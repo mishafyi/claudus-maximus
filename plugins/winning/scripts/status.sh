@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # Winning Orchestrator Status Script
-# Reports current orchestration state with elapsed time and iteration rate
+# Reports current round, elapsed time, and history summary
 
 set -euo pipefail
 
 STATE_FILE=".claude/winning-orchestrator.local.md"
+HISTORY_FILE=".claude/winning-history.local.md"
 
 if [[ ! -f "$STATE_FILE" ]]; then
   echo "No active winning orchestration."
@@ -21,17 +22,14 @@ if [[ -z "$FRONTMATTER" ]]; then
   exit 1
 fi
 
-ITERATION=$(echo "$FRONTMATTER" | grep '^iteration:' | sed 's/iteration: *//')
-MAX_ITERATIONS=$(echo "$FRONTMATTER" | grep '^max_iterations:' | sed 's/max_iterations: *//')
+ROUND=$(echo "$FRONTMATTER" | grep '^round:' | sed 's/round: *//')
 COMPLETION_PROMISE=$(echo "$FRONTMATTER" | grep '^completion_promise:' | sed 's/completion_promise: *//' | sed 's/^"\(.*\)"$/\1/')
 STRATEGIES=$(echo "$FRONTMATTER" | grep '^strategies:' | sed 's/strategies: *//')
 STARTED_AT=$(echo "$FRONTMATTER" | grep '^started_at:' | sed 's/started_at: *//' | sed 's/^"\(.*\)"$/\1/')
 SESSION_ID=$(echo "$FRONTMATTER" | grep '^session_id:' | sed 's/session_id: *//' || true)
-LAST_OUTPUT_HASH=$(echo "$FRONTMATTER" | grep '^last_output_hash:' | sed 's/last_output_hash: *//' || echo "")
 
 # Calculate elapsed time
 ELAPSED_DISPLAY="unknown"
-RATE_DISPLAY="--"
 ELAPSED_SECS=0
 
 if [[ -n "$STARTED_AT" ]]; then
@@ -52,85 +50,55 @@ if [[ -n "$STARTED_AT" ]]; then
     else
       ELAPSED_DISPLAY="${ELAPSED_SEC}s"
     fi
-
-    # Calculate iteration rate (iterations per minute)
-    if [[ $ELAPSED_SECS -gt 0 ]] && [[ "$ITERATION" =~ ^[0-9]+$ ]] && [[ $ITERATION -gt 0 ]]; then
-      RATE_X100=$(( ITERATION * 6000 / ELAPSED_SECS ))
-      RATE_WHOLE=$((RATE_X100 / 100))
-      RATE_FRAC=$((RATE_X100 % 100))
-      RATE_DISPLAY="${RATE_WHOLE}.$(printf '%02d' $RATE_FRAC) iter/min"
-    fi
   fi
-fi
-
-# Progress bar (guard against MAX_ITERATIONS=0 and overflow)
-PROGRESS_BAR=""
-if [[ "$ITERATION" =~ ^[0-9]+$ ]] && [[ "$MAX_ITERATIONS" =~ ^[0-9]+$ ]] && [[ $MAX_ITERATIONS -gt 0 ]]; then
-  PCT=$((ITERATION * 100 / MAX_ITERATIONS))
-  if [[ $PCT -gt 100 ]]; then PCT=100; fi
-  FILLED=$((PCT / 5))
-  EMPTY=$((20 - FILLED))
-  PROGRESS_BAR="["
-  for ((i=0; i<FILLED; i++)); do PROGRESS_BAR+="="; done
-  if [[ $FILLED -lt 20 ]]; then PROGRESS_BAR+=">"; EMPTY=$((EMPTY - 1)); fi
-  for ((i=0; i<EMPTY; i++)); do PROGRESS_BAR+=" "; done
-  PROGRESS_BAR+="] ${PCT}%"
-fi
-
-# Stuck detection
-STUCK_MSG=""
-if [[ -n "$LAST_OUTPUT_HASH" ]]; then
-  STUCK_MSG="  (tracking active)"
-else
-  STUCK_MSG="  (not yet tracked)"
 fi
 
 echo "Winning Orchestration Status"
 echo "================================================================"
 echo ""
-echo "  Iteration:          $ITERATION / $MAX_ITERATIONS  $PROGRESS_BAR"
-echo "  Strategies:         $STRATEGIES parallel"
+echo "  Round:              $ROUND (no limit)"
+echo "  Agents per round:   $STRATEGIES"
 echo "  Elapsed time:       $ELAPSED_DISPLAY"
-echo "  Iteration rate:     $RATE_DISPLAY"
 echo "  Completion promise: $COMPLETION_PROMISE"
 echo "  Started at:         $STARTED_AT"
 echo "  Session:            ${SESSION_ID:-<not set>}"
-echo "  Stuck detection:    $STUCK_MSG"
 echo ""
-
-# Estimated time remaining (guard against zero iteration rate)
-if [[ $ELAPSED_SECS -gt 0 ]] && [[ "$ITERATION" =~ ^[0-9]+$ ]] && [[ $ITERATION -gt 0 ]] && [[ "$MAX_ITERATIONS" =~ ^[0-9]+$ ]] && [[ $MAX_ITERATIONS -gt 0 ]]; then
-  REMAINING_ITERS=$((MAX_ITERATIONS - ITERATION))
-  if [[ $REMAINING_ITERS -gt 0 ]]; then
-    SECS_PER_ITER=$((ELAPSED_SECS / ITERATION))
-    if [[ $SECS_PER_ITER -gt 0 ]]; then
-      ETA_SECS=$((REMAINING_ITERS * SECS_PER_ITER))
-      ETA_MIN=$((ETA_SECS / 60))
-      ETA_SEC=$((ETA_SECS % 60))
-      if [[ $ETA_MIN -gt 0 ]]; then
-        echo "  ETA (at current rate): ~${ETA_MIN}m ${ETA_SEC}s"
-      else
-        echo "  ETA (at current rate): ~${ETA_SEC}s"
-      fi
-    else
-      echo "  ETA (at current rate): <1s per iteration"
-    fi
-    echo ""
-  fi
-fi
-
-# Staleness warning: started > 1 hour ago with low iteration count
-if [[ $ELAPSED_SECS -gt 3600 ]] && [[ "$ITERATION" =~ ^[0-9]+$ ]] && [[ $ITERATION -le 2 ]]; then
-  echo "  WARNING: Orchestration may be stale — running for over 1 hour"
-  echo "  with only $ITERATION iteration(s). Consider cancelling with /winning:cancel."
-  echo ""
-fi
 
 # Extract goal from prompt
 GOAL=$(awk '/^---$/{i++; next} i>=2' "$STATE_FILE" | grep '^GOAL:' | sed 's/^GOAL: *//')
 if [[ -n "$GOAL" ]]; then
   echo "  Goal: $GOAL"
+  echo ""
 fi
 
-echo ""
-echo "  State file: $STATE_FILE"
+# Show history summary if available
+if [[ -f "$HISTORY_FILE" ]]; then
+  HISTORY_ROUNDS=$(grep -c '^## Round' "$HISTORY_FILE" 2>/dev/null || echo "0")
+  echo "  History: $HISTORY_ROUNDS completed round(s) in $HISTORY_FILE"
+
+  # Show latest KEY INSIGHT if available
+  LAST_INSIGHT=$(grep '^KEY INSIGHT:' "$HISTORY_FILE" | tail -1)
+  if [[ -n "$LAST_INSIGHT" ]]; then
+    echo "  Latest insight: ${LAST_INSIGHT#KEY INSIGHT: }"
+  fi
+
+  # Show latest APPROACHES TO AVOID
+  LAST_AVOID=$(grep '^APPROACHES TO AVOID:' "$HISTORY_FILE" | tail -1)
+  if [[ -n "$LAST_AVOID" ]]; then
+    echo "  Avoiding: ${LAST_AVOID#APPROACHES TO AVOID: }"
+  fi
+  echo ""
+else
+  echo "  History: no completed rounds yet"
+  echo ""
+fi
+
+# Staleness warning: started > 1 hour ago with round still at 1
+if [[ $ELAPSED_SECS -gt 3600 ]] && [[ "$ROUND" =~ ^[0-9]+$ ]] && [[ $ROUND -le 1 ]]; then
+  echo "  WARNING: Orchestration may be stale — running for over 1 hour"
+  echo "  still on round $ROUND. Consider /winning:cancel."
+  echo ""
+fi
+
+echo "  State file:   $STATE_FILE"
+echo "  History file:  $HISTORY_FILE"

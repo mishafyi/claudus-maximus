@@ -7,12 +7,12 @@ description: This skill should be used when the user invokes /winning:cancel to 
 
 ## Step 1 -- Salvage
 
-BEFORE cancelling, read `.claude/winning-orchestrator.local.md` and extract:
-- **Score Table**: identify leading strategy (highest Progress)
-- **Goal**: what was being worked on
-- **Iteration reached** and **phase** at cancellation
+BEFORE cancelling, read both files if they exist:
 
-Check conversation for completed background agents. For each, note: STRATEGY RESULT status, PROGRESS_REPORT scores, and FILES_CHANGED list.
+1. `.claude/winning-orchestrator.local.md` — extract goal, round number
+2. `.claude/winning-history.local.md` — extract all round results and learnings
+
+Check conversation for completed background agents. For each, note: STRATEGY RESULT status, PROGRESS_REPORT, and FILES_CHANGED list.
 
 ## Step 2 -- Cancel
 
@@ -22,18 +22,20 @@ Check conversation for completed background agents. For each, note: STRATEGY RES
 
 ## Step 3 -- Report
 
-1. **Cancellation confirmed**: iterations completed, phase at cancellation
+1. **Cancellation confirmed**: rounds completed, elapsed time
 2. **Salvaged results** (from completed or in-progress agents):
-   - Leading strategy name and scores (Progress/Velocity/Risk)
+   - Best-performing agent and its progress_score
    - Files changed by completed agents
-   - Non-overlapping files from eliminated strategies that cover unmet SUCCESS_METRIC parts (per Phase 4 merge rules) -- flag these as candidates for manual merge
+   - Non-overlapping files that may be directly usable
 3. **Recommendation** (exactly one):
 
-   | Condition                               | Recommendation                                                            |
-   |-----------------------------------------|---------------------------------------------------------------------------|
-   | Any strategy Progress >= 70             | "[X] was near completion. Its output in [files] may be directly usable."  |
-   | Any strategy Progress 30-69             | "[X] made partial progress. Review [files] for reusable work."            |
-   | No strategy exceeded Progress 30        | "No significant progress. Consider a different approach."                 |
-   | Cancelled during iteration 1 (no scores)| "Cancelled before assessment. No partial results to salvage."             |
+   | Condition | Recommendation |
+   |-----------|---------------|
+   | Any agent COMPLETED (verification passed) | "[X] achieved the goal. Consolidate its output." |
+   | Any agent progress_score >= 70 | "[X] was near completion. Its output in [files] may be directly usable." |
+   | Any agent progress_score 30-69 | "[X] made partial progress. Review [files] for reusable work." |
+   | No agent exceeded progress_score 30 | "No significant progress. Consider a different approach." |
+   | Cancelled during round 1 (no history) | "Cancelled before any rounds completed. No results to salvage." |
 
-4. **Cleanup note**: Background strategy-runner agents may still be running independently. Their results will no longer be orchestrated. If using worktrees, run `git worktree list` to identify and `git worktree remove <path>` to clean up orphaned worktrees.
+4. **History preserved**: `.claude/winning-history.local.md` is NOT deleted — learnings persist. To resume later, the history provides context for a fresh `/winning:launch`.
+5. **Cleanup note**: Background agents may still be running. If using worktrees, run `git worktree list` to identify and `git worktree prune` to clean up.

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Winning Orchestrator Setup Script
-# Modernized from Ralph Loop — creates orchestrator state file for parallel strategy management
+# Creates orchestrator state file for evolutionary loop
 
 set -euo pipefail
 
@@ -41,14 +41,11 @@ fi
 # Validate session ID is available for session isolation
 if [[ -z "${CLAUDE_CODE_SESSION_ID:-}" ]]; then
   echo "WARNING: CLAUDE_CODE_SESSION_ID is not set." >&2
-  echo "  Session isolation will be disabled — the stop hook cannot verify" >&2
-  echo "  that orchestration belongs to this session." >&2
-  echo "  Proceeding anyway, but be cautious with multiple concurrent sessions." >&2
+  echo "  Session isolation will be disabled." >&2
   echo "" >&2
 fi
 
 PROMPT_PARTS=()
-MAX_ITERATIONS=10
 COMPLETION_PROMISE="GOAL ACHIEVED"
 STRATEGIES=3
 
@@ -56,38 +53,34 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     -h|--help)
       cat << 'HELP_EOF'
-Winning Orchestrator — parallel strategy deployment
+Winning Orchestrator — evolutionary parallel strategy deployment
 
 USAGE:
   /winning:launch GOAL [OPTIONS]
 
 ARGUMENTS:
-  GOAL    The task to optimize with parallel strategies
+  GOAL    The task to achieve with parallel strategies
 
 OPTIONS:
-  --strategies <n>               Number of parallel strategies (default: 3)
-  --max-iterations <n>           Max orchestrator cycles (default: 10)
+  --strategies <n>               Number of parallel strategies per round (default: 3)
   --completion-promise '<text>'  Promise phrase signaling goal achieved (default: "GOAL ACHIEVED")
   -h, --help                     Show this help
 
 EXAMPLES:
   /winning:launch "Build a REST API with full test coverage" --strategies 3
-  /winning:launch "Fix the auth bug" --max-iterations 5 --completion-promise "BUG FIXED"
-  /winning:launch "Refactor payment module" --strategies 2 --max-iterations 15
+  /winning:launch "Fix the auth bug" --completion-promise "BUG FIXED"
+
+HOW IT WORKS:
+  Each round deploys N agents on different strategies. Agents work until done
+  (no cycle limits). Results are compared against VERIFICATION_COMMAND.
+  If none pass, learnings are recorded and a new round starts with adjusted
+  strategies. Repeats until the goal is verifiably achieved.
 
 STOPPING:
   /winning:cancel    Cancel the orchestration
   /winning:status    Check current progress
 HELP_EOF
       exit 0
-      ;;
-    --max-iterations)
-      if [[ -z "${2:-}" ]] || ! [[ "$2" =~ ^[0-9]+$ ]]; then
-        echo "ERROR: --max-iterations requires a positive integer" >&2
-        exit 1
-      fi
-      MAX_ITERATIONS="$2"
-      shift 2
       ;;
     --completion-promise)
       if [[ -z "${2:-}" ]]; then
@@ -118,10 +111,9 @@ done
 
 PROMPT="${PROMPT_PARTS[*]:-}"
 
-# Validate prompt doesn't contain characters that break the heredoc state file
+# Validate prompt doesn't contain characters that break the heredoc
 if [[ "$PROMPT" == *'EOF'* ]]; then
   echo "ERROR: Goal text must not contain the literal string 'EOF'" >&2
-  echo "  This would break the internal state file format." >&2
   exit 1
 fi
 
@@ -138,8 +130,8 @@ fi
 
 # Check for existing orchestration
 if [[ -f ".claude/winning-orchestrator.local.md" ]]; then
-  EXISTING_ITERATION=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' ".claude/winning-orchestrator.local.md" | grep '^iteration:' | sed 's/iteration: *//')
-  echo "WARNING: Active orchestration found at iteration $EXISTING_ITERATION" >&2
+  EXISTING_ROUND=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' ".claude/winning-orchestrator.local.md" | grep '^round:' | sed 's/round: *//')
+  echo "WARNING: Active orchestration found at round $EXISTING_ROUND" >&2
   echo "   Cancel it first with /winning:cancel" >&2
   exit 1
 fi
@@ -152,35 +144,36 @@ COMPLETION_PROMISE_YAML="\"$COMPLETION_PROMISE\""
 cat > .claude/winning-orchestrator.local.md <<EOF
 ---
 active: true
-iteration: 1
+round: 1
 session_id: ${CLAUDE_CODE_SESSION_ID:-}
-max_iterations: $MAX_ITERATIONS
 completion_promise: $COMPLETION_PROMISE_YAML
 strategies: $STRATEGIES
 started_at: "$STARTED_AT"
 last_output_hash: ""
 ---
 
-WINNING ORCHESTRATOR — ITERATION CYCLE
+WINNING ORCHESTRATOR — EVOLUTIONARY LOOP
 
 GOAL: $PROMPT
 
-STRATEGIES TO DEPLOY: $STRATEGIES parallel approaches
-MAX ITERATIONS: $MAX_ITERATIONS
+STRATEGY_COUNT: $STRATEGIES agents per round
 
-PHASE PROTOCOL (see SKILL.md for full details):
+LOOP PROTOCOL:
+1. Deploy $STRATEGIES agents (different strategies, same goal) with run_in_background: true, model: "opus", and isolation: "worktree"
+2. Wait for all to complete
+3. Run VERIFICATION_COMMAND on each agent's output
+4. If any passes -> VICTORY (consolidate that agent's work, output completion promise)
+5. If none pass -> collect LEARNINGS from all agents
+6. Append learnings to .claude/winning-history.local.md
+7. Design $STRATEGIES NEW strategies informed by learnings (must address previous failures, must avoid failed approaches)
+8. Each new agent reads .claude/winning-history.local.md before starting
+9. -> Next round
 
-PHASE 1 — DEPLOY (iteration 1): Analyze goal, decompose into $STRATEGIES strategies, dispatch as background Agents with isolation: "worktree". Initialize Score Table.
-PHASE 2 — ASSESS (iterations 2-3): Collect PROGRESS_REPORTs, score all strategies (Progress/Velocity/Risk). Only eliminate if Progress=0 and no signs of life.
-PHASE 3 — ELIMINATE (iterations 4-$((MAX_ITERATIONS - 1))): Kill Velocity<2 or Risk<3 for 2 consecutive. Progress>=90 triggers Victory Protocol.
-PHASE 4 — CONSOLIDATE (iteration $MAX_ITERATIONS): Pick highest Progress, merge partial results, output Score Table and lessons.
-
-SCORE TABLE (update every iteration):
-| Strategy | Progress | Velocity | Risk | Status |
-|----------|----------|----------|------|--------|
-| (fill after deployment) |
-
-RULES: Score every strategy every iteration. Apply elimination thresholds mechanically. Kill underperformers immediately. No hedging.
+RULES:
+- No cycle limits on agents. They work until done or blocked.
+- No round limits on the orchestrator. Loop until VERIFICATION_COMMAND passes.
+- Each round's agents read .claude/winning-history.local.md so they don't repeat mistakes.
+- Every round must try at least one fundamentally different approach from all previous rounds.
 When the goal is fully achieved, output: <promise>$COMPLETION_PROMISE</promise>
 EOF
 
@@ -188,31 +181,29 @@ cat <<EOF
 Winning orchestration activated!
 
 Goal: $PROMPT
-Strategies: $STRATEGIES parallel approaches
-Max iterations: $MAX_ITERATIONS
+Strategies: $STRATEGIES agents per round
 Completion promise: $COMPLETION_PROMISE
 Session: ${CLAUDE_CODE_SESSION_ID:-<not set>}
 Started at: $STARTED_AT
 
-The stop hook is now active. Each cycle, check on your deployed strategies,
-eliminate underperformers, and consolidate when a winner emerges.
+No round limits. No cycle limits. Runs until the goal is verifiably achieved.
+Learnings persist in .claude/winning-history.local.md across rounds.
 
 To monitor: /winning:status
 To cancel:  /winning:cancel
 
 ================================================================
-CRITICAL — Completion Promise
+Completion Promise
 ================================================================
 
 To complete, output this EXACT text:
   <promise>$COMPLETION_PROMISE</promise>
 
 ONLY when the goal is genuinely and verifiably achieved.
-Do NOT output false promises to exit the loop.
 ================================================================
 EOF
 
 echo ""
 echo "GOAL: $PROMPT"
 echo ""
-echo "Begin by analyzing this goal and decomposing it into $STRATEGIES competing strategies."
+echo "Begin by refining this goal (Phase 0) then deploying $STRATEGIES competing strategies."

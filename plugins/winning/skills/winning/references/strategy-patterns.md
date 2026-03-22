@@ -8,42 +8,42 @@ Match top-to-bottom. First match wins.
 
 ```
 IF task mentions "test", "coverage", "spec", "validation"
-  THEN -> Testing Split (3-5 iterations)
+  THEN -> Testing Split (3-5 rounds)
 
 IF task mentions "API", "endpoint", "REST", "GraphQL", "route", "handler"
-  THEN -> API Development Split (5-8 iterations)
+  THEN -> API Development Split (5-8 rounds)
 
 IF task mentions "pipeline", "ETL", "ingest", "transform", "data flow", "stream"
-  THEN -> Data Pipeline Split (4-7 iterations)
+  THEN -> Data Pipeline Split (4-7 rounds)
 
 IF task mentions "migrate", "upgrade", "port", "convert", "move from X to Y"
-  THEN -> Migration Split (5-8 iterations)
+  THEN -> Migration Split (5-8 rounds)
 
 IF task mentions "fix", "bug", "broken", "error", "failing", "500", "crash"
   IF root cause location is known
-    THEN -> Fix Approach Split (2-4 iterations)
+    THEN -> Fix Approach Split (2-4 rounds)
   ELSE
-    THEN -> Diagnosis Split (3-6 iterations)
+    THEN -> Diagnosis Split (3-6 rounds)
 
 IF task mentions "slow", "optimize", "performance", "speed", "latency", "memory"
-  THEN -> Dimension Split (4-7 iterations)
+  THEN -> Dimension Split (4-7 rounds)
 
 IF task mentions "refactor", "restructure", "clean up", "extract", "decouple"
   IF test coverage exists (>60%)
-    THEN -> Scope Split (4-6 iterations)
+    THEN -> Scope Split (4-6 rounds)
   ELSE
-    THEN -> Scope Split with test-first Strategy A (5-8 iterations)
+    THEN -> Scope Split with test-first Strategy A (5-8 rounds)
 
 IF task mentions "design", "UI", "UX", "page", "component", "layout", "content"
-  THEN -> Perspective Split (3-5 iterations)
+  THEN -> Perspective Split (3-5 rounds)
 
 IF task mentions "build", "create", "implement", "add feature"
   IF modifying existing codebase with established patterns
-    THEN -> Methodology Split (4-7 iterations)
+    THEN -> Methodology Split (4-7 rounds)
   ELSE (greenfield / new module)
-    THEN -> Architecture Split (5-8 iterations)
+    THEN -> Architecture Split (5-8 rounds)
 
-ELSE -> Methodology Split (safest default, 4-7 iterations)
+ELSE -> Methodology Split (safest default, 4-7 rounds)
 ```
 
 ## Patterns
@@ -51,7 +51,7 @@ ELSE -> Methodology Split (safest default, 4-7 iterations)
 ### Testing Split
 When: task is primarily about adding/improving tests or coverage.
 When NOT: task is about fixing a specific bug (use Diagnosis/Fix Approach instead).
-Expected iterations: 3-5.
+Expected rounds: 3-5.
 
 - **A -- Coverage-gap**: Analyze uncovered code paths, write tests for highest-risk gaps first
 - **B -- Behavior-driven**: Write tests from user-story acceptance criteria, outside-in
@@ -60,7 +60,7 @@ Expected iterations: 3-5.
 ### API Development Split
 When: building new endpoints or overhauling existing API surface.
 When NOT: task is only about API performance (use Dimension Split).
-Expected iterations: 5-8.
+Expected rounds: 5-8.
 
 - **A -- Contract-first**: Define OpenAPI/GraphQL schema, generate stubs, implement handlers against contract
 - **B -- Vertical-slice**: Build one complete endpoint (handler + validation + persistence + tests) at a time
@@ -69,7 +69,7 @@ Expected iterations: 5-8.
 ### Data Pipeline Split
 When: building ETL, streaming, or data transformation workflows.
 When NOT: task is about optimizing existing query performance (use Dimension Split).
-Expected iterations: 4-7.
+Expected rounds: 4-7.
 
 - **A -- Schema-driven**: Define input/output schemas and transformations declaratively, then implement
 - **B -- Sample-first**: Process one real record end-to-end, then generalize and scale
@@ -78,7 +78,7 @@ Expected iterations: 4-7.
 ### Migration Split
 When: moving between frameworks, languages, database versions, or API versions.
 When NOT: task is a refactor within the same technology (use Scope Split).
-Expected iterations: 5-8.
+Expected rounds: 5-8.
 
 - **A -- Parallel-run**: New system alongside old, compare outputs, swap when matching
 - **B -- Incremental-cutover**: Migrate one component/table/endpoint at a time behind feature flags
@@ -87,7 +87,7 @@ Expected iterations: 5-8.
 ### Diagnosis Split
 When: bug exists, root cause location unknown.
 When NOT: you already know which function/module is broken (use Fix Approach Split).
-Expected iterations: 3-6.
+Expected rounds: 3-6.
 
 - **A -- Top-down**: Start from error symptoms, trace through call stack toward root cause
 - **B -- Bottom-up**: Start from data layer, verify each layer upward until failure found
@@ -96,7 +96,7 @@ Expected iterations: 3-6.
 ### Fix Approach Split
 When: broken component identified, deciding how to fix.
 When NOT: root cause still unclear (use Diagnosis Split).
-Expected iterations: 2-4.
+Expected rounds: 2-4.
 
 - **A -- Minimal-patch**: Smallest change that fixes the symptom with regression test
 - **B -- Root-cause**: Trace to fundamental issue, fix underlying problem
@@ -105,7 +105,7 @@ Expected iterations: 2-4.
 ### Dimension Split
 When: measurable performance problem -- latency, throughput, memory, CPU.
 When NOT: perceived slowness without measurements (add instrumentation first).
-Expected iterations: 4-7.
+Expected rounds: 4-7.
 
 - **A -- Algorithmic**: Better data structures, reduced complexity, eliminated redundant work
 - **B -- Caching**: Memoization, precomputation, result caching at appropriate layer
@@ -114,7 +114,7 @@ Expected iterations: 4-7.
 ### Scope Split
 When: restructuring existing code while maintaining behavior.
 When NOT: changing behavior (that is a feature task -- use Methodology Split).
-Expected iterations: 4-6 (with tests), 5-8 (without tests).
+Expected rounds: 4-6 (with tests), 5-8 (without tests).
 
 - **A -- Incremental**: Small safe refactors one at a time, tests green after each step
 - **B -- Extract-and-replace**: Build new implementation alongside old, swap atomically
@@ -123,7 +123,7 @@ Expected iterations: 4-6 (with tests), 5-8 (without tests).
 ### Perspective Split
 When: UI, UX, content, or design tasks with subjective quality criteria.
 When NOT: purely technical frontend work (use Methodology Split).
-Expected iterations: 3-5.
+Expected rounds: 3-5.
 
 - **A -- User-first**: Optimize for end-user experience, clarity, accessibility
 - **B -- System-first**: Optimize for component reuse, maintainability, design-system alignment
@@ -132,7 +132,7 @@ Expected iterations: 3-5.
 ### Methodology Split
 When: adding features to existing codebase. Default when no other pattern matches.
 When NOT: greenfield projects (use Architecture Split).
-Expected iterations: 4-7.
+Expected rounds: 4-7.
 
 - **A -- TDD-first**: Write comprehensive tests, then implement to satisfy them
 - **B -- Prototype-first**: Build working prototype fast, then add tests and refine
@@ -141,7 +141,7 @@ Expected iterations: 4-7.
 ### Architecture Split
 When: greenfield projects or new modules where structure is undecided.
 When NOT: existing codebase with established architecture (use Methodology Split).
-Expected iterations: 5-8.
+Expected rounds: 5-8.
 
 - **A -- Monolithic**: Single module, direct implementation, optimize structure later
 - **B -- Modular**: Decompose into focused modules with explicit interfaces from the start
@@ -152,4 +152,4 @@ Expected iterations: 5-8.
 1. **First match wins** -- traverse decision tree top-to-bottom, stop at first match
 2. **Genuine diversity** -- strategies must differ in approach, not minor details
 3. **Independent execution** -- no strategy depends on another's output
-4. **Early signal** -- design so failures surface by iteration 2, not at the end
+4. **Early signal** -- design so failures surface by round 2, not at the end

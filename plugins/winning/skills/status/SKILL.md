@@ -1,6 +1,6 @@
 ---
 name: status
-description: This skill should be used when the user invokes /winning:status to check progress of an active parallel strategy orchestration. Displays current state and interprets progress with actionable advice.
+description: This skill should be used when the user invokes /winning:status to check progress of an active winning orchestration. Displays current round, agent status, and learnings from previous rounds.
 ---
 
 # Winning Status
@@ -13,37 +13,34 @@ Run the status script:
 
 If no state file exists, report "No active winning orchestration." and stop.
 
-Read `.claude/winning-orchestrator.local.md` and present: iteration (current/max), active phase, goal, completion promise, elapsed time, and Score Table if populated.
+## Gather State
 
-## Interpret
+Read both files:
+1. `.claude/winning-orchestrator.local.md` — current round, goal, session info
+2. `.claude/winning-history.local.md` — results and learnings from completed rounds (if exists)
 
-Compute **iteration ratio** = `current_iteration / max_iterations` and classify:
+## Report
 
-| Ratio   | Stage       | Expectation                              |
-|---------|-------------|------------------------------------------|
-| < 0.3   | Early       | Establishing baselines                   |
-| 0.3-0.6 | Mid         | Clear differentiation between strategies |
-| 0.6-0.8 | Late        | Winner should be emerging                |
-| > 0.8   | Final       | Consolidation imminent                   |
+Present to the user:
+- **Goal**: what we're trying to achieve
+- **Current round**: N (with elapsed time)
+- **Agents this round**: how many deployed, how many completed, how many still running
+- **Verification status**: has VERIFICATION_COMMAND passed for any agent?
 
-From the Score Table, identify the **leader** (highest Progress) and flag concerns:
-
-| Condition                                           | Flag                                               |
-|-----------------------------------------------------|----------------------------------------------------|
-| Velocity < 2 after iteration 3                      | "[X] is stagnating -- candidate for elimination"   |
-| Risk < 3                                            | "[X] is in danger zone"                            |
-| All strategies Progress < 30 at ratio > 0.5         | "WARNING: All strategies behind schedule"           |
-| No Score Table after iteration 1                    | "WARNING: Scores not yet recorded"                 |
-| Leader Progress >= 90                               | "Victory imminent -- begin consolidation"          |
-| Leader Progress >= 70 and Velocity >= 5             | "On track -- likely to succeed"                    |
-| Leader Progress >= 70 and Velocity < 5              | "Leader is slowing down"                           |
-| Leader Progress < 50 at ratio > 0.5                 | "At risk -- insufficient progress"                 |
+If history file exists and has completed rounds:
+- **Rounds completed**: N
+- **Best result so far**: which agent/round got closest to passing verification
+- **Key learnings**: the KEY INSIGHT and APPROACHES TO AVOID from the most recent round
+- **Evolution**: one-line summary of how strategies evolved across rounds
 
 ## Advice
 
-Provide exactly one recommendation based on the most critical flag above:
-- "Continue monitoring" (no flags triggered)
-- "Consider eliminating [X]" (velocity/risk threshold breached)
-- "Trigger Victory Protocol" (Progress >= 90)
-- "Consider redeployment" (all strategies stagnating)
-- "Begin consolidation" (final iteration)
+Provide exactly one recommendation:
+
+| Condition | Recommendation |
+|-----------|---------------|
+| All agents still running | "Waiting for agents to complete." |
+| Some agents done, none passed verification | "Round incomplete — waiting for remaining agents." |
+| All agents done, none passed verification | "Ready for next round. Learnings recorded." |
+| An agent passed verification | "Victory — consolidate and declare." |
+| No agents running and no history | "Orchestration may be stale. Consider /winning:cancel." |
