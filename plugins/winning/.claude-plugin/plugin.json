@@ -1,0 +1,10 @@
+{
+  "name": "winning",
+  "description": "Parallel strategy orchestrator using Ralph-style loops. Deploys multiple background agents on competing strategies, monitors progress, eliminates underperformers, and consolidates the winning approach.",
+  "version": "0.1.0",
+  "author": {
+    "name": "misha"
+  },
+  "repository": "https://github.com/mishafyi/claudus-maximus",
+  "keywords": ["orchestrator", "parallel", "ralph-loop", "strategies", "optimization"]
+}

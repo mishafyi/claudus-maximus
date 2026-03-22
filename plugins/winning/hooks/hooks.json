@@ -1,0 +1,15 @@
+{
+  "description": "Winning orchestrator stop hook — keeps the main session alive for monitoring parallel strategies",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/stop-hook.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
