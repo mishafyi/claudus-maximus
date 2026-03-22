@@ -1,0 +1,11 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claudus-maximus",
+  "metadata": {
+    "description": "Personal Claude Code plugin marketplace"
+  },
+  "owner": {
+    "name": "misha"
+  },
+  "plugins": []
+}
