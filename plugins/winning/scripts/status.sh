@@ -63,10 +63,11 @@ if [[ -n "$STARTED_AT" ]]; then
   fi
 fi
 
-# Progress bar
+# Progress bar (guard against MAX_ITERATIONS=0 and overflow)
 PROGRESS_BAR=""
 if [[ "$ITERATION" =~ ^[0-9]+$ ]] && [[ "$MAX_ITERATIONS" =~ ^[0-9]+$ ]] && [[ $MAX_ITERATIONS -gt 0 ]]; then
   PCT=$((ITERATION * 100 / MAX_ITERATIONS))
+  if [[ $PCT -gt 100 ]]; then PCT=100; fi
   FILLED=$((PCT / 5))
   EMPTY=$((20 - FILLED))
   PROGRESS_BAR="["
@@ -97,21 +98,32 @@ echo "  Session:            ${SESSION_ID:-<not set>}"
 echo "  Stuck detection:    $STUCK_MSG"
 echo ""
 
-# Estimated time remaining
+# Estimated time remaining (guard against zero iteration rate)
 if [[ $ELAPSED_SECS -gt 0 ]] && [[ "$ITERATION" =~ ^[0-9]+$ ]] && [[ $ITERATION -gt 0 ]] && [[ "$MAX_ITERATIONS" =~ ^[0-9]+$ ]] && [[ $MAX_ITERATIONS -gt 0 ]]; then
   REMAINING_ITERS=$((MAX_ITERATIONS - ITERATION))
   if [[ $REMAINING_ITERS -gt 0 ]]; then
     SECS_PER_ITER=$((ELAPSED_SECS / ITERATION))
-    ETA_SECS=$((REMAINING_ITERS * SECS_PER_ITER))
-    ETA_MIN=$((ETA_SECS / 60))
-    ETA_SEC=$((ETA_SECS % 60))
-    if [[ $ETA_MIN -gt 0 ]]; then
-      echo "  ETA (at current rate): ~${ETA_MIN}m ${ETA_SEC}s"
+    if [[ $SECS_PER_ITER -gt 0 ]]; then
+      ETA_SECS=$((REMAINING_ITERS * SECS_PER_ITER))
+      ETA_MIN=$((ETA_SECS / 60))
+      ETA_SEC=$((ETA_SECS % 60))
+      if [[ $ETA_MIN -gt 0 ]]; then
+        echo "  ETA (at current rate): ~${ETA_MIN}m ${ETA_SEC}s"
+      else
+        echo "  ETA (at current rate): ~${ETA_SEC}s"
+      fi
     else
-      echo "  ETA (at current rate): ~${ETA_SEC}s"
+      echo "  ETA (at current rate): <1s per iteration"
     fi
     echo ""
   fi
+fi
+
+# Staleness warning: started > 1 hour ago with low iteration count
+if [[ $ELAPSED_SECS -gt 3600 ]] && [[ "$ITERATION" =~ ^[0-9]+$ ]] && [[ $ITERATION -le 2 ]]; then
+  echo "  WARNING: Orchestration may be stale — running for over 1 hour"
+  echo "  with only $ITERATION iteration(s). Consider cancelling with /winning:cancel."
+  echo ""
 fi
 
 # Extract goal from prompt

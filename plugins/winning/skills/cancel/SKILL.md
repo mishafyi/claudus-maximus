@@ -1,42 +1,39 @@
 ---
 name: cancel
-description: This skill should be used when the user invokes /winning:cancel to stop an active parallel strategy orchestration. Salvages partial results before removing state, then disables the monitoring loop. Background strategy agents may continue running independently.
+description: This skill should be used when the user invokes /winning:cancel to stop an active parallel strategy orchestration. Salvages partial results before removing state, then disables the monitoring loop.
 ---
 
 # Cancel Winning Orchestration
 
-## Step 1 — Salvage Partial Results
+## Step 1 -- Salvage
 
-BEFORE running the cancel script, read `.claude/winning-orchestrator.local.md` to extract:
+BEFORE cancelling, read `.claude/winning-orchestrator.local.md` and extract:
+- **Score Table**: identify leading strategy (highest Progress)
+- **Goal**: what was being worked on
+- **Iteration reached** and **phase** at cancellation
 
-1. **Score Table**: If scores exist, identify the leading strategy (highest Progress score)
-2. **Goal**: What was being worked on
-3. **Iteration reached**: How far the orchestration got
-4. **Phase**: What phase was active (Deploy/Assess/Eliminate/Consolidate)
+Check conversation for completed background agents. For each, note: STRATEGY RESULT status, PROGRESS_REPORT scores, and FILES_CHANGED list.
 
-Check if any background agents have completed by looking for agent completion notifications in the conversation. For any completed agents:
-- Note their final STRATEGY RESULT and PROGRESS_REPORT
-- Note their FILES_CHANGED list
-- Note their STATUS (SUCCEEDED / PARTIALLY_SUCCEEDED / FAILED / BLOCKED)
-
-## Step 2 — Execute Cancellation
+## Step 2 -- Cancel
 
 ```!
 "${CLAUDE_PLUGIN_ROOT}/scripts/cancel-loop.sh"
 ```
 
-## Step 3 — Report with Salvaged Context
-
-Report to the user:
+## Step 3 -- Report
 
 1. **Cancellation confirmed**: iterations completed, phase at cancellation
-2. **Salvaged results** (if any agents completed or made progress):
-   - Leading strategy name and its scores (Progress/Velocity/Risk)
-   - Files changed by completed agents — these contain usable partial work
-   - Whether any strategy was close to completion (Progress >= 70)
-3. **Recommendation**:
-   - If a strategy had Progress >= 70: "Strategy [X] was near completion. Its output in [files] may be directly usable."
-   - If a strategy had Progress 30-69: "Strategy [X] made partial progress. Review [files] for reusable work."
-   - If no strategy exceeded Progress 30: "No strategy made significant progress. Consider a different approach."
-   - If no scores were recorded (cancelled during iteration 1): "Cancelled before assessment. No partial results to salvage."
-4. **Warning**: Background strategy-runner agents may still be running independently. Their results will no longer be orchestrated or consolidated. If running in worktrees, those worktrees will persist until manually cleaned up.
+2. **Salvaged results** (from completed or in-progress agents):
+   - Leading strategy name and scores (Progress/Velocity/Risk)
+   - Files changed by completed agents
+   - Non-overlapping files from eliminated strategies that cover unmet SUCCESS_METRIC parts (per Phase 4 merge rules) -- flag these as candidates for manual merge
+3. **Recommendation** (exactly one):
+
+   | Condition                               | Recommendation                                                            |
+   |-----------------------------------------|---------------------------------------------------------------------------|
+   | Any strategy Progress >= 70             | "[X] was near completion. Its output in [files] may be directly usable."  |
+   | Any strategy Progress 30-69             | "[X] made partial progress. Review [files] for reusable work."            |
+   | No strategy exceeded Progress 30        | "No significant progress. Consider a different approach."                 |
+   | Cancelled during iteration 1 (no scores)| "Cancelled before assessment. No partial results to salvage."             |
+
+4. **Cleanup note**: Background strategy-runner agents may still be running independently. Their results will no longer be orchestrated. If using worktrees, run `git worktree list` to identify and `git worktree remove <path>` to clean up orphaned worktrees.

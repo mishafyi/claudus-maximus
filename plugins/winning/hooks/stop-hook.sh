@@ -10,6 +10,20 @@ HOOK_INPUT=$(cat)
 
 STATE_FILE=".claude/winning-orchestrator.local.md"
 
+# Graceful degradation if jq is not installed
+if ! command -v jq >/dev/null 2>&1; then
+  echo "FATAL: Winning orchestrator stop hook requires jq but it is not installed." >&2
+  echo "  Install it:" >&2
+  echo "    macOS:  brew install jq" >&2
+  echo "    Debian: sudo apt-get install jq" >&2
+  echo "    Arch:   sudo pacman -S jq" >&2
+  echo "    Fedora: sudo dnf install jq" >&2
+  echo "" >&2
+  echo "  Removing state file to prevent stuck loop." >&2
+  rm -f "$STATE_FILE"
+  exit 0
+fi
+
 if [[ ! -f "$STATE_FILE" ]]; then
   exit 0
 fi
@@ -189,17 +203,24 @@ fi
 
 # Update iteration and last_output_hash atomically
 TEMP_FILE="${STATE_FILE}.tmp.$$"
+trap 'rm -f "$TEMP_FILE" "${TEMP_FILE}.2"' EXIT
+
 sed "s/^iteration: .*/iteration: $NEXT_ITERATION/" "$STATE_FILE" > "$TEMP_FILE"
 
 # Update or insert last_output_hash in frontmatter
 if grep -q '^last_output_hash:' "$TEMP_FILE"; then
   sed -i '' "s/^last_output_hash:.*$/last_output_hash: $CURRENT_HASH/" "$TEMP_FILE"
 else
-  awk -v hash="$CURRENT_HASH" 'BEGIN{c=0} /^---$/{c++; if(c==2){print "last_output_hash: " hash}} {print}' "$TEMP_FILE" > "${TEMP_FILE}.2"
+  # Insert last_output_hash before the closing --- of frontmatter
+  awk -v hash="$CURRENT_HASH" '
+    /^---$/ { count++; if (count == 2) print "last_output_hash: " hash }
+    { print }
+  ' "$TEMP_FILE" > "${TEMP_FILE}.2"
   mv "${TEMP_FILE}.2" "$TEMP_FILE"
 fi
 
 mv "$TEMP_FILE" "$STATE_FILE"
+trap - EXIT
 
 # Build system message
 ITER_DISPLAY="$NEXT_ITERATION"

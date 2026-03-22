@@ -37,9 +37,15 @@ if [[ -n "$STATE_SESSION" ]] && [[ -n "$CURRENT_SESSION" ]] && [[ "$STATE_SESSIO
     echo "  To cancel anyway, use: /winning:cancel --force" >&2
     exit 1
   else
-    echo "WARNING: Force-cancelling orchestration from different session." >&2
+    echo "================================================================" >&2
+    echo "WARNING: FORCE-CANCELLING ANOTHER SESSION'S ORCHESTRATION" >&2
+    echo "================================================================" >&2
     echo "  Orchestration session: $STATE_SESSION" >&2
     echo "  Current session:       $CURRENT_SESSION" >&2
+    echo "" >&2
+    echo "  The owning session's stop hook will no longer fire." >&2
+    echo "  Any background agents from that session may still be running." >&2
+    echo "================================================================" >&2
     echo "" >&2
   fi
 fi
@@ -96,3 +102,14 @@ fi
 echo ""
 echo "  Note: Background agents may still be running."
 echo "  They will complete on their own but results won't be orchestrated."
+
+# Check for leftover worktree directories and offer cleanup
+WORKTREES=$(git worktree list --porcelain 2>/dev/null | grep '^worktree ' | grep -v "$(git rev-parse --show-toplevel 2>/dev/null)" || true)
+if [[ -n "$WORKTREES" ]]; then
+  WORKTREE_COUNT=$(echo "$WORKTREES" | wc -l | tr -d ' ')
+  echo ""
+  echo "  Found $WORKTREE_COUNT git worktree(s) that may be from strategy agents:"
+  echo "$WORKTREES" | sed 's/^worktree /    /'
+  echo ""
+  echo "  To clean up: git worktree prune"
+fi

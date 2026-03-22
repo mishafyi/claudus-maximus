@@ -21,8 +21,18 @@ if [[ ${#MISSING_DEPS[@]} -gt 0 ]]; then
   echo "  Install them before launching:" >&2
   for dep in "${MISSING_DEPS[@]}"; do
     case "$dep" in
-      jq)   echo "    brew install jq       # or: apt-get install jq" >&2 ;;
-      perl) echo "    perl is usually pre-installed on macOS/Linux" >&2 ;;
+      jq)
+        echo "    macOS:  brew install jq" >&2
+        echo "    Debian: sudo apt-get install jq" >&2
+        echo "    Arch:   sudo pacman -S jq" >&2
+        echo "    Fedora: sudo dnf install jq" >&2
+        ;;
+      perl)
+        echo "    perl is usually pre-installed on macOS/Linux" >&2
+        echo "    Debian: sudo apt-get install perl" >&2
+        echo "    Arch:   sudo pacman -S perl" >&2
+        echo "    Fedora: sudo dnf install perl" >&2
+        ;;
     esac
   done
   exit 1
@@ -108,6 +118,13 @@ done
 
 PROMPT="${PROMPT_PARTS[*]:-}"
 
+# Validate prompt doesn't contain characters that break the heredoc state file
+if [[ "$PROMPT" == *'EOF'* ]]; then
+  echo "ERROR: Goal text must not contain the literal string 'EOF'" >&2
+  echo "  This would break the internal state file format." >&2
+  exit 1
+fi
+
 if [[ -z "$PROMPT" ]]; then
   echo "ERROR: No goal provided" >&2
   echo "" >&2
@@ -151,50 +168,20 @@ GOAL: $PROMPT
 STRATEGIES TO DEPLOY: $STRATEGIES parallel approaches
 MAX ITERATIONS: $MAX_ITERATIONS
 
-PHASE PROTOCOL (follow the phase matching your current iteration):
+PHASE PROTOCOL (see SKILL.md for full details):
 
-PHASE 1 — DEPLOY (iteration 1):
-  - Analyze the goal and fill the Goal Definition Template from SKILL.md
-  - Decompose into $STRATEGIES genuinely different strategies
-  - Dispatch each as a background Agent (strategy-runner) with run_in_background: true and isolation: "worktree"
-  - Initialize Score Table: Progress=0, Velocity=N/A, Risk=7 for each strategy
-  - Do NOT eliminate anything yet
-
-PHASE 2 — ASSESS (iterations 2-3):
-  - Check agent notifications and collect PROGRESS_REPORT blocks
-  - Score every strategy: Progress (0-100), Velocity (0-10), Risk (0-10)
-  - Velocity = min(10, (current_progress - previous_progress) / 3)
-  - Risk starts at 10, subtract: blocker (-2), ambiguous work (-3), repeated failure (-3), fundamental approach flaw (-5)
-  - Flag Risk < 3 as "danger zone"
-  - Only eliminate if Progress=0 AND no signs of life
-  - Otherwise let strategies continue
-
-PHASE 3 — ELIMINATE (iterations 4 to $((MAX_ITERATIONS - 1)), if any):
-  - Hard thresholds: Velocity < 2 = kill. Risk < 3 for 2 consecutive iterations = kill.
-  - Progress >= 90 for any strategy = Victory Protocol (verify then consolidate)
-  - All strategies eliminated = redeploy new strategies from failure analysis
-  - All strategies Velocity < 3 = analyze stagnation, consider full redeployment
-
-PHASE 4 — CONSOLIDATE (iteration $MAX_ITERATIONS, the final iteration):
-  - No eliminations. Pick highest Progress score.
-  - Progress >= 70: consolidate as final result
-  - Progress < 70: consolidate best-effort with explicit gap analysis
-  - Merge useful partial results from eliminated strategies
-  - Output final Score Table and lessons learned
+PHASE 1 — DEPLOY (iteration 1): Analyze goal, decompose into $STRATEGIES strategies, dispatch as background Agents with isolation: "worktree". Initialize Score Table.
+PHASE 2 — ASSESS (iterations 2-3): Collect PROGRESS_REPORTs, score all strategies (Progress/Velocity/Risk). Only eliminate if Progress=0 and no signs of life.
+PHASE 3 — ELIMINATE (iterations 4-$((MAX_ITERATIONS - 1))): Kill Velocity<2 or Risk<3 for 2 consecutive. Progress>=90 triggers Victory Protocol.
+PHASE 4 — CONSOLIDATE (iteration $MAX_ITERATIONS): Pick highest Progress, merge partial results, output Score Table and lessons.
 
 SCORE TABLE (update every iteration):
 | Strategy | Progress | Velocity | Risk | Status |
 |----------|----------|----------|------|--------|
 | (fill after deployment) |
 
-RULES:
-- No hedging. Make decisions and execute.
-- Score every strategy every iteration. No skipping scores.
-- Apply elimination thresholds mechanically — do not make exceptions.
-- Kill underperformers immediately when thresholds are breached.
-- Failures surface immediately for aggressive pivot.
-- Only output the completion promise when the goal is genuinely and verifiably achieved.
-- When the goal is fully achieved, output: <promise>$COMPLETION_PROMISE</promise>
+RULES: Score every strategy every iteration. Apply elimination thresholds mechanically. Kill underperformers immediately. No hedging.
+When the goal is fully achieved, output: <promise>$COMPLETION_PROMISE</promise>
 EOF
 
 cat <<EOF

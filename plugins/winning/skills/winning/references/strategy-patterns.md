@@ -1,133 +1,155 @@
 # Strategy Patterns
 
-Common strategy decomposition templates for different task types.
+Deterministic pattern selection and decomposition templates. Every recommendation is a rule, not a suggestion.
 
-## Pattern Selection Guide
+## Pattern Selection Decision Tree
 
-Use this decision tree to pick the right pattern. Match on task keywords.
+Match top-to-bottom. First match wins.
 
 ```
-TASK TYPE?
-|
-|-- Contains "build", "create", "implement", "add feature"
-|   |-- Modifying existing codebase with established patterns? -> Methodology Split
-|   |-- Greenfield / new module? -> Architecture Split
-|
-|-- Contains "fix", "bug", "broken", "error", "failing"
-|   |-- Know which component is broken? -> Fix Approach Split
-|   |-- Don't know where the bug is? -> Diagnosis Split
-|
-|-- Contains "slow", "optimize", "performance", "speed", "latency"
-|   -> Dimension Split
-|
-|-- Contains "refactor", "restructure", "clean up", "migrate"
-|   |-- High test coverage exists? -> Scope Split (Incremental)
-|   |-- Low/no test coverage? -> Scope Split (Extract-and-replace)
-|
-|-- Contains "design", "UI", "UX", "content", "copy", "page"
-|   -> Perspective Split
-|
-|-- None of the above? -> Methodology Split (safest default)
+IF task mentions "test", "coverage", "spec", "validation"
+  THEN -> Testing Split (3-5 iterations)
+
+IF task mentions "API", "endpoint", "REST", "GraphQL", "route", "handler"
+  THEN -> API Development Split (5-8 iterations)
+
+IF task mentions "pipeline", "ETL", "ingest", "transform", "data flow", "stream"
+  THEN -> Data Pipeline Split (4-7 iterations)
+
+IF task mentions "migrate", "upgrade", "port", "convert", "move from X to Y"
+  THEN -> Migration Split (5-8 iterations)
+
+IF task mentions "fix", "bug", "broken", "error", "failing", "500", "crash"
+  IF root cause location is known
+    THEN -> Fix Approach Split (2-4 iterations)
+  ELSE
+    THEN -> Diagnosis Split (3-6 iterations)
+
+IF task mentions "slow", "optimize", "performance", "speed", "latency", "memory"
+  THEN -> Dimension Split (4-7 iterations)
+
+IF task mentions "refactor", "restructure", "clean up", "extract", "decouple"
+  IF test coverage exists (>60%)
+    THEN -> Scope Split (4-6 iterations)
+  ELSE
+    THEN -> Scope Split with test-first Strategy A (5-8 iterations)
+
+IF task mentions "design", "UI", "UX", "page", "component", "layout", "content"
+  THEN -> Perspective Split (3-5 iterations)
+
+IF task mentions "build", "create", "implement", "add feature"
+  IF modifying existing codebase with established patterns
+    THEN -> Methodology Split (4-7 iterations)
+  ELSE (greenfield / new module)
+    THEN -> Architecture Split (5-8 iterations)
+
+ELSE -> Methodology Split (safest default, 4-7 iterations)
 ```
 
-## Code Implementation Tasks
+## Patterns
 
-### Pattern: Methodology Split
-Best for: Adding features to existing codebases with established conventions.
+### Testing Split
+When: task is primarily about adding/improving tests or coverage.
+When NOT: task is about fixing a specific bug (use Diagnosis/Fix Approach instead).
+Expected iterations: 3-5.
 
-- **Strategy A -- TDD-first**: Write comprehensive tests, then implement to satisfy them
-- **Strategy B -- Prototype-first**: Build working prototype fast, then add tests and refine
-- **Strategy C -- Spec-first**: Define interfaces/types/schemas, then implement against contracts
+- **A -- Coverage-gap**: Analyze uncovered code paths, write tests for highest-risk gaps first
+- **B -- Behavior-driven**: Write tests from user-story acceptance criteria, outside-in
+- **C -- Mutation-based**: Run mutation testing to find weak assertions, harden test suite
 
-Example brief for Strategy A (TDD-first on "add user authentication"):
-```
-YOUR STRATEGY: TDD-first — write all auth tests before writing any auth code
-FIRST_ACTION: Write test cases for login, logout, token refresh, and permission checks using the project's existing test framework
-```
+### API Development Split
+When: building new endpoints or overhauling existing API surface.
+When NOT: task is only about API performance (use Dimension Split).
+Expected iterations: 5-8.
 
-### Pattern: Architecture Split
-Best for: Greenfield projects or new modules where structure is undecided.
+- **A -- Contract-first**: Define OpenAPI/GraphQL schema, generate stubs, implement handlers against contract
+- **B -- Vertical-slice**: Build one complete endpoint (handler + validation + persistence + tests) at a time
+- **C -- Inside-out**: Build data layer first, then service layer, then handlers last
 
-- **Strategy A -- Monolithic**: Single module, direct implementation, optimize later
-- **Strategy B -- Modular**: Decompose into small focused modules from the start
-- **Strategy C -- Event-driven**: Build around events/messages for loose coupling
+### Data Pipeline Split
+When: building ETL, streaming, or data transformation workflows.
+When NOT: task is about optimizing existing query performance (use Dimension Split).
+Expected iterations: 4-7.
 
-Example brief for Strategy B (Modular on "build notification system"):
-```
-YOUR STRATEGY: Modular — separate transport, templating, and delivery into independent modules
-FIRST_ACTION: Define module boundaries and interfaces for transport (email/SMS/push), template engine, and delivery scheduler
-```
+- **A -- Schema-driven**: Define input/output schemas and transformations declaratively, then implement
+- **B -- Sample-first**: Process one real record end-to-end, then generalize and scale
+- **C -- Checkpoint-based**: Build pipeline with idempotent stages and checkpoint/resume at each boundary
 
-## Bug Fixing Tasks
+### Migration Split
+When: moving between frameworks, languages, database versions, or API versions.
+When NOT: task is a refactor within the same technology (use Scope Split).
+Expected iterations: 5-8.
 
-### Pattern: Diagnosis Split
-Best for: Bugs where the root cause location is unknown.
+- **A -- Parallel-run**: New system alongside old, compare outputs, swap when matching
+- **B -- Incremental-cutover**: Migrate one component/table/endpoint at a time behind feature flags
+- **C -- Snapshot-rewrite**: Export current state, rewrite in target, validate against snapshot
 
-- **Strategy A -- Top-down**: Start from symptoms, trace through call stack
-- **Strategy B -- Bottom-up**: Start from data layer, verify each layer upward
-- **Strategy C -- Bisect**: Binary search through recent changes to isolate the breaking commit
+### Diagnosis Split
+When: bug exists, root cause location unknown.
+When NOT: you already know which function/module is broken (use Fix Approach Split).
+Expected iterations: 3-6.
 
-Example brief for Strategy A (Top-down on "users see 500 error on checkout"):
-```
-YOUR STRATEGY: Top-down — start from the 500 error response and trace backward through the request handler
-FIRST_ACTION: Find the checkout endpoint handler, add logging at entry/exit, reproduce the error, read the logs
-```
+- **A -- Top-down**: Start from error symptoms, trace through call stack toward root cause
+- **B -- Bottom-up**: Start from data layer, verify each layer upward until failure found
+- **C -- Bisect**: Binary search through recent changes to isolate breaking commit
 
-### Pattern: Fix Approach Split
-Best for: Bugs where the broken component is already identified.
+### Fix Approach Split
+When: broken component identified, deciding how to fix.
+When NOT: root cause still unclear (use Diagnosis Split).
+Expected iterations: 2-4.
 
-- **Strategy A -- Minimal patch**: Smallest change that fixes the symptom
-- **Strategy B -- Root cause**: Trace to fundamental issue, fix the underlying problem
-- **Strategy C -- Rewrite**: Replace the buggy component entirely with cleaner implementation
+- **A -- Minimal-patch**: Smallest change that fixes the symptom with regression test
+- **B -- Root-cause**: Trace to fundamental issue, fix underlying problem
+- **C -- Rewrite**: Replace buggy component entirely with cleaner implementation
 
-Example brief for Strategy B (Root cause on "token refresh fails silently"):
-```
-YOUR STRATEGY: Root cause — trace why the refresh token flow fails instead of patching the symptom
-FIRST_ACTION: Read the token refresh handler code, identify where errors are swallowed or state is lost
-```
+### Dimension Split
+When: measurable performance problem -- latency, throughput, memory, CPU.
+When NOT: perceived slowness without measurements (add instrumentation first).
+Expected iterations: 4-7.
 
-## Optimization Tasks
+- **A -- Algorithmic**: Better data structures, reduced complexity, eliminated redundant work
+- **B -- Caching**: Memoization, precomputation, result caching at appropriate layer
+- **C -- Parallelism**: Concurrent execution, batch processing, async I/O, connection pooling
 
-### Pattern: Dimension Split
-Best for: Performance problems — speed, memory, throughput.
+### Scope Split
+When: restructuring existing code while maintaining behavior.
+When NOT: changing behavior (that is a feature task -- use Methodology Split).
+Expected iterations: 4-6 (with tests), 5-8 (without tests).
 
-- **Strategy A -- Algorithmic**: Better data structures, reduced complexity
-- **Strategy B -- Caching**: Add memoization, precomputation, result caching
-- **Strategy C -- Parallelism**: Concurrent execution, batch processing, async operations
+- **A -- Incremental**: Small safe refactors one at a time, tests green after each step
+- **B -- Extract-and-replace**: Build new implementation alongside old, swap atomically
+- **C -- Strangler-fig**: Route new calls to new code, gradually migrate old callers
 
-Example brief for Strategy A (Algorithmic on "search endpoint takes 3s"):
-```
-YOUR STRATEGY: Algorithmic — replace the linear scan with an indexed lookup
-FIRST_ACTION: Profile the search endpoint to identify the hottest code path, measure current complexity
-```
+### Perspective Split
+When: UI, UX, content, or design tasks with subjective quality criteria.
+When NOT: purely technical frontend work (use Methodology Split).
+Expected iterations: 3-5.
 
-## Content/Design Tasks
+- **A -- User-first**: Optimize for end-user experience, clarity, accessibility
+- **B -- System-first**: Optimize for component reuse, maintainability, design-system alignment
+- **C -- Performance-first**: Optimize for render speed, bundle size, interaction latency
 
-### Pattern: Perspective Split
-Best for: UI, UX, content, or design tasks with subjective quality criteria.
+### Methodology Split
+When: adding features to existing codebase. Default when no other pattern matches.
+When NOT: greenfield projects (use Architecture Split).
+Expected iterations: 4-7.
 
-- **Strategy A -- User-first**: Optimize for end-user experience and clarity
-- **Strategy B -- System-first**: Optimize for maintainability and extensibility
-- **Strategy C -- Performance-first**: Optimize for speed and resource efficiency
+- **A -- TDD-first**: Write comprehensive tests, then implement to satisfy them
+- **B -- Prototype-first**: Build working prototype fast, then add tests and refine
+- **C -- Spec-first**: Define interfaces/types/schemas, then implement against contracts
 
-## Refactoring Tasks
+### Architecture Split
+When: greenfield projects or new modules where structure is undecided.
+When NOT: existing codebase with established architecture (use Methodology Split).
+Expected iterations: 5-8.
 
-### Pattern: Scope Split
-Best for: Restructuring existing code while maintaining behavior.
+- **A -- Monolithic**: Single module, direct implementation, optimize structure later
+- **B -- Modular**: Decompose into focused modules with explicit interfaces from the start
+- **C -- Event-driven**: Build around events/messages for loose coupling
 
-- **Strategy A -- Incremental**: Small safe refactors, one at a time, tests green after each
-- **Strategy B -- Extract-and-replace**: Build new implementation alongside old, swap atomically
-- **Strategy C -- Strangler fig**: Route new calls to new code, gradually migrate old callers
+## Selection Principles
 
-Example brief for Strategy A (Incremental on "extract payment logic from monolith"):
-```
-YOUR STRATEGY: Incremental — extract one function at a time, run tests after each extraction
-FIRST_ACTION: Identify all payment-related functions in the monolith, list them by dependency order (leaves first)
-```
-
-## General Principles
-
-1. **Genuine diversity**: Strategies must differ in approach, not just in minor details
-2. **Independent execution**: No strategy should depend on another's output
-3. **Measurable progress**: Each strategy must produce verifiable intermediate results
-4. **Early signal**: Design strategies so failures surface fast, not at the end
+1. **First match wins** -- traverse decision tree top-to-bottom, stop at first match
+2. **Genuine diversity** -- strategies must differ in approach, not minor details
+3. **Independent execution** -- no strategy depends on another's output
+4. **Early signal** -- design so failures surface by iteration 2, not at the end
