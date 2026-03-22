@@ -1,7 +1,7 @@
 ---
 name: winning
 description: This skill should be used when the user asks to "optimize a task with parallel strategies", "deploy winning strategies", "run competing approaches", "find the best approach by trying multiple strategies", or mentions "winning", "parallel optimization", "strategy competition". Orchestrates multiple background agents running Ralph-style loops to converge on the best solution.
-version: 0.4.0
+version: 0.5.0
 ---
 
 # Winning Orchestrator
@@ -47,10 +47,35 @@ GOAL REFINEMENT — Pick one or type your own:
 
 **Rules for refinement:**
 - Option (1) must NOT add anything the user didn't say — pure restructuring
-- Option (2) should add reasonable, industry-standard metrics for the task type
-- Option (3) should push metrics to an ambitious but not impossible level (e.g., 80% coverage → 95%, "works" → "works + load tested at 1000 RPS")
+- Option (2) must add industry-standard metrics for the task type: if the task involves code, add coverage percentage and test count; if it involves performance, add latency and throughput thresholds; if it involves content, add word count and structure requirements
+- Option (3) must multiply Option (2) numeric metrics by 2-5x (e.g., 80% coverage becomes 95%, 500ms latency becomes 100ms, 10 tests becomes 50 tests)
 - All options must have a concrete VERIFICATION command or check
 - If the user's goal is already precise and measurable, say so and recommend skipping to Phase 1 with option (1) pre-selected
+
+**Example: User says "make my API faster"**
+
+```
+GOAL REFINEMENT — Pick one or type your own:
+
+(1) FAITHFUL REWRITE — Your goal, restructured into our framework. Nothing added.
+    GOAL: Reduce API response times from current values to faster values
+    SUCCESS_METRIC: API responses are measurably faster than before changes
+    VERIFICATION: Run timing measurements before and after, compare results
+
+(2) SUGGESTED METRICS — Your goal + concrete metrics we recommend.
+    GOAL: Reduce p95 response time of all API endpoints below 200ms
+    SUCCESS_METRIC: p95 latency < 200ms across all endpoints under current production load
+    VERIFICATION: `k6 run load-test.js --duration 60s | grep 'p(95)' # must show < 200ms`
+
+(3) 10X METRICS — Ambitious version. Same goal, 10x the bar.
+    GOAL: Reduce p95 response time below 50ms and support 10x current RPS without degradation
+    SUCCESS_METRIC: p95 latency < 50ms at 10x current RPS; zero error rate increase
+    VERIFICATION: `k6 run load-test.js --vus 500 --duration 120s | grep -E 'p\(95\)|http_req_failed' # p95 < 50ms AND failed = 0.00%`
+
+(4) TYPE SOMETHING ELSE — Not what you meant? Describe your goal differently.
+```
+
+User picks (2). Orchestrator fills the Goal Definition Template using option (2)'s values and proceeds to Phase 1.
 
 ### Phase 1 — Deploy (Iteration 1)
 
@@ -68,8 +93,8 @@ GOAL REFINEMENT — Pick one or type your own:
 3. Score every strategy using the three-dimensional Scoring System below
 4. Compute velocity from progress delta since last evaluation
 5. Flag any strategy with Risk < 3 as "danger zone"
-6. First elimination ONLY if a strategy has Progress=0 and shows zero signs of life
-7. Otherwise, let strategies continue — too early for aggressive cuts
+6. Eliminate a strategy ONLY if ALL of these are true: Progress=0 AND files_changed is empty AND the agent reported BLOCKED or produced no PROGRESS_REPORT
+7. If the conditions in step 6 are not all met, do not eliminate — redeploy the strategy for another iteration
 
 ### Phase 3 — Eliminate (Iterations 4 to max_iterations-1)
 
@@ -79,8 +104,8 @@ GOAL REFINEMENT — Pick one or type your own:
 2. If any strategy hits Progress >= 90 → enter Victory Protocol
 3. If only one strategy remains → let it run uncontested
 4. If all strategies eliminated → redeploy new strategies derived from failure analysis
-5. Consider redeploying a new strategy into an eliminated slot if iterations remain
-6. If all strategies have Velocity < 3 → analyze stagnation, consider full redeployment
+5. If a strategy is eliminated AND at least 3 iterations remain AND fewer than 2 redeployments have occurred this run: deploy a new strategy into the eliminated slot using failure analysis from the eliminated strategy's blockers to pick a different approach. Otherwise, do not redeploy.
+6. If all surviving strategies have Velocity < 3 for 2 consecutive iterations: kill all strategies and redeploy STRATEGY_COUNT new strategies. Each new strategy must avoid the approaches that produced Velocity < 3.
 
 ### Phase 4 — Consolidate (Final Iteration)
 
@@ -88,7 +113,7 @@ GOAL REFINEMENT — Pick one or type your own:
 2. Pick the strategy with the highest Progress score
 3. If Progress >= 70: consolidate its output as the final result
 4. If Progress < 70: consolidate best-effort result with explicit gap analysis
-5. Merge any useful partial results from eliminated strategies if they complement the winner
+5. For each eliminated strategy: if it produced files that the winning strategy did not produce AND those files address a part of the SUCCESS_METRIC not yet covered by the winner, merge those files into the final result. If the eliminated strategy's files overlap with the winner's files, discard the eliminated strategy's versions.
 6. Report final Score Table for all strategies (including eliminated ones) with lessons learned
 
 ### Victory Protocol (Any Iteration)
@@ -136,6 +161,63 @@ Before dispatching, verify:
 - [ ] No two strategies would produce identical intermediate artifacts
 - [ ] Each strategy could succeed even if the others fail completely
 
+**Example: Phase 1 deployment for "reduce p95 latency < 200ms"**
+
+Filled Goal Definition Template:
+
+```
+GOAL: Reduce p95 response time of all API endpoints below 200ms
+SUCCESS_METRIC: p95 latency < 200ms across all endpoints under current production load
+VERIFICATION_COMMAND: k6 run load-test.js --duration 60s | grep 'p(95)' # must show < 200ms
+MAX_ITERATIONS: 8
+STRATEGY_COUNT: 3
+COMPLETION_PROMISE: "All API endpoints now respond with p95 < 200ms under load."
+ISOLATION_NEEDED: yes
+```
+
+Filled Strategy Decomposition:
+
+```
+STRATEGY A:
+  NAME: Query-Optimization
+  APPROACH: Profile all SQL queries with EXPLAIN ANALYZE, add missing indexes, rewrite N+1 queries as JOINs
+  FIRST_ACTION: Run EXPLAIN ANALYZE on the 5 slowest endpoints identified by current APM data
+  EXPECTED_SIGNAL_BY_CYCLE_2: At least 2 slow queries identified with concrete optimization plans, 1 index added
+  RISK: Slow queries may not be the bottleneck — latency could be network or serialization
+
+STRATEGY B:
+  NAME: Caching-Layer
+  APPROACH: Add Redis caching for repeated reads, implement cache invalidation on writes, cache at the response level
+  FIRST_ACTION: Identify the top 5 most-called GET endpoints and their cache-ability (idempotent, low-churn data)
+  EXPECTED_SIGNAL_BY_CYCLE_2: Redis connected, at least 1 endpoint cached, before/after latency measured
+  RISK: Cache invalidation bugs could serve stale data; cache misses may not improve p95
+
+STRATEGY C:
+  NAME: Async-Refactor
+  APPROACH: Convert blocking I/O calls to async, parallelize independent downstream calls, add connection pooling
+  FIRST_ACTION: Audit request handlers for sequential await chains that could be parallelized with Promise.all
+  EXPECTED_SIGNAL_BY_CYCLE_2: At least 2 handlers refactored to parallel I/O, latency delta measured
+  RISK: Parallelization may introduce race conditions; connection pool tuning may require iteration
+```
+
+Diversity check:
+- [x] No two strategies share the same first action (EXPLAIN ANALYZE vs. cache-ability audit vs. await chain audit)
+- [x] No two strategies produce identical intermediate artifacts (indexes vs. Redis config vs. refactored handlers)
+- [x] Each strategy could succeed independently
+
+Initial Score Table:
+
+```
+SCORES (iteration 1 of 8):
+| Strategy              | Progress | Velocity | Risk | Status   |
+|-----------------------|----------|----------|------|----------|
+| A: Query-Optimization |     0    |   N/A    |   7  | ON_TRACK |
+| B: Caching-Layer      |     0    |   N/A    |   7  | ON_TRACK |
+| C: Async-Refactor     |     0    |   N/A    |   7  | ON_TRACK |
+
+Decision: All strategies deployed. No eliminations — establishing baseline.
+```
+
 ## Agent Deployment
 
 Dispatch each strategy as a background Agent using the Agent tool with `run_in_background: true`. Each agent receives a brief structured exactly as follows:
@@ -181,7 +263,7 @@ Every strategy is scored on three dimensions each orchestrator cycle. Scores are
 |-----------|-------|----------------|
 | **Progress** | 0-100 | Percentage of goal completion. What fraction of deliverables exist and are verified? Count concrete evidence: files created, tests passing, features working. Agent self-report is input but verify against artifacts. |
 | **Velocity** | 0-10 | Rate of progress per iteration. Formula: `min(10, (current_progress - previous_progress) / 3)`. Score 0 if progress unchanged. Score 10 if progress jumped 30+ points. |
-| **Risk** | 0-10 | Likelihood of success from current position. Start at 10, subtract: each active blocker (-2), ambiguous remaining work (-3), repeated failure on same issue (-3), fundamental approach flaw (-5). Floor at 0. |
+| **Risk** | 0-10 | Likelihood of success from current position. Start at 10, subtract: each active blocker reported by the agent (-2), remaining work that has no concrete next_action defined in the PROGRESS_REPORT (-3), agent reported the same blocker in 2+ consecutive iterations (-3), the strategy's core approach contradicts a known constraint from the Goal Definition (-5). Floor at 0. |
 
 ### Elimination Thresholds
 
