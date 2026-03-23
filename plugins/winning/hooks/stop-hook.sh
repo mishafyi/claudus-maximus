@@ -162,7 +162,7 @@ sed "s/^round: .*/round: $NEXT_ROUND/" "$STATE_FILE" > "$TEMP_FILE"
 
 # Update or insert last_output_hash in frontmatter
 if grep -q '^last_output_hash:' "$TEMP_FILE"; then
-  sed -i '' "s/^last_output_hash:.*$/last_output_hash: $CURRENT_HASH/" "$TEMP_FILE"
+  sed -i.bak "s/^last_output_hash:.*$/last_output_hash: $CURRENT_HASH/" "$TEMP_FILE" && rm -f "${TEMP_FILE}.bak"
 else
   awk -v hash="$CURRENT_HASH" '
     /^---$/ { count++; if (count == 2) print "last_output_hash: " hash }

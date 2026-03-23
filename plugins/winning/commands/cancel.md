@@ -1,6 +1,6 @@
 ---
-name: cancel
-description: This skill should be used when the user invokes /winning:cancel to stop an active parallel strategy orchestration. Salvages partial results before removing state, then disables the monitoring loop.
+description: "Cancel active winning orchestration — salvages partial results, preserves history"
+argument-hint: "[--force]"
 ---
 
 # Cancel Winning Orchestration
@@ -17,7 +17,7 @@ Check conversation for completed background agents. For each, note: STRATEGY RES
 ## Step 2 -- Cancel
 
 ```!
-"${CLAUDE_PLUGIN_ROOT}/scripts/cancel-loop.sh"
+"${CLAUDE_PLUGIN_ROOT}/scripts/cancel-loop.sh" $ARGUMENTS
 ```
 
 ## Step 3 -- Report

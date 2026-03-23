@@ -1,6 +1,5 @@
 ---
-name: launch
-description: This skill should be used when the user invokes /winning:launch to start a parallel strategy orchestration. Initializes the orchestrator loop and delegates to the winning skill.
+description: "Start a winning orchestration — deploys parallel agents that evolve until the goal is verified"
 argument-hint: "GOAL [--strategies N] [--completion-promise TEXT]"
 ---
 

@@ -58,7 +58,7 @@ All round results and learnings are persisted in `.claude/winning-history.local.
 - Is appended after each round with results and learnings
 - Is read by every agent at the start of their work
 - Persists across sessions (resume where you left off)
-- Is deleted on `/winning:cancel` or victory
+- Persists on cancel and victory — only deleted if the user manually removes it
 
 Format:
 

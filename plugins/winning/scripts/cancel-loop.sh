@@ -80,7 +80,7 @@ echo "Winning orchestration cancelled."
 echo ""
 echo "  Summary:"
 echo "  --------"
-echo "  Completed rounds:     $ROUND"
+echo "  Current round:        $ROUND"
 echo "  Agents per round:     $STRATEGIES"
 echo "  Elapsed time:         $ELAPSED_DISPLAY"
 if [[ -n "$GOAL" ]]; then

@@ -1,6 +1,5 @@
 ---
-name: status
-description: This skill should be used when the user invokes /winning:status to check progress of an active winning orchestration. Displays current round, agent status, and learnings from previous rounds.
+description: "Show current winning orchestration progress — round, agents, learnings"
 ---
 
 # Winning Status

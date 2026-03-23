@@ -1,5 +1,5 @@
 {
-  "description": "Winning orchestrator stop hook — keeps the main session alive for monitoring parallel strategies",
+  "description": "Winning orchestrator stop hook — keeps session alive for evolutionary loop until goal is verified",
   "hooks": {
     "Stop": [
       {
