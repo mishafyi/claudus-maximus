@@ -1,5 +1,7 @@
 # winning
 
+> Winning is all that matters. Winning is the only goal.
+
 > v0.8.0
 
 Evolutionary parallel strategy orchestrator for Claude Code. Deploys 3 agents on different strategies, compares results against verifiable tests, records learnings, adjusts approach, and redeploys. **Never stops until the goal is achieved.**

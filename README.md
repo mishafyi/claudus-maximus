@@ -45,6 +45,8 @@ diagram the database schema
 
 ### winning
 
+> Winning is all that matters. Winning is the only goal.
+
 Evolutionary parallel strategy orchestrator. Deploys 3 agents per round on different strategies, compares results against a verification command, records what worked and what didn't, then redeploys with accumulated learnings. No cycle limits. No round limits. Loops until the goal is verifiably achieved.
 
 **How it works:**
