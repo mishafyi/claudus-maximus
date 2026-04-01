@@ -1,6 +1,6 @@
 # winning
 
-> v0.7.0
+> v0.8.0
 
 Evolutionary parallel strategy orchestrator for Claude Code. Deploys 3 agents on different strategies, compares results against verifiable tests, records learnings, adjusts approach, and redeploys. **Never stops until the goal is achieved.**
 
@@ -64,18 +64,19 @@ Round 2: DEPLOY -- 3 NEW agents, informed by Round 1 learnings
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `/winning:launch GOAL [OPTIONS]` | Start orchestration with goal refinement |
-| `/winning:status` | Show current round and learnings |
-| `/winning:cancel [--force]` | Cancel orchestration (history preserved) |
+| Command                          | Description                                             |
+| -------------------------------- | ------------------------------------------------------- |
+| `/winning:launch GOAL [OPTIONS]` | Start orchestration with goal refinement                |
+| `/winning:how-to-win QUESTION`   | Research what winning means before deploying strategies |
+| `/winning:status`                | Show current round and learnings                        |
+| `/winning:cancel [--force]`      | Cancel orchestration (history preserved)                |
 
 ### Launch Options
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `--strategies N` | 3 | Number of agents per round (1-10) |
-| `--completion-promise TEXT` | "GOAL ACHIEVED" | Phrase signaling completion |
+| Option                      | Default         | Description                       |
+| --------------------------- | --------------- | --------------------------------- |
+| `--strategies N`            | 3               | Number of agents per round (1-10) |
+| `--completion-promise TEXT` | "GOAL ACHIEVED" | Phrase signaling completion       |
 
 ### Cancel
 
@@ -85,32 +86,37 @@ Round 2: DEPLOY -- 3 NEW agents, informed by Round 1 learnings
 
 ## Files
 
-| File | Purpose | Lifecycle |
-|------|---------|-----------|
-| `.claude/winning-orchestrator.local.md` | Loop state (round, session, config) | Created on launch, deleted on victory/cancel |
-| `.claude/winning-history.local.md` | Learnings from all rounds | Created on Round 1, appended each round, **preserved on cancel** |
+| File                                    | Purpose                             | Lifecycle                                                        |
+| --------------------------------------- | ----------------------------------- | ---------------------------------------------------------------- |
+| `.claude/winning-orchestrator.local.md` | Loop state (round, session, config) | Created on launch, deleted on victory/cancel                     |
+| `.claude/winning-history.local.md`      | Learnings from all rounds           | Created on Round 1, appended each round, **preserved on cancel** |
 
 ## Architecture
 
 ```
 winning/
+├── commands/
+│   ├── launch.md              # /winning:launch — init state, delegate to winning skill
+│   ├── how-to-win.md          # /winning:how-to-win — delegate to how-to-win skill
+│   ├── status.md              # /winning:status — report round + learnings
+│   └── cancel.md              # /winning:cancel — salvage + stop
 ├── skills/
-│   ├── winning/                   # Orchestrator (evolutionary loop logic)
+│   ├── winning/               # Orchestrator (evolutionary loop logic)
 │   │   ├── SKILL.md
 │   │   └── references/
 │   │       └── strategy-patterns.md  # Pattern library with decision tree
-│   ├── launch/SKILL.md            # /winning:launch -- init + delegate
-│   ├── status/SKILL.md            # /winning:status -- round + learnings
-│   └── cancel/SKILL.md            # /winning:cancel -- salvage + stop
+│   └── how-to-win/            # Pre-strategy research (3 rounds × 3 angles)
+│       └── SKILL.md
 ├── agents/
-│   └── strategy-runner.md         # Background agent (opus, tools: *, no cycle limit)
+│   ├── strategy-runner.md     # Execution agent (opus, tools: *, no cycle limit)
+│   └── researcher.md          # Research agent (opus, 3 angles: codebase/domain/adversary)
 ├── hooks/
-│   ├── hooks.json                 # Stop hook registration
-│   └── stop-hook.sh               # Loop engine (keeps session alive)
+│   ├── hooks.json             # Stop hook registration
+│   └── stop-hook.sh           # Loop engine (keeps session alive)
 └── scripts/
-    ├── setup-loop.sh              # Initialize orchestrator state
-    ├── status.sh                  # Report round status + history
-    └── cancel-loop.sh             # Cancel with session verification
+    ├── setup-loop.sh          # Initialize orchestrator state
+    ├── status.sh              # Report round status + history
+    └── cancel-loop.sh         # Cancel with session verification
 ```
 
 ## Requirements

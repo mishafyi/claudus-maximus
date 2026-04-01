@@ -5,6 +5,7 @@ Generate accurate Mermaid diagrams from codebase analysis.
 ## How it works
 
 Two-agent pipeline:
+
 1. **code-explorer** — analyzes the codebase: traces execution paths, maps architecture, documents dependencies
 2. **diagram-builder** — converts analysis results into correct Mermaid `.mmd` files with color-coded actors
 
@@ -32,15 +33,19 @@ Say "diagram the auth flow" or "create an architecture diagram" — the skill tr
 
 ```
 diagram/
-├── SKILL.md                    # Orchestrator
+├── .claude-plugin/
+│   └── plugin.json             # Plugin manifest
 ├── agents/
 │   ├── code-explorer.md        # Analyzes code (from Anthropic feature-dev)
 │   ├── code-architect.md       # Maps architecture (from Anthropic feature-dev)
 │   ├── code-reviewer.md        # Reviews code (from Anthropic feature-dev)
 │   └── diagram-builder.md      # Builds .mmd from analysis
-├── references/                 # 27 official Mermaid syntax docs
-└── commands/
-    └── feature-dev-orchestrator.md  # Reference orchestration pattern
+├── commands/
+│   └── feature-dev-orchestrator.md  # Reference orchestration pattern
+└── skills/
+    └── diagram/
+        ├── SKILL.md            # Orchestrator skill
+        └── references/         # 27 official Mermaid syntax docs
 ```
 
 ## Credits

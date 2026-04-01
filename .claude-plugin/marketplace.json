@@ -9,12 +9,44 @@
   },
   "plugins": [
     {
+      "name": "diagram",
+      "description": "Generate architecture diagrams, flowcharts, sequence diagrams, and system maps from actual codebase analysis using Mermaid syntax",
+      "source": "./plugins/diagram",
+      "version": "1.0.0",
+      "category": "visualization",
+      "tags": [
+        "diagram",
+        "mermaid",
+        "architecture",
+        "flowchart",
+        "sequence",
+        "visualization"
+      ]
+    },
+    {
       "name": "winning",
-      "description": "Parallel strategy orchestrator — deploys competing approaches, monitors progress, eliminates underperformers, consolidates the winner",
+      "description": "Evolutionary parallel strategy orchestrator — deploys competing approaches, monitors progress, eliminates underperformers, consolidates the winner",
       "source": "./plugins/winning",
-      "version": "0.1.0",
+      "version": "0.8.0",
       "category": "orchestration",
       "tags": ["parallel", "strategies", "optimization", "ralph-loop"]
+    },
+    {
+      "name": "career-companion",
+      "description": "Career companion for frontier tech — search live job openings, tailor resumes, and practice interviews across space, AI, robotics, and defense industries",
+      "source": "./plugins/career-companion",
+      "version": "1.0.0",
+      "category": "productivity",
+      "tags": [
+        "jobs",
+        "career",
+        "resume",
+        "interview",
+        "space",
+        "ai",
+        "robotics",
+        "defense"
+      ]
     }
   ]
 }
