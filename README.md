@@ -5,10 +5,16 @@ A Claude Code plugin marketplace. Three plugins that give Claude superpowers it 
 ## Install
 
 ```bash
-/install mishafyi/claudus-maximus
+/plugin marketplace add mishafyi/claudus-maximus
 ```
 
-Then enable the plugins you want. Each plugin works independently.
+Then install individual plugins:
+
+```bash
+/plugin install diagram@claudus-maximus
+/plugin install winning@claudus-maximus
+/plugin install career-companion@claudus-maximus
+```
 
 ## Plugins
 
