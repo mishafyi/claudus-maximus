@@ -12,7 +12,7 @@
       "name": "diagram",
       "description": "Generate architecture diagrams, flowcharts, sequence diagrams, and system maps from actual codebase analysis using Mermaid syntax",
       "source": "./plugins/diagram",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "category": "visualization",
       "tags": [
         "diagram",

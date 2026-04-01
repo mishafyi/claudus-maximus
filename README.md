@@ -14,7 +14,7 @@ Then enable the plugins you want. Each plugin works independently.
 
 | Plugin                                | Version | Category      | What it does                                                             |
 | ------------------------------------- | ------- | ------------- | ------------------------------------------------------------------------ |
-| [diagram](#diagram)                   | 1.0.0   | visualization | Generates Mermaid diagrams from actual codebase analysis — not guesswork |
+| [diagram](#diagram)                   | 1.1.0   | visualization | Generates Mermaid diagrams from actual codebase analysis — not guesswork |
 | [winning](#winning)                   | 0.8.0   | orchestration | Deploys parallel agents on competing strategies, keeps the winner        |
 | [career-companion](#career-companion) | 1.0.0   | productivity  | Searches 20,000+ live jobs, tailors resumes, runs mock interviews        |
 
