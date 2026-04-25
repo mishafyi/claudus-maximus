@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Reviews code for bugs, logic errors, security vulnerabilities, code quality issues, and adherence to project conventions, using confidence-based filtering to report only high-priority issues that truly matter
+description: Sub-agent dispatched by /diagram:feature-dev-orchestrator. Reviews code against project conventions and reports only high-confidence issues (≥80).
 tools: Glob, Grep, LS, Read, NotebookRead, WebFetch, TodoWrite, WebSearch, KillShell, BashOutput
 model: sonnet
 color: red
