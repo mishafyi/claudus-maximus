@@ -74,7 +74,7 @@ Based on the user's request, determine:
 
 ### Step 2: Analyze (code-derived diagrams only)
 
-Launch code-explorer agents using the Agent tool with `subagent_type: "feature-dev:code-explorer"`. Give focused prompts based on diagram type:
+Launch code-explorer agents using the Agent tool with `subagent_type: "diagram:code-explorer"`. Give focused prompts based on diagram type:
 
 **Flowcharts / sequence diagrams** — launch 2 agents in parallel:
 
@@ -111,11 +111,32 @@ Read `../../agents/diagram-builder.md` for the full rules, then follow them:
 4. **Save to `docs/`** with descriptive name (e.g., `docs/flow-bounty-lifecycle.mmd`, `docs/erd-database-schema.mmd`)
 5. **Add theme config** at the top: `%%{ init: { 'theme': 'dark', 'themeVariables': { 'fontSize': '14px' } } }%%`
 
-### Step 4: Preview
+### Step 4: Render-verify (MANDATORY — do NOT skip)
 
-1. **Cursor** — user previews `.mmd` with Mermaid Chart extension (default, just save the file)
-2. **Browser** — build HTML with `<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'</script>`, write to `/tmp/diagram-preview.html`, run `open`
-3. **mcp-mermaid** — render to PNG/SVG via `mcp__mcp-mermaid__generate_mermaid_diagram`
+**Never claim "done" without proving the `.mmd` parses.** Pick the first available option from the ladder below. If it fails, fix the syntax and re-verify before returning.
+
+1. **mcp-mermaid (preferred when available)** — call `mcp__mcp-mermaid__generate_mermaid_diagram` with the file's content. If it returns an error, the syntax is broken — fix it and retry.
+
+2. **mermaid.ink HTTP API (no extension required)** — quick POST that returns 200 on success / 400 with error body on failure:
+   ```bash
+   curl -s -o /tmp/render-test.png -w "%{http_code}" \
+     "https://mermaid.ink/img/$(jq -c -Rs --arg c "$(cat docs/<file>.mmd)" '{code:$c}' | base64)"
+   ```
+   200 = parses. 400 = inspect `/tmp/render-test.png` (will be JSON error body).
+
+3. **Local mmdc CLI** — `mmdc -i docs/<file>.mmd -o /tmp/render-test.svg`. Returns non-zero on syntax error.
+
+4. **Browser fallback (manual)** — only if 1–3 unavailable. Build an HTML file with `<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'</script>`, **inline the .mmd content into a JS string** (don't fetch via file://), write to `/tmp/diagram-preview.html`, `open` it, and ask the user to confirm it rendered. State explicitly that you couldn't verify automatically.
+
+**Common syntax errors to fix on failure:**
+
+- **Decimal numbers in classDef styles** — `stroke-width:1.5px` fails on many parsers. Use whole numbers (`1px`, `2px`, `3px`).
+- **YAML `---` frontmatter + `%%{init}%%` directive together** — pick one. Older renderers reject the combo.
+- **`layout: elk` config** — requires mermaid 9.4+ with ELK lazy-loading. Default to dagre unless you've confirmed the target renderer supports ELK.
+- **Smart quotes** (`"` `"`) in attribute comments — only straight quotes (`"`) work.
+- **Reserved keyword `end`** at start of a node label — wrap in quotes.
+
+After a successful render, save the diagram and report. If render fails 3 times, surface the error to the user — don't keep iterating silently.
 
 ## Diagram Type Selection
 
@@ -149,4 +170,4 @@ Read `../../agents/diagram-builder.md` for the full rules, then follow them:
 | Strategy map          | `wardley`            | `references/wardley.md`               | No                   |
 | Alt. sequence         | `zenuml`             | `references/zenuml.md`                | Yes                  |
 
-> **Source:** Reference files from [mermaid-js/mermaid](https://github.com/mermaid-js/mermaid/tree/develop/packages/mermaid/src/docs/syntax). Code-explorer agent from [anthropics/claude-code](https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev).
+> **Source:** Reference files from [mermaid-js/mermaid](https://github.com/mermaid-js/mermaid/tree/develop/packages/mermaid/src/docs/syntax). Code-explorer agent forked from [anthropics/claude-code](https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev) and re-namespaced as `diagram:code-explorer` in this plugin.

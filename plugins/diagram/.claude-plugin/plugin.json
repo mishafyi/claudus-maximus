@@ -1,6 +1,6 @@
 {
   "name": "diagram",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Generate architecture diagrams, flowcharts, sequence diagrams, and system maps from codebase analysis using Mermaid syntax. Analyzes real code paths first, then produces accurate .mmd files.",
   "author": {
     "name": "misha"

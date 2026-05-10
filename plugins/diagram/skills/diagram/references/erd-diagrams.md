@@ -1,5 +1,53 @@
 # Entity Relationship Diagrams
 
+> **⚠️ LLM-curated preamble (read first — the upstream mermaid-js docs follow below).**
+>
+> **Minimal working example:**
+> ```
+> %%{ init: { 'theme': 'dark' } }%%
+> erDiagram
+>   direction LR
+>   CUSTOMER ||--o{ ORDER : places
+>   CUSTOMER {
+>     string id PK
+>     string email UK
+>   }
+>   ORDER {
+>     string id PK
+>     string customerId FK
+>   }
+> ```
+>
+> **ER-specific pitfalls (cause silent or cryptic parse failures):**
+>
+> - **`stroke-width:1.5px` and other decimal style values FAIL.** Use whole-number widths only (`1px`, `2px`, `3px`). The tokenizer rejects the `.` inside style property values in many Mermaid versions.
+> - **Don't combine `%%{init}%%` directive with `---` YAML frontmatter.** Pick one. The combination breaks older parsers (including some Cursor/VSCode extensions).
+> - **`layout: elk`** requires Mermaid 9.4+ AND a renderer that has ELK lazy-loading enabled. Skip it unless you've confirmed the target renderer supports it. Default `dagre` is universally supported.
+> - **Multi-space alignment in classDef lines (`classDef foo      fill:#xxx`) IS valid syntax** — don't waste a fix-cycle "fixing" this. The decimal `stroke-width` is almost always the real culprit.
+> - **Attribute types** must start with an alphabetic character; arrays use `string[]` syntax. Nested types (`json`, `jsonb`, `vector`, `geometry`) work as plain strings.
+> - **Attribute comments** use straight double-quotes only: `string foo "comment"`. Smart quotes break the parser.
+> - **Reserved keyword `end`** as an entity name or attribute name needs quoting.
+>
+> **ER-specific color taxonomy** (suggested — flowchart's agent/backend/external taxonomy doesn't map):
+> ```
+> classDef canonical fill:#2d1b4e,color:#e0e0e0,stroke:#9b59b6,stroke-width:2px      %% Silver-layer business tables
+> classDef canonicalMulti fill:#1b3d2e,color:#e8f4ed,stroke:#2ecc71,stroke-width:3px %% Multi-source-merged silver (HIGHLIGHTED)
+> classDef bronze fill:#4a3520,color:#fbe4c4,stroke:#e67e22,stroke-width:3px         %% Raw-payload / mirror layer
+> classDef junction fill:#1e3a5f,color:#cfe1f5,stroke:#4a9eff,stroke-width:2px       %% M:N join tables
+> classDef audit fill:#2a2a2a,color:#c0c0c0,stroke:#7f8c8d,stroke-width:1px          %% Append-only audit logs / DLQ
+> classDef geo fill:#1b3a3d,color:#a8e4e8,stroke:#16a085,stroke-width:2px            %% Reference data (countries, regions)
+> classDef auth fill:#2d2418,color:#e8d5b0,stroke:#a67c52,stroke-width:1px           %% Identity / sessions
+> classDef stripe fill:#3d3a1a,color:#f0e8c0,stroke:#c9a227,stroke-width:2px         %% Billing / subscriptions
+> ```
+>
+> Apply via `:::className` notation: `Customer:::canonical { ... }`.
+>
+> **Always render-verify before declaring done.** See the parent skill's Step 4 / the diagram-builder agent's "Render Verification" section. Don't trust your reading of the syntax — prove it parses.
+
+---
+
+## Upstream mermaid-js reference
+
 > An entity–relationship model (or ER model) describes interrelated things of interest in a specific domain of knowledge. A basic ER model is composed of entity types (which classify the things of interest) and specifies relationships that can exist between entities (instances of those entity types) [Wikipedia](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model).
 
 Note that practitioners of ER modelling almost always refer to _entity types_ simply as _entities_. For example the `CUSTOMER` entity _type_ would be referred to simply as the `CUSTOMER` entity. This is so common it would be inadvisable to do anything else, but technically an entity is an abstract _instance_ of an entity type, and this is what an ER diagram shows - abstract instances, and the relationships between them. This is why entities are always named using singular nouns.

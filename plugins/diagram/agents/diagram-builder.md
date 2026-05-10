@@ -118,3 +118,19 @@ Before saving the `.mmd` file:
 4. Decision diamonds use `{" "}` syntax with `:::decision` class
 5. No orphan nodes (every node connects to at least one other)
 6. File paths and API endpoints are specific (not generic placeholders)
+7. **classDef style values use whole numbers** — `stroke-width:2px`, never `stroke-width:1.5px`. Many parsers reject decimals.
+8. **No conflicting top-of-file config** — pick EITHER `%%{init}%%` directive OR YAML `---` frontmatter, not both. Don't include `layout: elk` unless the target renderer is known to support it.
+
+## Render Verification (MANDATORY before reporting done)
+
+You do NOT get to declare the file "built" based on reading it. Pick the first available option and prove the diagram parses:
+
+1. **mcp-mermaid** — call `mcp__mcp-mermaid__generate_mermaid_diagram` with the file content. Non-200 / error response = syntax bug, must fix.
+2. **mermaid.ink HTTP API** — `curl -s -w "%{http_code}" "https://mermaid.ink/img/$(jq -c -Rs --arg c "$(cat <file>)" '{code:$c}' | base64)"` returns 200 on parse success.
+3. **mmdc CLI** — `mmdc -i <file> -o /tmp/test.svg` (non-zero exit = failure).
+
+If render fails:
+- Read the error message literally. Common culprits: decimal stroke-widths (`1.5px`), reserved keywords, mismatched braces, smart quotes.
+- Fix and re-render. Max 3 iterations before surfacing the unfixed error to the user.
+
+Only after a successful render: save final, report file path + render method used.
