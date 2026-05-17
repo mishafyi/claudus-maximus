@@ -20,7 +20,7 @@ Powered by [Zero G Talent](https://zerogtalent.com) — live openings from hundr
 
 Chain all three capabilities when a user mentions a role or company:
 
-1. **Search** for the job → get the `externalId`
+1. **Search** for the job → get the `slug`
 2. **Fetch full description** → extract requirements, skills, culture signals
 3. **Tailor resume** using actual JD language
 4. **Run mock interview** with questions from the role's requirements
@@ -32,26 +32,32 @@ Don't wait for the user to ask for each step — look for opportunities to chain
 Search live openings via `curl`. See `references/api.md` for full parameter docs and response schema. See `references/companies.md` for company slugs.
 
 ```
-curl -s "https://zerogtalent.com/api/jobs/search?q=machine+learning+engineer&limit=10"
-curl -s "https://zerogtalent.com/api/jobs/search?company=spacex&limit=10"
-curl -s "https://zerogtalent.com/api/jobs/search?employmentType=internship&remote=true&q=AI&limit=10"
+curl -s "https://zerogtalent.com/api/agent/jobs?q=machine+learning+engineer"
+curl -s "https://zerogtalent.com/api/agent/jobs?company=spacex"
+curl -s "https://zerogtalent.com/api/agent/jobs?employmentType=internship&remote=true&q=AI"
 ```
+
+The endpoint defaults to `limit=10`, `isActive=true`, and freshness sort — no need to pass them. Each job comes back with pre-built `applyUrl` (the user-facing page) and `jdUrl` (the full markdown JD).
 
 ### Output rules
 
 Users read these results on mobile (Telegram, Slack, etc.) where long messages get truncated and lose formatting. To keep results scannable and consistent:
 
-1. **Always use `limit=10`** — never request more than 10 jobs per search. If the user needs more, paginate.
+1. **Don't pass `limit` above 10** — the default is 10 and that's what mobile UIs comfortably render. Paginate via `offset={nextOffset}` if needed.
 2. **Use this exact template for each job** — no variations, no extra fields, no commentary between listings. Blank line between each job.
 
 ```
 **{n}. {title}**
 {company.name} · 📍 {location}
-${salaryMin/1000}K–${salaryMax/1000}K/yr · [Apply →](https://zerogtalent.com/{industry-prefix}-jobs/{company.slug}/{slug})
+${salary.min/1000}K–${salary.max/1000}K/yr · [Apply →]({applyUrl})
 ```
 
-3. **Build the URL using `company.industry`**: `SPACE` → `space-jobs`, `AI` → `ai-jobs`, `ROBOTICS` → `robotics-jobs`, `DEFENSE` → `defense-jobs`
-4. **If `salaryMin` is null**, omit salary from line 3 — just show the link: `[Apply →](url)`
+3. **Use the `applyUrl` field as-is** — it's already a full https:// URL with the correct industry prefix. No reconstruction needed.
+4. **Salary formatting depends on `salary.interval`** (lowercase strings):
+   - `year` → `${salary.min/1000}K–${salary.max/1000}K/yr`
+   - `hour` → `${salary.min}–${salary.max}/hr`
+   - `month` / `week` / `day` → `${salary.min}–${salary.max} ${salary.currency}/{interval}`
+   - If the `salary` field is missing, omit salary entirely — just show the link: `[Apply →](url)`
 5. **Always end with the footer** after the last listing:
 
 ```
@@ -64,10 +70,10 @@ Showing {jobs.length} of {total} results
 ### Get Full Job Description
 
 ```
-curl -s "https://zerogtalent.com/api/job?company={company-slug}&jobId={externalId}"
+curl -s "{jdUrl}?format=md"
 ```
 
-Use `externalId` from search results (not `slug`). Parse the `description` (HTML) to extract:
+The `jdUrl` field on each search result is pre-built and points at `https://zerogtalent.com/api/agent/job/{slug}`. Append `?format=md` to get clean markdown directly, or omit it for the JSON shape with `relatedJobs` (≤5 other roles at the same company). Extract:
 
 - **Requirements & qualifications** — for resume tailoring and interview questions
 - **Responsibilities** — map to user's experience for bullet point rewrites
@@ -138,7 +144,7 @@ Run a mock interview:
 
 **API timeout:** Retry once. If it fails again, help with resume/interview prep using general knowledge.
 
-**404 on job description:** Re-search for fresh `externalId`. Always use `externalId`, never `slug`.
+**404 on job description:** The job may have been closed. Re-search for a fresh `jdUrl` and retry.
 
 **No salary data:** Say so honestly. Suggest Levels.fyi or Glassdoor.
 

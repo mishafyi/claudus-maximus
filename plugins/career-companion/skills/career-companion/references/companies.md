@@ -1,31 +1,28 @@
 # Company Slugs Reference
 
-Use these slugs with the `company` parameter in the search API. Grouped by DB industry (determines URL prefix).
+Use these slugs with the `company` parameter in the search API. Grouped by DB `CompanyIndustry` (determines the URL prefix: `SPACE` → `space-jobs`, `AI` → `ai-jobs`, `ROBOTICS` → `robotics-jobs`, `DEFENSE` → `defense-jobs`, `FRONTIER` → `frontier-jobs`).
+
+Job counts shown are active openings at time of writing — directional only.
 
 ## Space (URL prefix: `space-jobs`)
 
-| Company                   | Slug                                 |
-| ------------------------- | ------------------------------------ |
-| SpaceX                    | `spacex`                             |
-| Blue Origin               | `blue-origin`                        |
-| Northrop Grumman          | `northrop-grumman`                   |
-| Relativity Space          | `relativity-space`                   |
-| Rocket Lab                | `rocket-lab`                         |
-| The Aerospace Corporation | `the-aerospace-corporation`          |
-| Archer Aviation           | `archer-aviation`                    |
-| Saronic                   | `saronic`                            |
-| Firefly Aerospace         | `firefly-aerospace`                  |
-| Boeing                    | `boeing`                             |
-| CesiumAstro               | `cesiumastro`                        |
-| Astranis                  | `astranis`                           |
-| Planet Labs               | `planet-labs`                        |
-| ArianeGroup               | `arianegroup`                        |
-| NASA                      | `nasa`                               |
-| RTX                       | `rtx-raytheon-collins-pratt-whitney` |
-| ASML                      | `asml`                               |
-| Thales Alenia Space       | `thales-alenia-space`                |
-| Telespazio                | `telespazio`                         |
-| Airbus                    | `airbus`                             |
+| Company                   | Slug                        |
+| ------------------------- | --------------------------- |
+| SpaceX                    | `spacex`                    |
+| Blue Origin               | `blue-origin`               |
+| Thales Alenia Space       | `thales-alenia-space`       |
+| Firefly Aerospace         | `firefly-aerospace`         |
+| The Aerospace Corporation | `the-aerospace-corporation` |
+| Relativity Space          | `relativity-space`          |
+| Rocket Lab                | `rocket-lab`                |
+| Northrop Grumman          | `northrop-grumman`          |
+| Archer Aviation           | `archer-aviation`           |
+| CesiumAstro               | `cesiumastro`               |
+| Boeing                    | `boeing`                    |
+| Astranis                  | `astranis`                  |
+| Telespazio                | `telespazio`                |
+| Planet Labs               | `planet-labs`               |
+| NASA                      | `nasa`                      |
 
 ## AI (URL prefix: `ai-jobs`)
 
@@ -34,20 +31,14 @@ Use these slugs with the `company` parameter in the search API. Grouped by DB in
 | Databricks        | `databricks`        |
 | OpenAI            | `openai`            |
 | Anthropic         | `anthropic`         |
-| Waymo             | `waymo`             |
-| Deel              | `deel`              |
 | xAI               | `xai`               |
-| Aurora Innovation | `aurora-innovation` |
 | Scale AI          | `scale-ai`          |
-| Helion Energy     | `helion-energy`     |
+| Aurora Innovation | `aurora-innovation` |
 | Cohere            | `cohere`            |
-| IonQ              | `ionq`              |
-| DeepMind          | `deepmind`          |
-| Perplexity        | `perplexity`        |
-| Neuralink         | `neuralink`         |
 | Cursor            | `cursor`            |
+| Perplexity        | `perplexity`        |
+| DeepMind          | `deepmind`          |
 | Together AI       | `together-ai`       |
-| Rigetti Computing | `rigetti-computing` |
 
 ## Robotics (URL prefix: `robotics-jobs`)
 
@@ -58,8 +49,26 @@ Use these slugs with the `company` parameter in the search API. Grouped by DB in
 
 ## Defense (URL prefix: `defense-jobs`)
 
-| Company            | Slug                 |
-| ------------------ | -------------------- |
-| Anduril Industries | `anduril-industries` |
-| Shield AI          | `shield-ai`          |
-| Skydio             | `skydio`             |
+| Company            | Slug                                 |
+| ------------------ | ------------------------------------ |
+| Anduril Industries | `anduril-industries`                 |
+| RTX                | `rtx-raytheon-collins-pratt-whitney` |
+| Shield AI          | `shield-ai`                          |
+| Saronic            | `saronic`                            |
+| Skydio             | `skydio`                             |
+| Airbus             | `airbus`                             |
+
+## Frontier (URL prefix: `frontier-jobs`)
+
+The `FRONTIER` industry is the catch-all for frontier-tech companies that don't fit Space/AI/Robotics/Defense (autonomy, semiconductors, fusion, BCI, quantum, fintech with deep-tech mission, etc.).
+
+| Company           | Slug                |
+| ----------------- | ------------------- |
+| ASML              | `asml`              |
+| Waymo             | `waymo`             |
+| ArianeGroup       | `arianegroup`       |
+| Deel              | `deel`              |
+| Helion Energy     | `helion-energy`     |
+| IonQ              | `ionq`              |
+| Neuralink         | `neuralink`         |
+| Rigetti Computing | `rigetti-computing` |
