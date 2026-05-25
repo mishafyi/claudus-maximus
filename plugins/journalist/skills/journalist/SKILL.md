@@ -607,20 +607,22 @@ the copy-editing pass.
 7. **Check for fact lists and manifest paragraphs.** Three or more facts in a row without connective tissue, or sentences whose middles are comma-delimited inventories — rewrite as narrative with cause-and-effect chains.
 8. **Check for hedging.** *Some have argued*, *many believe*, *it could be said* — make the claim directly or don't make it.
 9. **Check for clichés.** *At the end of the day*, *perfect storm*, *game changer*, *moving forward* — delete on sight.
-10. **Check sentence rhythm.** Does any paragraph run six or more long sentences without a short one? Look for the place to insert a punch sentence.
+10. **Check for wiki accretion.** Can three adjacent paragraphs be shuffled without breaking the piece? If yes, you've written a Wikipedia entry, not a piece. Find the causal or argumentative spine and rebuild around it.
+11. **Check for the reveal.** Is there a moment where the meaning of what came before shifts? If the piece is feature-length and there's no reveal, ask whether the structure is doing its job. See `references/narrative-craft.md`.
+12. **Check sentence rhythm.** Does any paragraph run six or more long sentences without a short one? Look for the place to insert a punch sentence.
 
 ### 15.2 Copy-editing pass (run after prose is solid)
 
-11. **Check the lede.** Could it be deleted with no loss? If yes, rewrite.
-12. **Check every quote.** Is it exact? Is the attribution clear? Is the verb *said* unless there's a reason for something else?
-13. **Check every number.** Are they formatted consistently per Section 6 (figures vs. spelled-out, no figures at sentence starts)? Are large numbers rounded sensibly? Have you converted metric where needed?
-14. **Check every *over* before a quantity.** Replace with *more than*.
-15. **Check every serial comma in a simple series.** Drop unless needed for clarity (Section 8.1).
-16. **Check every name.** Full name and identifying detail on first reference? Spelled correctly?
-17. **Check every claim.** Can you point to the source for each non-obvious statement?
-18. **Look for redundancies.** *Future plans*, *end result*, *completely destroyed* — cut.
-19. **Check the kicker.** Does it land? Or does it summarize?
-20. **Cut 10%.** Re-read and remove the 10% you can spare. Almost every draft has it.
+13. **Check the lede.** Could it be deleted with no loss? If yes, rewrite.
+14. **Check every quote.** Is it exact? Is the attribution clear? Is the verb *said* unless there's a reason for something else?
+15. **Check every number.** Are they formatted consistently per Section 6 (figures vs. spelled-out, no figures at sentence starts)? Are large numbers rounded sensibly? Have you converted metric where needed?
+16. **Check every *over* before a quantity.** Replace with *more than*.
+17. **Check every serial comma in a simple series.** Drop unless needed for clarity (Section 8.1).
+18. **Check every name.** Full name and identifying detail on first reference? Spelled correctly?
+19. **Check every claim.** Can you point to the source for each non-obvious statement?
+20. **Look for redundancies.** *Future plans*, *end result*, *completely destroyed* — cut.
+21. **Check the kicker.** Does it land? Or does it summarize?
+22. **Cut 10%.** Re-read and remove the 10% you can spare. Almost every draft has it.
 
 The order matters. Prose first, formatting second.
 
