@@ -1,6 +1,6 @@
 # claudus-maximus
 
-A Claude Code plugin marketplace. Three plugins that give Claude superpowers it doesn't ship with — diagramming from real code analysis, evolutionary multi-agent problem solving, and live job search for frontier tech.
+A Claude Code plugin marketplace. Four plugins that give Claude superpowers it doesn't ship with — diagramming from real code analysis, evolutionary multi-agent problem solving, live job search for frontier tech, and a newspaper-grade writing guideline for long-form content.
 
 ## Install
 
@@ -14,15 +14,17 @@ Then install individual plugins:
 /plugin install diagram@claudus-maximus
 /plugin install winning@claudus-maximus
 /plugin install career-companion@claudus-maximus
+/plugin install journalist@claudus-maximus
 ```
 
 ## Plugins
 
-| Plugin                                | Version | Category      | What it does                                                             |
-| ------------------------------------- | ------- | ------------- | ------------------------------------------------------------------------ |
-| [diagram](#diagram)                   | 1.1.0   | visualization | Generates Mermaid diagrams from actual codebase analysis — not guesswork |
-| [winning](#winning)                   | 0.8.0   | orchestration | Deploys parallel agents on competing strategies, keeps the winner        |
-| [career-companion](#career-companion) | 1.0.0   | productivity  | Searches 20,000+ live jobs, tailors resumes, runs mock interviews        |
+| Plugin                                | Version | Category      | What it does                                                                       |
+| ------------------------------------- | ------- | ------------- | ---------------------------------------------------------------------------------- |
+| [diagram](#diagram)                   | 1.1.1   | visualization | Generates Mermaid diagrams from actual codebase analysis — not guesswork           |
+| [winning](#winning)                   | 0.8.0   | orchestration | Deploys parallel agents on competing strategies, keeps the winner                  |
+| [career-companion](#career-companion) | 1.0.0   | productivity  | Searches 20,000+ live jobs, tailors resumes, runs mock interviews                  |
+| [journalist](#journalist)             | 1.1.0   | productivity  | Newspaper prose discipline + narrative craft for any extended long-form writing    |
 
 ---
 
@@ -97,6 +99,30 @@ run a mock interview for a robotics position at Boston Dynamics
 
 ---
 
+### journalist
+
+Writing guideline for long-form content. Combines newspaper prose discipline (NYT/AP/WSJ traditions) with narrative craft (the longform-feature tradition — story shape, voice, earned realizations, research woven into prose rather than dumped as citations).
+
+**Two pillars:**
+
+1. **Newspaper rules** — active voice, plain words, *said* attribution, no clichés, no editorializing, proper numbers/dates/punctuation. NYT style by default.
+2. **Narrative craft** — show don't dump, voice, cliff-hangers, the reveal, the wiki test.
+
+**Try it:**
+
+```
+write a 1200-word feature on <topic> for my newsletter
+edit this draft — too much hedging and throat-clearing
+help me structure a 5000-word longform for The Atlantic
+polish this op-ed in WSJ style
+```
+
+For drafts over ~500 words, ask Claude to "dispatch a parallel review" — three reviewer subagents (prose, copy-editing, narrative) run concurrently and return structured critiques.
+
+**Components:** 1 skill, 4 deep-dive references (narrative-craft, anti-patterns, citation-and-sourcing, copy-editing-mechanics), 3 subagent prompt templates
+
+---
+
 ## Structure
 
 ```
@@ -115,8 +141,13 @@ claudus-maximus/
     │   ├── skills/              # winning, how-to-win
     │   ├── hooks/               # Stop hook (loop engine)
     │   └── scripts/             # setup-loop, status, cancel-loop
-    └── career-companion/        # Job search + resume + interviews
-        └── skills/              # career-companion skill + API/company refs
+    ├── career-companion/        # Job search + resume + interviews
+    │   └── skills/              # career-companion skill + API/company refs
+    └── journalist/              # Long-form writing guideline
+        └── skills/journalist/   # SKILL.md + references/ (narrative-craft,
+                                 # anti-patterns, citation-and-sourcing,
+                                 # copy-editing-mechanics) + prompts/
+                                 # (prose/copy-editor/narrative reviewers)
 ```
 
 ## Requirements
