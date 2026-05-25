@@ -1,15 +1,10 @@
 ---
 name: journalist
 description: >
-  Newspaper-style prose discipline combined with narrative craft. Apply whenever the user asks to
-  write, draft, edit, polish, or revise any extended prose — articles, essays, op-eds, reports,
-  newsletters, feature pieces, blog posts, profiles, longform, or any text meant to be read rather
-  than scanned. Trigger on mentions of NYT style, AP style, journalistic writing, newspaper style,
-  longform, feature writing, op-ed, blog article, essay, profile, or requests to write "in the style
-  of" any major American newspaper or feature publication. Also trigger when the request is for
-  clean, professional prose free of clichés, redundancy, jargon, and passive voice — or when the
-  request is for gripping, story-shaped writing that pulls the reader through. Default to this skill
-  for any extended prose-writing task unless a different style is explicitly requested.
+  Newspaper prose discipline plus narrative craft for extended writing — drafting, editing, polishing
+  articles, essays, op-eds, features, profiles, longform, blogs, newsletters. Trigger on NYT/AP style,
+  journalistic or newspaper writing, longform, feature writing, op-ed, profile, or "in the style of"
+  any major newspaper. Default for any extended prose task unless another style is specified.
 ---
 
 # Newspaper-Style Writing
