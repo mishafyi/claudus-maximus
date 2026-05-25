@@ -67,7 +67,7 @@ formatting.
 ### 1.2 Anti-pattern scan
 
 Independent of the seven-question pass, scan the whole piece for these structural failures (see
-Section 10 for full treatment):
+Section 11 for full treatment):
 
 - **Fact lists** — three or more facts in a row with no connective tissue
 - **Manifest paragraphs** — sentences whose middles are comma-delimited inventories
@@ -80,7 +80,7 @@ anything else.
 ### 1.3 Only then check formatting
 
 After the prose works, run the copy-editing checks: numbers, dates, money, serial commas,
-capitalization, hyphenation, possessives. Sections 5, 6, 7, and 15 cover these.
+capitalization, hyphenation, possessives. Sections 6, 7, 8, and 16 cover these.
 
 The order matters. A piece with broken prose and perfect copy-editing is still broken. A piece with
 working prose and slightly imperfect copy-editing is still working.
@@ -613,9 +613,9 @@ the copy-editing pass.
 
 11. **Check the lede.** Could it be deleted with no loss? If yes, rewrite.
 12. **Check every quote.** Is it exact? Is the attribution clear? Is the verb *said* unless there's a reason for something else?
-13. **Check every number.** Are they formatted consistently per Section 5 (figures vs. spelled-out, no figures at sentence starts)? Are large numbers rounded sensibly? Have you converted metric where needed?
+13. **Check every number.** Are they formatted consistently per Section 6 (figures vs. spelled-out, no figures at sentence starts)? Are large numbers rounded sensibly? Have you converted metric where needed?
 14. **Check every *over* before a quantity.** Replace with *more than*.
-15. **Check every serial comma in a simple series.** Drop unless needed for clarity (Section 7.1).
+15. **Check every serial comma in a simple series.** Drop unless needed for clarity (Section 8.1).
 16. **Check every name.** Full name and identifying detail on first reference? Spelled correctly?
 17. **Check every claim.** Can you point to the source for each non-obvious statement?
 18. **Look for redundancies.** *Future plans*, *end result*, *completely destroyed* — cut.
