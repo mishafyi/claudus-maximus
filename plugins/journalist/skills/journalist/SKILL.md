@@ -48,7 +48,9 @@ The credo underneath every rule: *do not insult the intelligence of the reader.*
 - Capitalization
 - Punctuation
 
-**Deep-dive reference:** `references/narrative-craft.md` — show vs tell vs earn, voice, the Chekhov principle, the reveal, building tension, connective tissue, marrying research and prose, the wiki test, patterns from masters.
+**Deep-dive references:**
+- `references/narrative-craft.md` — show vs tell vs earn, voice, the Chekhov principle, the reveal, building tension, connective tissue, marrying research and prose, the wiki test, patterns from masters.
+- `references/anti-patterns.md` — full treatments of the seven anti-patterns (fact lists, manifest paragraphs, hedging, throat-clearing, adjective pile-up, clichés, editorializing).
 
 **Subagent prompt templates:** `prompts/prose-reviewer-prompt.md`, `prompts/copy-editor-prompt.md`, `prompts/narrative-reviewer-prompt.md` — for parallel fresh-eyes review of longer drafts.
 
@@ -364,64 +366,7 @@ Seven common failures, all of which damage prose at the sentence or paragraph le
 6. **Clichés** — *at the end of the day*, *perfect storm*, *moving forward*
 7. **Editorializing through adjectives** — *shocking*, *tragic*, *courageous*
 
-Each is treated below.
-
-#### The fact list
-
-Three or more facts in a row with no connective tissue. Reads like a Wikipedia entry, not prose. Each fact should cause or explain the next. If the connective tissue isn't there, the paragraph is a list pretending to be prose.
-
-#### The manifest paragraph
-
-A sentence whose middle is a comma-delimited inventory of items. The reader's attention slides off the list and never lands on what the sentence was about. Rewrite so the inventory either becomes the structural backbone of a longer sentence or gets compressed into a single representative example.
-
-#### Hedging into oblivion
-
-"Some have argued." "It could be said." "Many believe." These phrases launder opinions through phantom third parties. Either make the claim directly or don't make it.
-
-#### Throat-clearing
-
-"This article will examine..." "It is important to note that..." "There are many factors to consider when thinking about..."
-
-Strip them all. Start with the claim or the scene.
-
-#### Adjective pile-up
-
-"A devastating, unprecedented, catastrophic, world-changing event."
-
-Pick one. Adjectives that compete for the reader's attention cancel each other out.
-
-#### Clichés
-
-A non-exhaustive list to delete on sight:
-
-- "at the end of the day"
-- "needless to say" (if needless, don't say it)
-- "in this day and age"
-- "thinking outside the box"
-- "the perfect storm"
-- "a game changer"
-- "the elephant in the room"
-- "moving forward" (use *from now on*, or delete)
-- "to be honest" / "to tell you the truth" (implies you weren't before)
-- "low-hanging fruit"
-- "circle back"
-- "double down"
-
-#### Editorializing through adjectives
-
-Don't tell the reader how to feel through loaded modifiers. *"The shocking decision," "the courageous senator," "the tragic event," "the grim pattern," "the devastating consequences"* — these editorialize. The reader should reach those judgments on their own from the facts you present. Adjectives that pre-judge the reader's response are a form of telling rather than showing.
-
-A working list of words to interrogate every time they appear:
-
-- *shocking, stunning, breathtaking, jaw-dropping*
-- *tragic, devastating, catastrophic, heartbreaking*
-- *courageous, brave, heroic*
-- *grim, dark, ominous, chilling*
-- *unprecedented* (often false; usually means *I haven't checked*)
-- *incredible, unbelievable* (literally tell the reader not to believe you)
-- *iconic, legendary* (usually doing PR work, not description)
-
-If you find one, ask: *can the facts produce this reaction on their own?* If yes, cut the adjective. If no, the facts probably aren't strong enough and the adjective is doing the persuasion the evidence couldn't.
+Each is straightforward to identify but easy to slip into. For full treatments — what each anti-pattern looks like, why it damages prose, and how to rewrite around it (including the full cliché list and the editorializing-adjective inventory) — see `references/anti-patterns.md`.
 
 ### The underlying voice
 
