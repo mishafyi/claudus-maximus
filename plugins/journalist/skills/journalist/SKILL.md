@@ -1,10 +1,8 @@
 ---
 name: journalist
 description: >
-  Newspaper prose discipline plus narrative craft — default for drafting, editing, or polishing any
-  extended prose (articles, essays, op-eds, features, profiles, longform, blogs, newsletters),
-  including NYT/AP-style or "in the style of" major-newspaper requests, unless another style is
-  specified.
+  Newspaper prose discipline plus narrative craft — default for any extended prose, NYT/AP-style, or
+  "in the style of" major-newspaper requests.
 ---
 
 # Newspaper-Style Writing
