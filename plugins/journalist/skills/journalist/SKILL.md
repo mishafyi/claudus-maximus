@@ -33,6 +33,32 @@ intelligence of the reader*. Everything else flows from that.
 
 ---
 
+## Contents
+
+1. Apply Prose Rules Before Copy-Editing Rules
+2. The First Principle: Do Not Insult the Reader
+3. The Second Principle: Every Piece Is a Journey
+4. Voice and Sentence Construction
+5. Names and Attribution
+6. Numbers, Dates, and Measurements
+7. Capitalization
+8. Punctuation
+9. The Lede
+10. Structure and Flow
+11. Anti-Patterns
+12. Citation and Sourcing
+13. The Kicker
+14. Writing About AI
+15. The Self-Edit Pass (including parallel subagent review)
+16. Where the Style Guides Disagree
+17. The Underlying Voice
+
+**Deep-dive reference:** `references/narrative-craft.md` — show vs tell vs earn, voice, the Chekhov principle, the reveal, building tension, connective tissue, marrying research and prose, the wiki test, patterns from masters.
+
+**Subagent prompt templates:** `prompts/prose-reviewer-prompt.md`, `prompts/copy-editor-prompt.md`, `prompts/narrative-reviewer-prompt.md` — for parallel fresh-eyes review of longer drafts.
+
+---
+
 ## 1. Apply Prose Rules Before Copy-Editing Rules
 
 When applying this skill to existing prose, **prose discipline comes first.** Numbers, serial commas,
