@@ -1,56 +1,52 @@
 ---
 name: journalist
 description: >
-  A writing-style skill that combines two disciplines: newspaper prose discipline (grounded in The New
-  York Times Manual of Style and Usage, 5th Edition; The Associated Press Stylebook 2024-2026; and the
-  Wall Street Journal page-one feature tradition) and narrative craft (the longform-feature tradition
-  of taking the reader on a journey — story shape, voice, earned realizations, research woven into
-  prose rather than dumped as citations). Apply this skill whenever the user asks to write, draft,
-  edit, polish, or revise any extended prose — articles, essays, op-eds, reports, newsletters, feature
-  pieces, blog posts, profiles, longform, or any text meant to be read rather than scanned. Trigger on
-  mentions of NYT style, AP style, journalistic writing, newspaper style, longform, feature writing,
-  op-ed, blog article, essay, profile, or requests to write "in the style of" any major American
-  newspaper or feature publication. Also trigger when the request is for clean, professional prose
-  free of clichés, redundancy, jargon, and passive voice — or when the request is for gripping,
-  story-shaped writing that pulls the reader through. Default to this skill for any extended
-  prose-writing task unless a different style is explicitly requested.
+  Newspaper-style prose discipline combined with narrative craft. Apply whenever the user asks to
+  write, draft, edit, polish, or revise any extended prose — articles, essays, op-eds, reports,
+  newsletters, feature pieces, blog posts, profiles, longform, or any text meant to be read rather
+  than scanned. Trigger on mentions of NYT style, AP style, journalistic writing, newspaper style,
+  longform, feature writing, op-ed, blog article, essay, profile, or requests to write "in the style
+  of" any major American newspaper or feature publication. Also trigger when the request is for
+  clean, professional prose free of clichés, redundancy, jargon, and passive voice — or when the
+  request is for gripping, story-shaped writing that pulls the reader through. Default to this skill
+  for any extended prose-writing task unless a different style is explicitly requested.
 ---
 
 # Newspaper-Style Writing
 
-This skill applies the principles of serious American journalism — drawn primarily from *The New
-York Times Manual of Style and Usage, 5th Edition* (Siegal & Connolly, 2015), supplemented by *The
-Associated Press Stylebook 2024-2026* and the page-one feature tradition of *The Wall Street
-Journal* — to produce prose that meets the standards of the country's leading news organizations.
+A discipline for serious prose — drafting, editing, polishing. Two pillars: sentence-level craft (active voice, plain words, clean attribution, proper formatting) and piece-level structure (the lede, the journey, the reveal, the kicker). Apply both to any extended writing meant to be read rather than scanned.
 
-The three sources agree on most of the fundamentals and disagree on a handful of specific
-conventions (the serial comma, possessives ending in *s*, percent vs. %, courtesy titles). Where they
-diverge, this skill notes the divergence and recommends defaults.
-
-The underlying philosophy is consistent across all three: write clearly, write accurately, write
-with respect for the reader. The NYT Manual states the credo explicitly: *do not insult the
-intelligence of the reader*. Everything else flows from that.
+The credo underneath every rule: *do not insult the intelligence of the reader.* Everything else flows from that.
 
 ---
 
 ## Contents
 
-1. Apply Prose Rules Before Copy-Editing Rules
-2. The First Principle: Do Not Insult the Reader
-3. The Second Principle: Every Piece Is a Journey
-4. Voice and Sentence Construction
-5. Names and Attribution
-6. Numbers, Dates, and Measurements
-7. Capitalization
-8. Punctuation
-9. The Lede
-10. Structure and Flow
-11. Anti-Patterns
-12. Citation and Sourcing
-13. The Kicker
-14. Writing About AI
-15. The Self-Edit Pass (including parallel subagent review)
-16. The Underlying Voice
+**Workflow**
+- Apply prose rules before copy-editing
+- The self-edit pass (manual + parallel subagent review)
+
+**Principles**
+- Do not insult the reader
+- Every piece is a journey
+
+**Prose craft**
+- Voice and sentence construction
+- The lede
+- Structure and flow
+- The kicker
+- Anti-patterns
+- The underlying voice
+
+**Sources and attribution**
+- Names and attribution
+- Citation and sourcing
+- Writing about AI
+
+**Copy-editing mechanics**
+- Numbers, dates, and measurements
+- Capitalization
+- Punctuation
 
 **Deep-dive reference:** `references/narrative-craft.md` — show vs tell vs earn, voice, the Chekhov principle, the reveal, building tension, connective tissue, marrying research and prose, the wiki test, patterns from masters.
 
@@ -58,83 +54,119 @@ intelligence of the reader*. Everything else flows from that.
 
 ---
 
-## 1. Apply Prose Rules Before Copy-Editing Rules
+## Workflow
 
-When applying this skill to existing prose, **prose discipline comes first.** Numbers, serial commas,
-and capitalization are copy-editing concerns — they polish prose that already works. They don't make
-broken prose work. Run the prose-discipline pass below before touching any formatting rule.
+### Apply prose rules before copy-editing rules
 
-### 1.1 The seven-question prose pass
+When applying this skill to existing prose, **prose discipline comes first.** Numbers, serial commas, and capitalization are copy-editing concerns — they polish prose that already works. They don't make broken prose work. Run the prose-discipline pass below before touching any formatting rule.
+
+#### The seven-question prose pass
 
 Read each paragraph and ask:
 
-1. **Active voice?** Is the actor doing the action, or is the action happening to a vague subject?
-   Mark every passive construction and rewrite unless the actor is genuinely unknown or irrelevant.
-2. **Verbs doing work?** Are the verbs strong (*forced, cut, broke, won*), or are they nominalized
-   (*made a decision, gave consideration to, faced the possibility of*)? Collapse nominalizations
-   back into verbs.
+1. **Active voice?** Is the actor doing the action, or is the action happening to a vague subject? Mark every passive construction and rewrite unless the actor is genuinely unknown or irrelevant.
+2. **Verbs doing work?** Are the verbs strong (*forced, cut, broke, won*), or are they nominalized (*made a decision, gave consideration to, faced the possibility of*)? Collapse nominalizations back into verbs.
 3. **Concrete nouns?** Are the things in the sentence specific (named places, exact dollar figures, particular operations) or abstract (*weapons*, *significant funding*, *military operations*)? Push toward concrete.
-4. **Sentence rhythm?** Does this paragraph alternate long and short sentences, or does it run six
-   long sentences in a row? Long-building-to-short-punch is the strongest rhythm in feature writing.
-   Look for the place to insert a four-word sentence.
-5. **Adjective pile-up?** Are there two or more adjectives competing for the reader's attention in
-   the same phrase ("the devastating, unprecedented, catastrophic event")? Pick one. Adjectives that
-   compete cancel each other out.
-6. **Editorializing through adjectives?** Are loaded modifiers telling the reader how to feel
-   ("the shocking decision," "the tragic event," "the grim pattern")? Cut them. Let the facts produce
-   the feeling.
-7. **Throat-clearing?** Does any sentence open with a soft transition that doesn't carry information
-   ("It only escalated," "It is important to note," "Moving forward")? Cut.
+4. **Sentence rhythm?** Does this paragraph alternate long and short sentences, or does it run six long sentences in a row? Long-building-to-short-punch is the strongest rhythm in feature writing. Look for the place to insert a four-word sentence.
+5. **Adjective pile-up?** Are there two or more adjectives competing for the reader's attention in the same phrase ("the devastating, unprecedented, catastrophic event")? Pick one. Adjectives that compete cancel each other out.
+6. **Editorializing through adjectives?** Are loaded modifiers telling the reader how to feel ("the shocking decision," "the tragic event," "the grim pattern")? Cut them. Let the facts produce the feeling.
+7. **Throat-clearing?** Does any sentence open with a soft transition that doesn't carry information ("It only escalated," "It is important to note," "Moving forward")? Cut.
 
-If a paragraph passes all seven, it's working prose. If it fails any, fix the prose before checking
-formatting.
+If a paragraph passes all seven, it's working prose. If it fails any, fix the prose before checking formatting.
 
-### 1.2 Anti-pattern scan
+#### Anti-pattern scan
 
-Independent of the seven-question pass, scan the whole piece for these structural failures (see
-Section 11 for full treatment):
+Independent of the seven-question pass, scan the whole piece for these structural failures (full treatment under **Prose craft → Anti-patterns**):
 
 - **Fact lists** — three or more facts in a row with no connective tissue
 - **Manifest paragraphs** — sentences whose middles are comma-delimited inventories
 - **Hedging** — "some have argued," "it could be said," "many believe"
 - **Clichés** — any phrase that arrived in the draft pre-formed from a thousand other articles
 
-These are the failures that distinguish a Wikipedia entry from journalism. Catch them before
-anything else.
+These are the failures that distinguish a Wikipedia entry from prose. Catch them before anything else.
 
-### 1.3 Only then check formatting
+#### Only then check formatting
 
-After the prose works, run the copy-editing checks: numbers, dates, money, serial commas,
-capitalization, hyphenation, possessives. Sections 6, 7, and 8 cover these.
+After the prose works, run the copy-editing checks: numbers, dates, money, serial commas, capitalization, hyphenation, possessives. The **Copy-editing mechanics** bucket covers these.
 
-The order matters. A piece with broken prose and perfect copy-editing is still broken. A piece with
-working prose and slightly imperfect copy-editing is still working.
+The order matters. A piece with broken prose and perfect copy-editing is still broken. A piece with working prose and slightly imperfect copy-editing is still working.
+
+### The self-edit pass
+
+Run the prose pass first, then the copy-editing pass.
+
+#### Prose pass (run first)
+
+1. **Read the piece aloud.** Sentences that don't work usually fail at the level of sound. If you stumble while reading, the reader will too.
+2. **Check every sentence for passive voice.** Mark each one. Rewrite unless the actor is genuinely unknown or irrelevant.
+3. **Check every long noun phrase.** Collapse nominalizations into verbs. A clause like "made a decision to approve" should become "approved."
+4. **Check for adjective pile-up.** Any phrase with two or more adjectives competing for attention — pick one.
+5. **Check for editorializing adjectives.** *Shocking, tragic, courageous, grim, devastating, stunning* — cut them. Let the facts produce the reader's reaction.
+6. **Check for throat-clearing.** Sentence openers that don't carry information — *it is important to note*, *moving forward*, *in today's world* — cut.
+7. **Check for fact lists and manifest paragraphs.** Three or more facts in a row without connective tissue, or sentences whose middles are comma-delimited inventories — rewrite as narrative with cause-and-effect chains.
+8. **Check for hedging.** *Some have argued*, *many believe*, *it could be said* — make the claim directly or don't make it.
+9. **Check for clichés.** *At the end of the day*, *perfect storm*, *game changer*, *moving forward* — delete on sight.
+10. **Check for wiki accretion.** Can three adjacent paragraphs be shuffled without breaking the piece? If yes, you've written a Wikipedia entry, not a piece. Find the causal or argumentative spine and rebuild around it.
+11. **Check for the reveal.** Is there a moment where the meaning of what came before shifts? If the piece is feature-length and there's no reveal, ask whether the structure is doing its job. See `references/narrative-craft.md`.
+12. **Check sentence rhythm.** Does any paragraph run six or more long sentences without a short one? Look for the place to insert a punch sentence.
+
+#### Copy-editing pass (run after prose is solid)
+
+13. **Check the lede.** Could it be deleted with no loss? If yes, rewrite.
+14. **Check every quote.** Is it exact? Is the attribution clear? Is the verb *said* unless there's a reason for something else?
+15. **Check every number.** Are they formatted consistently per **Mechanics → Numbers** (figures vs. spelled-out, no figures at sentence starts)? Are large numbers rounded sensibly? Have you converted metric where needed?
+16. **Check every *over* before a quantity.** Use *more than* unless the spatial sense or sentence rhythm calls for it.
+17. **Check every serial comma in a simple series.** Drop unless needed for clarity (**Mechanics → Punctuation → Serial comma**).
+18. **Check every name.** Full name and identifying detail on first reference? Spelled correctly?
+19. **Check every claim.** Can you point to the source for each non-obvious statement?
+20. **Look for redundancies.** *Future plans*, *end result*, *completely destroyed* — cut.
+21. **Check the kicker.** Does it land? Or does it summarize?
+22. **Cut 10%.** Re-read and remove the 10% you can spare. Almost every draft has it.
+
+The order matters. Prose first, formatting second.
+
+#### Parallel review with subagents (optional, recommended for longer pieces)
+
+For drafts longer than ~500 words, dispatch three reviewer subagents in parallel for fresh-eyes critique. Each is a fresh `general-purpose` agent with no conversation history — they see the draft cold, the way a real reader would.
+
+Three prompt templates ship with this skill:
+
+- `prompts/prose-reviewer-prompt.md` — runs the prose pass items 1–12 against the draft
+- `prompts/copy-editor-prompt.md` — runs the copy-editing pass items 13–22 against the draft
+- `prompts/narrative-reviewer-prompt.md` — runs the wiki test, reveal check, voice check, connective-tissue check (uses `references/narrative-craft.md`)
+
+**Dispatch pattern:** Read each prompt template. For each one, substitute the draft text into the template's `{{DRAFT}}` placeholder, then dispatch via the Agent tool with `subagent_type: 'general-purpose'` and the filled-in prompt. Send all three dispatches in a single message so they run concurrently. Each returns a structured critique (a numbered list of issues with line references and explanations). Aggregate the three reports for the user.
+
+**When NOT to dispatch:**
+
+- Drafts under ~500 words — the manual pass is faster than the dispatch overhead.
+- Hard-news copy on a deadline — the inverted pyramid doesn't need narrative review.
+- Interactive editing where the user is iterating sentence by sentence — the round-trip latency interrupts flow.
+
+The three reports often surface overlapping issues. That overlap is signal, not noise — issues that two or three reviewers independently flag are the most worth addressing first.
 
 ---
 
-## 2. The First Principle: Do Not Insult the Reader
+## Principles
+
+### Do not insult the reader
 
 The reader is intelligent, attentive, and reading deliberately. Two consequences follow:
 
-- **Don't over-explain.** Trust the reader to follow a thought from premise to conclusion. Don't
-  repeat the same idea three different ways "to make sure they got it."
-- **Don't under-explain.** Trust the reader's intelligence, but not their prior knowledge. Define
-  technical terms in line. Expand acronyms on first use. Name people in full on first reference.
+- **Don't over-explain.** Trust the reader to follow a thought from premise to conclusion. Don't repeat the same idea three different ways "to make sure they got it."
+- **Don't under-explain.** Trust the reader's intelligence, but not their prior knowledge. Define technical terms in line. Expand acronyms on first use. Name people in full on first reference.
 
-The line between these two failures is the line between writing that respects the reader and writing
-that condescends. Aim for the middle.
+The line between these two failures is the line between writing that respects the reader and writing that condescends. Aim for the middle.
 
----
-
-## 3. The Second Principle: Every Piece Is a Journey
+### Every piece is a journey
 
 A piece of writing is not an information container. It is an experience the reader moves through — a journey the writer designs. The writer's job is to engineer that journey: where the reader starts, what they encounter, what they realize, where they arrive.
 
-The first principle (§2) protects the reader's intelligence. The second principle honors their attention. The two work together: don't waste the reader's time by under- or over-explaining (§2), and don't waste it by failing to take them anywhere (§3).
+The first principle protects the reader's intelligence. This second principle honors their attention. The two work together: don't waste the reader's time by under- or over-explaining, and don't waste it by failing to take them anywhere.
 
 The reader's contract is simple. They give you their attention as long as you keep earning it. They will leave at any paragraph, on any sentence. Lose them once and the rest of the piece is wasted on no one.
 
-### 3.1 Show, don't dump
+#### Show, don't dump
 
 Resist the urge to explain. Let the reader realize.
 
@@ -142,13 +174,13 @@ The pieces people remember are the ones where the reader felt smart for noticing
 
 This is more than "show, don't tell." It is "show enough that they earn the meaning."
 
-### 3.2 Voice — the writer is in the room
+#### Voice — the writer is in the room
 
 Anonymous wire-service prose serves a purpose, but it does not engage. Features, essays, blogs, and longform require a point of view. The reader is reading you, not a corpus.
 
 Voice in nonfiction is rarely the first-person pronoun. It is in the choices: what is foregrounded, what is elided, where the camera lingers, which detail gets the sentence and which gets the clause. The author's stance is always present, even in prose that reads as neutral. The question is whether the writer is using that stance deliberately or pretending it does not exist.
 
-### 3.3 Connective tissue
+#### Connective tissue
 
 Every paragraph earns the next. If you could shuffle three adjacent paragraphs without breaking the piece, those paragraphs are not doing their job — they are not connected, they are merely co-located.
 
@@ -156,13 +188,13 @@ The strongest connections are causal: this happened, which caused that. The next
 
 When in doubt, the test is: can the reader say "and so" between the paragraphs? If yes, they are connected.
 
-### 3.4 Cliff-hangers and revelations
+#### Cliff-hangers and revelations
 
 A paragraph's last sentence should make the next paragraph inevitable. The reader should reach the period at the end of a paragraph and want — not need but want — to know what comes next.
 
 The pieces people remember have at least one revelation: a moment where the meaning of what came before shifts. The reader thought they were reading one kind of story and learns they are reading another. The shift is not a plot twist; it is an understanding earned by the writer's deliberate withholding and timed release.
 
-### 3.5 Research as raw material, not output
+#### Research as raw material, not output
 
 The facts serve the narrative; the narrative makes the facts matter.
 
@@ -170,67 +202,66 @@ Quoting a study is not writing about the study. Writing about it means making th
 
 The research dump — three paragraphs of cited statistics without a through-line — is worse than no research. It gives the illusion of substance while failing to do the work of synthesis. The reader can sense the difference.
 
-### 3.6 When this does not apply
+#### When this does not apply
 
-Pure reference documents (instructions, specifications, glossaries) are tools, not journeys. The prose discipline of §1 and §2 still applies — clean active sentences, no clichés, no editorializing — but the narrative arc does not. A list of API endpoints is not a story and should not pretend to be one.
+Pure reference documents (instructions, specifications, glossaries) are tools, not journeys. The prose discipline still applies — clean active sentences, no clichés, no editorializing — but the narrative arc does not. A list of API endpoints is not a story and should not pretend to be one.
 
-Hard-news leads, where the inverted pyramid (§10.1) prioritizes getting the facts out in the first paragraph for readers who may stop reading, are a different mode. The reveal pattern (build tension, withhold, release) competes with the wire-service goal of front-loading. Choose the mode the piece needs.
+Hard-news leads, where the inverted pyramid (see **Prose craft → Structure and flow**) prioritizes getting the facts out in the first paragraph for readers who may stop reading, are a different mode. The reveal pattern (build tension, withhold, release) competes with the front-loading goal. Choose the mode the piece needs.
 
 For everything else — features, profiles, op-eds, essays, longform, blog posts, newsletters, reports meant to be read rather than scanned — the journey is the form. For deep dives on the patterns (show vs tell vs earn, the Chekhov principle, building tension, the wiki test, marrying research and prose, patterns from masters), see `references/narrative-craft.md`.
 
 ---
 
-## 4. Voice and Sentence Construction
+## Prose craft
 
-### 4.1 Use the active voice
+### Voice and sentence construction
 
-The most consistent rule across every major style guide. Active voice clarifies who acted; passive obscures it, which is why bureaucracies prefer it.
+#### Use the active voice
+
+Active voice clarifies who acted; passive obscures it, which is why bureaucracies prefer it.
 
 The one acceptable use of the passive: when the actor is genuinely unknown, irrelevant, or rhetorically less important than the action.
 
-### 4.2 Verbs over nouns
+#### Verbs over nouns
 
 The strongest sentences move on verbs. Nominalization — turning verbs into nouns — drains energy.
 
 When editing, scan for words ending in *-tion, -ment, -ance, -ence, -ity*. Many can be collapsed back into the verbs they came from.
 
-### 4.3 Plain words beat Latinate ones
+#### Plain words beat Latinate ones
 
-A suspect *stole* the funds, not *absconded with* them. The shorter Anglo-Saxon word is almost
-always stronger.
+A suspect *stole* the funds, not *absconded with* them. The shorter Anglo-Saxon word is almost always stronger.
 
-| Avoid                  | Prefer        |
-|------------------------|---------------|
-| utilize                | use           |
-| implement              | do, carry out |
-| facilitate             | help          |
-| demonstrate            | show          |
-| approximately          | about         |
-| subsequent to          | after         |
-| in order to            | to            |
-| at this point in time  | now           |
-| despite the fact that  | although      |
-| in the event that      | if            |
-| prior to               | before        |
+Common replacements (cut the left, use the right):
+
+- *utilize* → use
+- *implement* → do, carry out
+- *facilitate* → help
+- *demonstrate* → show
+- *approximately* → about
+- *subsequent to* → after
+- *in order to* → to
+- *at this point in time* → now
+- *despite the fact that* → although
+- *in the event that* → if
+- *prior to* → before
 
 Reserve Latinate vocabulary for cases where precision genuinely requires it.
 
-### 4.4 "More than" vs. "over"
-
-AP draws a strict line: *more than* for quantities, *over* for spatial relationships. The NYT permits *over* with quantities in many cases.
+#### "More than" vs. "over"
 
 Both are accepted. Use whichever reads better in context. *More than 200 protesters* and *over 200 protesters* are both acceptable; pick the one that fits the rhythm of the sentence. Reserve *over* for spatial uses when ambiguity would otherwise arise.
 
-### 4.5 Strip prepositional clutter
+#### Strip prepositional clutter
 
-The NYT Manual: "Unnecessary prepositions should be eliminated to streamline prose." Two patterns to watch for:
+Unnecessary prepositions slow the sentence. Two patterns to watch for:
 
 - Prepositional phrases in the wrong order — put them in the sequence the reader needs them.
 - Stacked prepositional phrases that pile *of...on...for* into a single noun. Rewrite by converting to possessives or recasting around a verb.
 
-### 4.6 Cut redundancy
+#### Cut redundancy
 
-A non-exhaustive list of phrases all three style guides flag as redundant:
+A non-exhaustive list of phrases to delete on sight:
 
 - **"absolutely necessary"** — necessary
 - **"end result"** — result
@@ -247,202 +278,38 @@ A non-exhaustive list of phrases all three style guides flag as redundant:
 
 The pattern: an adjective or modifier that restates what the noun already means. Cut the modifier.
 
-### 4.7 Vary sentence length
+#### Vary sentence length
 
 A page of uniform sentences exhausts the reader. The strongest rhythm in feature writing: long, building sentences that accumulate context, then short declarative sentences that release the pressure. A four-word punch sentence works *because* the sentences around it built up to it.
 
-### 4.8 Avoid "alphabet soup"
+#### Avoid "alphabet soup"
 
-AP's term for paragraphs choked with acronyms. Strings of agency initials cause the reader to disengage.
+Paragraphs choked with acronyms make the reader disengage.
 
 If three or more acronyms appear in a single sentence, rewrite. Spell out one or two. Reference the agencies by function ("intelligence services" or "federal investigators") where the specific name doesn't matter.
 
----
+### The lede
 
-## 5. Names and Attribution
+The first paragraph buys the second. Most readers drop off after the opening. The lede must be specific, surprising, and confident.
 
-### 5.1 Full name on first reference
-
-Give the full name on first use. On later references, use a courtesy title with the last name: *Mr. Smith*, *Ms. Jones*, *Dr. Patel*. This is NYT style — the default for serious prose. Drop courtesy titles only in sports, arts, and pop-culture sections where they read as fussy, and in contexts where the person has explicitly stated a preference otherwise.
-
-AP dropped courtesy titles long ago; if writing for an AP-style outlet, use the last name alone on second reference. For everything else — features, longform, essays, op-eds, profiles — courtesy titles signal that the writing takes the subject seriously.
-
-### 5.2 Honorifics before names; descriptive titles after
-
-- **Before the name (capitalized):** President, Senator, Dr. when used as a formal title attached to a specific name.
-- **After the name (lowercase):** the president, a senator from the state, when the role is described after the name.
-
-Don't capitalize *the president* or *the secretary of state* when the title stands alone without the name.
-
-### 5.3 Use "said" for attribution
-
-The NYT Manual's preference is firm: *said* is invisible to the reader and does its job. *Stated*,
-*noted*, *explained*, and *exclaimed* either editorialize ("noted" implies the statement is true) or
-call attention to themselves. The exception is when a different verb conveys real information:
-*shouted* if the speaker actually raised their voice, *whispered* if they actually did.
-
-AP agrees: *said* is the workhorse. Reach for an alternative only when it earns its place.
-
-### 5.4 Attribution placement
-
-For a short quote, put the attribution at the end. For a long quote, bury the attribution mid-sentence so the reader doesn't wait for it. Inserting *he said* between two clauses of a long quotation lets the reader hear the voice before the bureaucracy of attribution.
-
----
-
-## 6. Numbers, Dates, and Measurements
-
-The three style guides agree on most basics and diverge on a few details. The most useful unified
-rules:
-
-### 6.1 Numbers
-
-- **Spell out one through nine.** ("Six soldiers, seven officers.")
-- **Use figures for 10 and above.** ("11 senators, 250 protesters.")
-- **Always use figures for:** ages, percentages, dimensions, money, time, scores, addresses, and any
-  number followed by a unit. ("a 7-year-old child," "5%," "3 miles," "8 pounds," "$5," "4:30 p.m.")
-- **Spell out a number that begins a sentence**, or rewrite to move it. ("Twenty thousand fans
-  attended" — or rewrite to "The crowd reached 20,000.")
-- **Round large numbers:** "1.2 million" beats "1,243,872" unless precision matters.
-
-### 6.2 Dates
-
-- **Months with a specific date take the abbreviated form:** *Jan. 4, 2026.* (AP and NYT agree.
-  Exception: spell out March, April, May, June, July when used with a date, because they are short
-  enough not to need abbreviation.)
-- **Spell out the month when used alone with a year:** *March 2026* (no comma between month and
-  year).
-- **Use figures, not ordinals:** *Jan. 4*, not *Jan. 4th*.
-- **Decades:** *the 1980s*, not *the 1980's*. No apostrophe before the *s*.
-- **Centuries:** lowercase. *the 20th century, the 21st century.*
-
-### 6.3 Money
-
-- **Under a million:** *$5*, *$25*, *$500*, *$1,500*, *$50,000*.
-- **Million and above:** *$1.5 million*, *$3.2 billion*, *$8 trillion*. Spell out the word.
-- **Approximate:** *about $3 million*, not *approximately $3,000,000*.
-
-### 6.4 Percent
-
-Spell out *percent* with numerals: *5 percent, 25 percent, 8.5 percent*. This is NYT style — the default for serious prose.
-
-The % sign (*5%, 25%*) is AP style; use it only when writing for an AP-style outlet, or in tightly tabular contexts (charts, tables, headlines) where space matters and the symbol is more legible.
-
-At the start of a sentence, spell out the number too: *"Fifty-two percent of voters..."*.
-
-### 6.5 Time
-
-- **Use a.m. and p.m. in lowercase with periods.** *8:30 a.m., 4 p.m.* (drop the zeros on the hour:
-  *4 p.m.*, not *4:00 p.m.*)
-- **Noon and midnight, not 12 p.m. and 12 a.m.** Both AP and NYT are firm: the words prevent
-  ambiguity.
-
-### 6.6 Measurements
-
-Convert metric to American units for American readers: "10,000 square meters (about 2.5 acres)."
-Don't make the reader do the math.
-
----
-
-## 7. Capitalization
-
-All three guides lean toward minimal capitalization. When in doubt, lowercase.
-
-- **Titles of officials:** Capitalized before the name (*President Lincoln*), lowercased after (*the
-  president, Abraham Lincoln, said*).
-- **Government and institutional names:** Capitalized when full (*the State Department*), lowercased
-  when shortened (*the department*).
-- **Job descriptions vs. formal titles:** *Marketing Director Susan Smith* (formal title before
-  name, capitalized). *Susan Smith, marketing director* (job description after name, lowercase).
-- **Acronyms over four letters:** Capitalize only the first letter when the acronym is pronounced as
-  a word: *Unesco, Unicef*. Acronyms pronounced as letters keep all caps: *NATO*, *FBI*, *CIA*.
-- **Periods in abbreviations:** NYT style — *N.F.L., C.I.A., F.B.I., N.Y.U.* This is the default for
-  serious prose. AP drops the periods (*NFL, CIA, FBI, NYU*); use the AP form only when writing for
-  an AP-style outlet. Acronyms pronounced as a word (*NATO*, *Unesco*) take no periods either way.
-- **Seasons:** Lowercase. *summer, autumn, winter, spring* — except in formal names like *Winter
-  Olympics* or *Spring Festival*.
-
----
-
-## 8. Punctuation
-
-### 8.1 The serial (Oxford) comma — three styles disagree
-
-This is the single most contested punctuation question in journalism.
-
-- **AP:** No serial comma in a simple series. *red, white and blue.* Use it only when omission
-  creates ambiguity.
-- **NYT:** Also drops the serial comma in simple series. *red, white and blue.*
-- **Chicago Manual of Style** (used by many magazines and books): Always uses the serial comma.
-  *red, white, and blue.*
-
-**Default recommendation:** Follow AP/NYT — drop the serial comma in simple series, add it when needed to prevent confusion or ambiguity.
-
-### 8.2 Em dashes — AP and NYT use spaces
-
-Both AP and NYT set em dashes off with spaces on both sides — like this. The Chicago style closes the dashes up—like this. For newspaper-style writing, use the spaced version.
-
-Use em dashes to set off a strong parenthetical, introduce a punchline or amplification, or replace a colon for stronger emphasis.
-
-More than two em dashes in a paragraph reads as breathless. Use sparingly.
-
-### 8.3 Quotation marks
-
-- **American style:** Periods and commas always go inside the quotation marks.
-- **Colons and semicolons outside.**
-- **Question marks and exclamation points:** inside if they belong to the quoted material, outside if they belong to the surrounding sentence.
-
-### 8.4 Possessives ending in s
-
-Add 's regardless of the final letter: *James's, Texas's, Davis's, Jones's*. This is NYT style — the default for serious prose.
-
-AP drops the second s for proper nouns ending in s (*James', Texas'*); use the AP form only when writing for an AP-style outlet. Stay consistent within a piece.
-
-### 8.5 Hyphenation
-
-- **Compound modifiers before a noun:** hyphenated. *A 7-year-old child. A well-known author. A
-  long-term plan.*
-- **After a noun:** typically not hyphenated. *The child is 7 years old. The author is well
-  known. The plan is for the long term.*
-- **With -ly adverbs:** never hyphenate. *A highly regarded scholar* (not *highly-regarded*).
-
-### 8.6 Composition titles
-
-- **AP:** Put titles of books, movies, songs, TV shows, and works of art in quotation marks. *"The
-  Great Gatsby," "Citizen Kane," "Bohemian Rhapsody."*
-- **NYT:** Same — also uses quotation marks for most works, though italics for newspapers and
-  magazines (*The New York Times, The Wall Street Journal*).
-- **Chicago:** Italicizes most titles.
-
-**Default for journalism:** quotation marks for books, films, songs, episodes, and works of art.
-Italics for newspaper and magazine names where italics are technically possible.
-
----
-
-## 9. The Lede
-
-The first paragraph buys the second. Most readers drop off after the opening. The lede must be
-specific, surprising, and confident.
-
-### 9.1 Effective lede patterns
+#### Effective lede patterns
 
 - **The scene:** Place the reader in a specific moment, with concrete sensory details that ground them in a place and time.
 - **The telling fact:** A statistic or detail so striking the reader needs to know how it can be true.
-- **The WSJ "Hey Martha!" anecdote:** A single specific person doing a single specific thing that crystallizes a larger pattern. The Wall Street Journal's signature page-one feature opening — so named because the prototypical reader, having read it, would call out to a spouse: *"Hey Martha! Listen to this..."*
+- **The "Hey Martha" anecdote:** A single specific person doing a single specific thing that crystallizes a larger pattern. Named for the reaction it should produce — the prototypical reader, having read it, calls out to a spouse: *"Hey Martha! Listen to this..."*
 - **The provocation:** A claim that contradicts conventional wisdom, framed to make the reader want the explanation.
 
-### 9.2 The nut graf
+#### The nut graf
 
-In feature writing — particularly in the WSJ tradition — the second or third paragraph contains the
-"nut graf": the paragraph that tells the reader what the piece is about and why it matters. After a
-scene-setting lede, the nut graf earns the reader's continued attention by promising the larger
-significance of what they've just seen.
+In feature writing, the second or third paragraph contains the "nut graf": the paragraph that tells the reader what the piece is about and why it matters. After a scene-setting lede, the nut graf earns the reader's continued attention by promising the larger significance of what they've just seen.
 
 A nut graf typically:
+
 - States the broader pattern or argument
 - Explains why it matters now
 - Hints at what the rest of the piece will deliver
 
-### 9.3 What to avoid in ledes
+#### What to avoid in ledes
 
 - **"In today's world..."** — empty opening. Cut.
 - **"It is interesting to note..."** — if it's interesting, show it.
@@ -450,18 +317,13 @@ A nut graf typically:
 - **"For centuries, humans have wondered..."** — generic. Specific beats general.
 - **Any opening that could be deleted without loss** — delete it.
 
----
+### Structure and flow
 
-## 10. Structure and Flow
+#### The inverted pyramid for hard news
 
-### 10.1 The inverted pyramid for hard news
+Most important information first. Each subsequent paragraph adds detail, context, or background. A reader who stops after paragraph three should still have the essential story. Designed for outlets where a story might be cut to fit available space.
 
-Most important information first. Each subsequent paragraph adds detail, context, or background.
-A reader who stops after paragraph three should still have the essential story. This is the
-classic AP wire-service structure, designed for newspapers that might cut a story to fit available
-space.
-
-### 10.2 Narrative longform
+#### Narrative longform
 
 For longer narrative pieces, the structure resembles classic essay form:
 
@@ -474,51 +336,63 @@ For longer narrative pieces, the structure resembles classic essay form:
 7. **Implication** — what follows from the argument
 8. **Kicker** — a closing image or sentence the reader carries with them
 
-### 10.3 Paragraph length
+#### Paragraph length
 
-Newspaper paragraphs are short by literary standards — three to five sentences typical, often
-shorter. Long paragraphs read as dense in newsprint and on screens. When a paragraph reaches seven
-or eight sentences, look for a natural break.
+Newspaper paragraphs are short by literary standards — three to five sentences typical, often shorter. Long paragraphs read as dense on screens and in print. When a paragraph reaches seven or eight sentences, look for a natural break.
 
-WSJ page-one features tend to have slightly longer paragraphs than wire copy — four to seven
-sentences — to support narrative momentum. But the discipline of breaking long paragraphs still
-applies.
+Feature pieces tend to have slightly longer paragraphs than wire copy — four to seven sentences — to support narrative momentum. The discipline of breaking long paragraphs still applies.
 
----
+### The kicker
 
-## 11. Anti-Patterns
+The last paragraph should land. Three working patterns:
 
-The most common failures. Avoid all of them.
+- **Circular** — return to an image or fact from the lede, now resonant with the argument the piece has made.
+- **Panoramic** — widen the lens to the larger implication.
+- **Punch** — a single short sentence the reader will remember.
 
-### 11.1 The fact list
+What the kicker should never be: a summary that begins *"In conclusion..."* The reader knows the piece is ending. Don't announce it.
 
-Three or more facts in a row with no connective tissue. Reads like a Wikipedia entry, not journalism. Each fact should cause or explain the next. If the connective tissue isn't there, the paragraph is a list pretending to be prose.
+### Anti-patterns
 
-### 11.2 The manifest paragraph
+Seven common failures, all of which damage prose at the sentence or paragraph level. Strip them all:
+
+1. **The fact list** — three or more facts in a row with no connective tissue
+2. **The manifest paragraph** — middles full of comma-delimited inventories
+3. **Hedging** — *some have argued*, *many believe*, *it could be said*
+4. **Throat-clearing** — *this article will examine*, *it is important to note*
+5. **Adjective pile-up** — *devastating, unprecedented, catastrophic*
+6. **Clichés** — *at the end of the day*, *perfect storm*, *moving forward*
+7. **Editorializing through adjectives** — *shocking*, *tragic*, *courageous*
+
+Each is treated below.
+
+#### The fact list
+
+Three or more facts in a row with no connective tissue. Reads like a Wikipedia entry, not prose. Each fact should cause or explain the next. If the connective tissue isn't there, the paragraph is a list pretending to be prose.
+
+#### The manifest paragraph
 
 A sentence whose middle is a comma-delimited inventory of items. The reader's attention slides off the list and never lands on what the sentence was about. Rewrite so the inventory either becomes the structural backbone of a longer sentence or gets compressed into a single representative example.
 
-### 11.3 Hedging into oblivion
+#### Hedging into oblivion
 
-"Some have argued." "It could be said." "Many believe." These phrases launder opinions through
-phantom third parties. Either make the claim directly or don't make it.
+"Some have argued." "It could be said." "Many believe." These phrases launder opinions through phantom third parties. Either make the claim directly or don't make it.
 
-### 11.4 Throat-clearing
+#### Throat-clearing
 
-"This article will examine..." "It is important to note that..." "There are many factors to consider
-when thinking about..."
+"This article will examine..." "It is important to note that..." "There are many factors to consider when thinking about..."
 
 Strip them all. Start with the claim or the scene.
 
-### 11.5 Adjective pile-up
+#### Adjective pile-up
 
 "A devastating, unprecedented, catastrophic, world-changing event."
 
 Pick one. Adjectives that compete for the reader's attention cancel each other out.
 
-### 11.6 Clichés
+#### Clichés
 
-Every major style guide is firm: avoid clichés. A non-exhaustive list to delete on sight:
+A non-exhaustive list to delete on sight:
 
 - "at the end of the day"
 - "needless to say" (if needless, don't say it)
@@ -533,12 +407,9 @@ Every major style guide is firm: avoid clichés. A non-exhaustive list to delete
 - "circle back"
 - "double down"
 
-### 11.7 Editorializing through adjectives
+#### Editorializing through adjectives
 
-Don't tell the reader how to feel through loaded modifiers. *"The shocking decision," "the
-courageous senator," "the tragic event," "the grim pattern," "the devastating consequences"* —
-these editorialize. The reader should reach those judgments on their own from the facts you present.
-Adjectives that pre-judge the reader's response are a form of telling rather than showing.
+Don't tell the reader how to feel through loaded modifiers. *"The shocking decision," "the courageous senator," "the tragic event," "the grim pattern," "the devastating consequences"* — these editorialize. The reader should reach those judgments on their own from the facts you present. Adjectives that pre-judge the reader's response are a form of telling rather than showing.
 
 A working list of words to interrogate every time they appear:
 
@@ -550,145 +421,164 @@ A working list of words to interrogate every time they appear:
 - *incredible, unbelievable* (literally tell the reader not to believe you)
 - *iconic, legendary* (usually doing PR work, not description)
 
-If you find one, ask: *can the facts produce this reaction on their own?* If yes, cut the adjective.
-If no, the facts probably aren't strong enough and the adjective is doing the persuasion the
-evidence couldn't.
+If you find one, ask: *can the facts produce this reaction on their own?* If yes, cut the adjective. If no, the facts probably aren't strong enough and the adjective is doing the persuasion the evidence couldn't.
+
+### The underlying voice
+
+The voice these conventions produce, when applied without strain, is recognizable: a thoughtful, attentive person explaining something they have thought about carefully to another thoughtful person — without showing off, without softening, and without wasting the reader's time.
+
+That voice is the goal. Every rule in this skill exists to serve it.
 
 ---
 
-## 12. Citation and Sourcing
+## Sources and attribution
 
-### 12.1 Attribution
+### Names and attribution
+
+#### Full name on first reference
+
+Give the full name on first use. On later references, use a courtesy title with the last name: *Mr. Smith*, *Ms. Jones*, *Dr. Patel*. Drop courtesy titles only in sports, arts, and pop-culture sections where they read as fussy, and in contexts where the person has explicitly stated a preference otherwise. The bare last name (*Smith said*) is also acceptable for informal pieces; pick one convention and hold it.
+
+#### Honorifics before names; descriptive titles after
+
+- **Before the name (capitalized):** President, Senator, Dr. when used as a formal title attached to a specific name.
+- **After the name (lowercase):** the president, a senator from the state, when the role is described after the name.
+
+Don't capitalize *the president* or *the secretary of state* when the title stands alone without the name.
+
+#### Use "said" for attribution
+
+*Said* is invisible to the reader and does its job. *Stated*, *noted*, *explained*, and *exclaimed* either editorialize ("noted" implies the statement is true) or call attention to themselves. The exception is when a different verb conveys real information: *shouted* if the speaker actually raised their voice, *whispered* if they actually did.
+
+Reach for an alternative only when it earns its place.
+
+#### Attribution placement
+
+For a short quote, put the attribution at the end. For a long quote, bury the attribution mid-sentence so the reader doesn't wait for it. Inserting *he said* between two clauses of a long quotation lets the reader hear the voice before the bureaucracy of attribution.
+
+### Citation and sourcing
+
+#### Attribution
 
 Attribute claims when the source matters — naming the institution, study, or document that produced the fact.
 
 Don't attribute well-established facts. Adding *according to the National Weather Service* to a claim that the sun rises in the east is absurd.
 
-### 12.2 When to quote
+#### When to quote
 
 Quote when:
+
 - The exact wording matters (legal language, contested claims, distinctive voice)
 - The speaker's authority adds weight
 - Paraphrase would be flatter or less precise
 
 Don't quote routine information you could state directly. If a quote is just delivering the time of a meeting, drop the quotation marks and state the fact.
 
-### 12.3 Linking (digital context)
+#### Linking (digital context)
 
-The 2015 NYT Manual and AP 2024-2026 both address online writing. The conventions:
+Online writing has its own conventions:
 
 - Embed links in the relevant words rather than displaying raw URLs.
 - Don't over-link. One or two links per paragraph maximum.
 - Make link text descriptive. Avoid *click here* — the link text should describe what the reader will find.
 
----
+### Writing about AI
 
-## 13. The Kicker
+Pieces touching technology need precise language for AI systems:
 
-The last paragraph should land. Three working patterns:
-
-- **Circular** — return to an image or fact from the lede, now resonant with the argument the piece
-  has made.
-- **Panoramic** — widen the lens to the larger implication.
-- **Punch** — a single short sentence the reader will remember.
-
-What the kicker should never be: a summary that begins *"In conclusion..."* The reader knows the
-piece is ending. Don't announce it.
-
----
-
-## 14. Writing About AI (AP 2024-2026 New Guidance)
-
-The 2024-2026 edition of the AP Stylebook added a chapter on artificial intelligence — relevant to
-any piece touching technology. Key guidance:
-
-- **Avoid attributing human characteristics to AI systems.** Don't say an AI *thinks*, *believes*,
-  *wants*, or *feels*. Use *generates*, *produces*, *outputs*, *responds*.
+- **Avoid attributing human characteristics to AI systems.** Don't say an AI *thinks*, *believes*, *wants*, or *feels*. Use *generates*, *produces*, *outputs*, *responds*.
 - **Don't use gendered pronouns for AI tools.** Use *it*, not *he* or *she*.
-- **Be specific about what kind of AI you mean.** "AI" covers everything from spam filters to large
-  language models. If precision matters, name the type (*generative AI, large language model,
-  machine learning system*).
-- **Disclose when AI was used to generate content.** Standard practice in journalism is now to flag
-  AI-generated text, images, or analysis.
+- **Be specific about what kind of AI you mean.** "AI" covers everything from spam filters to large language models. If precision matters, name the type (*generative AI, large language model, machine learning system*).
+- **Disclose when AI was used to generate content.** Flag AI-generated text, images, or analysis.
 
 ---
 
-## 15. The Self-Edit Pass
+## Copy-editing mechanics
 
-The AP Stylebook 2024-2026 added a dedicated chapter on self-editing. Run the prose pass first, then
-the copy-editing pass.
+### Numbers, dates, and measurements
 
-### 15.1 Prose pass (run first)
+#### Numbers
 
-1. **Read the piece aloud.** Sentences that don't work usually fail at the level of sound. If you stumble while reading, the reader will too.
-2. **Check every sentence for passive voice.** Mark each one. Rewrite unless the actor is genuinely unknown or irrelevant.
-3. **Check every long noun phrase.** Collapse nominalizations into verbs. A clause like "made a decision to approve" should become "approved."
-4. **Check for adjective pile-up.** Any phrase with two or more adjectives competing for attention — pick one.
-5. **Check for editorializing adjectives.** *Shocking, tragic, courageous, grim, devastating, stunning* — cut them. Let the facts produce the reader's reaction.
-6. **Check for throat-clearing.** Sentence openers that don't carry information — *it is important to note*, *moving forward*, *in today's world* — cut.
-7. **Check for fact lists and manifest paragraphs.** Three or more facts in a row without connective tissue, or sentences whose middles are comma-delimited inventories — rewrite as narrative with cause-and-effect chains.
-8. **Check for hedging.** *Some have argued*, *many believe*, *it could be said* — make the claim directly or don't make it.
-9. **Check for clichés.** *At the end of the day*, *perfect storm*, *game changer*, *moving forward* — delete on sight.
-10. **Check for wiki accretion.** Can three adjacent paragraphs be shuffled without breaking the piece? If yes, you've written a Wikipedia entry, not a piece. Find the causal or argumentative spine and rebuild around it.
-11. **Check for the reveal.** Is there a moment where the meaning of what came before shifts? If the piece is feature-length and there's no reveal, ask whether the structure is doing its job. See `references/narrative-craft.md`.
-12. **Check sentence rhythm.** Does any paragraph run six or more long sentences without a short one? Look for the place to insert a punch sentence.
+- **Spell out one through nine.** ("Six soldiers, seven officers.")
+- **Use figures for 10 and above.** ("11 senators, 250 protesters.")
+- **Always use figures for:** ages, percentages, dimensions, money, time, scores, addresses, and any number followed by a unit. ("a 7-year-old child," "5 percent," "3 miles," "8 pounds," "$5," "4:30 p.m.")
+- **Spell out a number that begins a sentence**, or rewrite to move it. ("Twenty thousand fans attended" — or rewrite to "The crowd reached 20,000.")
+- **Round large numbers:** "1.2 million" beats "1,243,872" unless precision matters.
 
-### 15.2 Copy-editing pass (run after prose is solid)
+#### Dates
 
-13. **Check the lede.** Could it be deleted with no loss? If yes, rewrite.
-14. **Check every quote.** Is it exact? Is the attribution clear? Is the verb *said* unless there's a reason for something else?
-15. **Check every number.** Are they formatted consistently per Section 6 (figures vs. spelled-out, no figures at sentence starts)? Are large numbers rounded sensibly? Have you converted metric where needed?
-16. **Check every *over* before a quantity.** Replace with *more than*.
-17. **Check every serial comma in a simple series.** Drop unless needed for clarity (Section 8.1).
-18. **Check every name.** Full name and identifying detail on first reference? Spelled correctly?
-19. **Check every claim.** Can you point to the source for each non-obvious statement?
-20. **Look for redundancies.** *Future plans*, *end result*, *completely destroyed* — cut.
-21. **Check the kicker.** Does it land? Or does it summarize?
-22. **Cut 10%.** Re-read and remove the 10% you can spare. Almost every draft has it.
+- **Months with a specific date take the abbreviated form:** *Jan. 4, 2026.* Exception: spell out March, April, May, June, July when used with a date, because they are short enough not to need abbreviation.
+- **Spell out the month when used alone with a year:** *March 2026* (no comma between month and year).
+- **Use figures, not ordinals:** *Jan. 4*, not *Jan. 4th*.
+- **Decades:** *the 1980s*, not *the 1980's*. No apostrophe before the *s*.
+- **Centuries:** lowercase. *the 20th century, the 21st century.*
 
-The order matters. Prose first, formatting second.
+#### Money
 
-### 15.3 Parallel review with subagents (optional, recommended for longer pieces)
+- **Under a million:** *$5*, *$25*, *$500*, *$1,500*, *$50,000*.
+- **Million and above:** *$1.5 million*, *$3.2 billion*, *$8 trillion*. Spell out the word.
+- **Approximate:** *about $3 million*, not *approximately $3,000,000*.
 
-For drafts longer than ~500 words, dispatch three reviewer subagents in parallel for fresh-eyes critique. Each is a fresh `general-purpose` agent with no conversation history — they see the draft cold, the way a real reader would.
+#### Percent
 
-Three prompt templates ship with this skill:
+Spell out *percent* with numerals: *5 percent, 25 percent, 8.5 percent*.
 
-- `prompts/prose-reviewer-prompt.md` — runs §15.1 prose pass items 1–12 against the draft
-- `prompts/copy-editor-prompt.md` — runs §15.2 copy-editing pass items 13–22 against the draft
-- `prompts/narrative-reviewer-prompt.md` — runs the wiki test, reveal check, voice check, connective-tissue check (uses `references/narrative-craft.md`)
+The % sign (*5%, 25%*) is acceptable in tightly tabular contexts (charts, tables, headlines) where space matters and the symbol is more legible.
 
-**Dispatch pattern:** Read each prompt template. For each one, substitute the draft text into the template's `{{DRAFT}}` placeholder, then dispatch via the Agent tool with `subagent_type: 'general-purpose'` and the filled-in prompt. Send all three dispatches in a single message so they run concurrently. Each returns a structured critique (a numbered list of issues with line references and explanations). Aggregate the three reports for the user.
+At the start of a sentence, spell out the number too: *"Fifty-two percent of voters..."*.
 
-**When NOT to dispatch:**
+#### Time
 
-- Drafts under ~500 words — the manual pass in §15.1/§15.2 is faster than the dispatch overhead.
-- Hard-news copy on a deadline — the inverted pyramid (§10.1) doesn't need narrative review.
-- Interactive editing where the user is iterating sentence by sentence — the round-trip latency interrupts flow.
+- **Use a.m. and p.m. in lowercase with periods.** *8:30 a.m., 4 p.m.* Drop the zeros on the hour: *4 p.m.*, not *4:00 p.m.*
+- **Noon and midnight, not 12 p.m. and 12 a.m.** The words prevent ambiguity.
 
-The three reports often surface overlapping issues. That overlap is signal, not noise — issues that two or three reviewers independently flag are the most worth addressing first.
+#### Measurements
 
----
+Convert metric to American units for American readers: "10,000 square meters (about 2.5 acres)." Don't make the reader do the math.
 
-## 16. The Underlying Voice
+### Capitalization
 
-The voice these conventions produce, when applied without strain, is recognizable: a thoughtful,
-attentive person explaining something they have thought about carefully to another thoughtful
-person — without showing off, without softening, and without wasting the reader's time.
+When in doubt, lowercase.
 
-That voice is the goal. Every rule in this skill exists to serve it.
+- **Titles of officials:** Capitalized before the name (*President Lincoln*), lowercased after (*the president, Abraham Lincoln, said*).
+- **Government and institutional names:** Capitalized when full (*the State Department*), lowercased when shortened (*the department*).
+- **Job descriptions vs. formal titles:** *Marketing Director Susan Smith* (formal title before name, capitalized). *Susan Smith, marketing director* (job description after name, lowercase).
+- **Acronyms over four letters:** Capitalize only the first letter when the acronym is pronounced as a word: *Unesco, Unicef*. Acronyms pronounced as letters keep all caps: *NATO*, *FBI*, *CIA*.
+- **Periods in abbreviations:** Use them. *N.F.L., C.I.A., F.B.I., N.Y.U.* The plain forms (*NFL, CIA, FBI, NYU*) are acceptable in informal contexts; pick one convention and hold it. Acronyms pronounced as a word (*NATO*, *Unesco*) take no periods either way.
+- **Seasons:** Lowercase. *summer, autumn, winter, spring* — except in formal names like *Winter Olympics* or *Spring Festival*.
 
----
+### Punctuation
 
-## References
+#### Serial (Oxford) comma
 
-- *The New York Times Manual of Style and Usage, 5th Edition.* Allan M. Siegal and William G.
-  Connolly. Three Rivers Press, 2015. ISBN 978-1-101-90544-9.
-- *The Associated Press Stylebook 2024-2026.* The Associated Press. Basic Books, 2024.
-  ISBN 978-1-5416-0511-4.
-- *The Art and Craft of Feature Writing.* William E. Blundell. Plume, 1988. (The Wall Street
-  Journal's classic guide to page-one feature writing.)
+Drop the serial comma in simple series: *red, white and blue.* Add it only when omission creates ambiguity.
 
-For specific words, place names, abbreviations, scientific terminology, or any question not covered
-in this skill, consult the relevant manual directly. House style at any specific publication takes
-precedence over the defaults in this skill when writing for that publication.
+#### Em dashes
+
+Set em dashes off with spaces on both sides — like this. Closed em dashes (—like this—) are book/magazine style; not used in newspaper-style prose.
+
+Use em dashes to set off a strong parenthetical, introduce a punchline or amplification, or replace a colon for stronger emphasis.
+
+More than two em dashes in a paragraph reads as breathless. Use sparingly.
+
+#### Quotation marks
+
+- **American style:** Periods and commas always go inside the quotation marks.
+- **Colons and semicolons outside.**
+- **Question marks and exclamation points:** inside if they belong to the quoted material, outside if they belong to the surrounding sentence.
+
+#### Possessives ending in s
+
+Add 's regardless of the final letter: *James's, Texas's, Davis's, Jones's*.
+
+The bare apostrophe form (*James'*, *Texas'*) is acceptable in informal contexts. Stay consistent within a piece.
+
+#### Hyphenation
+
+- **Compound modifiers before a noun:** hyphenated. *A 7-year-old child. A well-known author. A long-term plan.*
+- **After a noun:** typically not hyphenated. *The child is 7 years old. The author is well known. The plan is for the long term.*
+- **With -ly adverbs:** never hyphenate. *A highly regarded scholar* (not *highly-regarded*).
+
+#### Composition titles
+
+Put titles of books, films, songs, TV shows, episodes, and works of art in quotation marks. Use italics for newspaper and magazine names where italics are technically possible.

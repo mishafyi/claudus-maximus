@@ -11,24 +11,33 @@ The skill auto-triggers when you ask Claude to write, draft, edit, polish, or re
 
 ## What it covers
 
-In the SKILL.md (loaded when the skill triggers):
+The SKILL.md (loaded when the skill triggers) is organized into five buckets:
 
-1. Apply prose rules before copy-editing rules — the workflow
-2. The first principle: do not insult the reader
-3. The second principle: every piece is a journey
-4. Voice and sentence construction
-5. Names and attribution
-6. Numbers, dates, and measurements
-7. Capitalization
-8. Punctuation
-9. The lede
-10. Structure and flow (incl. inverted pyramid for hard news)
-11. Anti-patterns (fact lists, hedging, clichés, editorializing)
-12. Citation and sourcing
-13. The kicker
-14. Writing about AI
-15. The self-edit pass (manual + parallel-review-with-subagents)
-16. The underlying voice
+**Workflow**
+- Apply prose rules before copy-editing
+- The self-edit pass (manual + parallel subagent review)
+
+**Principles**
+- Do not insult the reader
+- Every piece is a journey
+
+**Prose craft**
+- Voice and sentence construction
+- The lede
+- Structure and flow (incl. inverted pyramid for hard news)
+- The kicker
+- Anti-patterns (fact lists, manifest paragraphs, hedging, throat-clearing, adjective pile-up, clichés, editorializing)
+- The underlying voice
+
+**Sources and attribution**
+- Names and attribution
+- Citation and sourcing
+- Writing about AI
+
+**Copy-editing mechanics**
+- Numbers, dates, and measurements
+- Capitalization
+- Punctuation (serial comma, em dashes, quotes, possessives, hyphenation, composition titles)
 
 Loaded on demand:
 
@@ -60,7 +69,7 @@ For drafts longer than ~500 words, ask Claude to "dispatch a parallel review" an
 - *The Associated Press Stylebook 2024-2026.* The Associated Press. Basic Books, 2024. ISBN 978-1-5416-0511-4.
 - *The Art and Craft of Feature Writing.* William E. Blundell. Plume, 1988. (The Wall Street Journal's classic guide to page-one feature writing.)
 
-The narrative-craft section (SKILL.md §3 and `references/narrative-craft.md`) is original synthesis informed by the longform-feature tradition. It does not carry an authoritative citation; treat the patterns as field-tested heuristics rather than canonical rules.
+The narrative-craft material (SKILL.md "Every piece is a journey" and `references/narrative-craft.md`) is original synthesis informed by the longform-feature tradition. It does not carry an authoritative citation; treat the patterns as field-tested heuristics rather than canonical rules.
 
 ## Install
 
