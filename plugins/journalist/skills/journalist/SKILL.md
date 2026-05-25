@@ -626,6 +626,26 @@ the copy-editing pass.
 
 The order matters. Prose first, formatting second.
 
+### 15.3 Parallel review with subagents (optional, recommended for longer pieces)
+
+For drafts longer than ~500 words, dispatch three reviewer subagents in parallel for fresh-eyes critique. Each is a fresh `general-purpose` agent with no conversation history — they see the draft cold, the way a real reader would.
+
+Three prompt templates ship with this skill:
+
+- `prompts/prose-reviewer-prompt.md` — runs §15.1 prose pass items 1–12 against the draft
+- `prompts/copy-editor-prompt.md` — runs §15.2 copy-editing pass items 13–22 against the draft
+- `prompts/narrative-reviewer-prompt.md` — runs the wiki test, reveal check, voice check, connective-tissue check (uses `references/narrative-craft.md`)
+
+**Dispatch pattern:** Read each prompt template. For each one, substitute the draft text into the template's `{{DRAFT}}` placeholder, then dispatch via the Agent tool with `subagent_type: 'general-purpose'` and the filled-in prompt. Send all three dispatches in a single message so they run concurrently. Each returns a structured critique (a numbered list of issues with line references and explanations). Aggregate the three reports for the user.
+
+**When NOT to dispatch:**
+
+- Drafts under ~500 words — the manual pass in §15.1/§15.2 is faster than the dispatch overhead.
+- Hard-news copy on a deadline — the inverted pyramid (§10.1) doesn't need narrative review.
+- Interactive editing where the user is iterating sentence by sentence — the round-trip latency interrupts flow.
+
+The three reports often surface overlapping issues. That overlap is signal, not noise — issues that two or three reviewers independently flag are the most worth addressing first.
+
 ---
 
 ## 16. Where the Style Guides Disagree — Quick Reference
