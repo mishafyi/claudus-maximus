@@ -25,15 +25,20 @@
     },
     {
       "name": "winning",
-      "description": "Evolutionary parallel strategy orchestrator — deploys competing approaches, monitors progress, eliminates underperformers, consolidates the winner",
+      "description": "Evolutionary parallel strategy orchestrator \u2014 deploys competing approaches, monitors progress, eliminates underperformers, consolidates the winner",
       "source": "./plugins/winning",
       "version": "0.8.0",
       "category": "orchestration",
-      "tags": ["parallel", "strategies", "optimization", "ralph-loop"]
+      "tags": [
+        "parallel",
+        "strategies",
+        "optimization",
+        "ralph-loop"
+      ]
     },
     {
       "name": "career-companion",
-      "description": "Career companion for frontier tech — search live job openings, tailor resumes, and practice interviews across space, AI, robotics, and defense industries",
+      "description": "Career companion for frontier tech \u2014 search live job openings, tailor resumes, and practice interviews across space, AI, robotics, and defense industries",
       "source": "./plugins/career-companion",
       "version": "1.0.0",
       "category": "productivity",
@@ -46,6 +51,25 @@
         "ai",
         "robotics",
         "defense"
+      ]
+    },
+    {
+      "name": "journalist",
+      "description": "Newspaper prose discipline (NYT/AP/WSJ) plus narrative craft for drafting, editing, and polishing serious writing \u2014 story-shaped, gripping, research-woven.",
+      "source": "./plugins/journalist",
+      "version": "1.0.0",
+      "category": "productivity",
+      "tags": [
+        "writing",
+        "editing",
+        "prose",
+        "journalism",
+        "narrative",
+        "longform",
+        "feature",
+        "style",
+        "ap",
+        "nyt"
       ]
     }
   ]
