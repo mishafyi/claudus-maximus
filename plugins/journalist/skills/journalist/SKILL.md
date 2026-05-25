@@ -50,8 +50,7 @@ intelligence of the reader*. Everything else flows from that.
 13. The Kicker
 14. Writing About AI
 15. The Self-Edit Pass (including parallel subagent review)
-16. Where the Style Guides Disagree
-17. The Underlying Voice
+16. The Underlying Voice
 
 **Deep-dive reference:** `references/narrative-craft.md` — show vs tell vs earn, voice, the Chekhov principle, the reveal, building tension, connective tissue, marrying research and prose, the wiki test, patterns from masters.
 
@@ -106,7 +105,7 @@ anything else.
 ### 1.3 Only then check formatting
 
 After the prose works, run the copy-editing checks: numbers, dates, money, serial commas,
-capitalization, hyphenation, possessives. Sections 6, 7, 8, and 16 cover these.
+capitalization, hyphenation, possessives. Sections 6, 7, and 8 cover these.
 
 The order matters. A piece with broken prose and perfect copy-editing is still broken. A piece with
 working prose and slightly imperfect copy-editing is still working.
@@ -216,11 +215,11 @@ always stronger.
 
 Reserve Latinate vocabulary for cases where precision genuinely requires it.
 
-### 4.4 AP's classic rule: "more than" vs. "over"
+### 4.4 "More than" vs. "over"
 
-A signature AP rule: use *more than* for quantities, *over* for spatial relationships.
+AP draws a strict line: *more than* for quantities, *over* for spatial relationships. The NYT permits *over* with quantities in many cases.
 
-The NYT now permits *over* with quantities in many cases, but *more than* is always safe and feels more precise. Default to *more than* for numbers.
+Both are accepted. Use whichever reads better in context. *More than 200 protesters* and *over 200 protesters* are both acceptable; pick the one that fits the rhythm of the sentence. Reserve *over* for spatial uses when ambiguity would otherwise arise.
 
 ### 4.5 Strip prepositional clutter
 
@@ -264,9 +263,9 @@ If three or more acronyms appear in a single sentence, rewrite. Spell out one or
 
 ### 5.1 Full name on first reference
 
-Give the full name on first use. On later references, use the last name alone.
+Give the full name on first use. On later references, use a courtesy title with the last name: *Mr. Smith*, *Ms. Jones*, *Dr. Patel*. This is NYT style — the default for serious prose. Drop courtesy titles only in sports, arts, and pop-culture sections where they read as fussy, and in contexts where the person has explicitly stated a preference otherwise.
 
-**NYT vs. AP:** The Times traditionally uses a courtesy title (*Mr. Smith*, *Ms. Jones*) on second reference, though this is relaxed in sports, arts, and pop culture sections. AP dropped courtesy titles long ago. For general writing outside the Times itself, the last name alone (AP style) is the standard default.
+AP dropped courtesy titles long ago; if writing for an AP-style outlet, use the last name alone on second reference. For everything else — features, longform, essays, op-eds, profiles — courtesy titles signal that the writing takes the subject seriously.
 
 ### 5.2 Honorifics before names; descriptive titles after
 
@@ -322,16 +321,13 @@ rules:
 - **Million and above:** *$1.5 million*, *$3.2 billion*, *$8 trillion*. Spell out the word.
 - **Approximate:** *about $3 million*, not *approximately $3,000,000*.
 
-### 6.4 Percent vs. %
+### 6.4 Percent
 
-**AP and NYT disagree.** AP since 2019 uses **the % sign with numerals**: *5%, 25%, 8.5%*. The NYT
-Manual still says **percent**: *5 percent, 25 percent*. Both are correct in their respective house
-styles.
+Spell out *percent* with numerals: *5 percent, 25 percent, 8.5 percent*. This is NYT style — the default for serious prose.
 
-**Default recommendation:** Use the % sign in business, financial, and online contexts (AP style).
-Spell out *percent* in literary or formal contexts (NYT style). Be consistent within a piece.
+The % sign (*5%, 25%*) is AP style; use it only when writing for an AP-style outlet, or in tightly tabular contexts (charts, tables, headlines) where space matters and the symbol is more legible.
 
-At the start of a sentence, spell out: *"Fifty-two percent of voters..."* (both styles agree).
+At the start of a sentence, spell out the number too: *"Fifty-two percent of voters..."*.
 
 ### 6.5 Time
 
@@ -359,8 +355,9 @@ All three guides lean toward minimal capitalization. When in doubt, lowercase.
   name, capitalized). *Susan Smith, marketing director* (job description after name, lowercase).
 - **Acronyms over four letters:** Capitalize only the first letter when the acronym is pronounced as
   a word: *Unesco, Unicef*. Acronyms pronounced as letters keep all caps: *NATO*, *FBI*, *CIA*.
-- **NYT uses periods in many abbreviations** (*N.F.L., C.I.A., F.B.I., N.Y.U.*). AP and most other
-  outlets drop them (*NFL, CIA, FBI, NYU*). The AP convention is the modern default.
+- **Periods in abbreviations:** NYT style — *N.F.L., C.I.A., F.B.I., N.Y.U.* This is the default for
+  serious prose. AP drops the periods (*NFL, CIA, FBI, NYU*); use the AP form only when writing for
+  an AP-style outlet. Acronyms pronounced as a word (*NATO*, *Unesco*) take no periods either way.
 - **Seasons:** Lowercase. *summer, autumn, winter, spring* — except in formal names like *Winter
   Olympics* or *Spring Festival*.
 
@@ -394,12 +391,11 @@ More than two em dashes in a paragraph reads as breathless. Use sparingly.
 - **Colons and semicolons outside.**
 - **Question marks and exclamation points:** inside if they belong to the quoted material, outside if they belong to the surrounding sentence.
 
-### 8.4 Possessives ending in s — AP and NYT disagree
+### 8.4 Possessives ending in s
 
-- **NYT:** Always add 's regardless of the final letter (*James's, Texas's, Davis's*).
-- **AP:** Drop the second s for proper nouns ending in s (*James', Texas', Davis'*).
+Add 's regardless of the final letter: *James's, Texas's, Davis's, Jones's*. This is NYT style — the default for serious prose.
 
-**Default recommendation:** Pick one and stay consistent. AP style (drop the second s) is more common in journalism; NYT style is more common in book publishing.
+AP drops the second s for proper nouns ending in s (*James', Texas'*); use the AP form only when writing for an AP-style outlet. Stay consistent within a piece.
 
 ### 8.5 Hyphenation
 
@@ -674,26 +670,7 @@ The three reports often surface overlapping issues. That overlap is signal, not 
 
 ---
 
-## 16. Where the Style Guides Disagree — Quick Reference
-
-| Question                          | NYT (2015)              | AP (2024-2026)         | Default for general use |
-|-----------------------------------|-------------------------|------------------------|-------------------------|
-| Serial (Oxford) comma             | No, except for clarity  | No, except for clarity | No                      |
-| Percent                           | spell out: *5 percent*  | symbol: *5%*           | AP style (% sign)       |
-| Possessive of names ending in s   | adds 's                 | drops second s         | AP style (drop second s)|
-| Courtesy titles on second reference | uses *Mr./Ms.*        | last name only         | AP style                |
-| Acronyms with periods             | adds periods            | no periods             | AP style                |
-| Em dash with spaces               | Yes                     | Yes                    | Yes (both agree)        |
-| "More than" vs. "over"            | both accepted           | *more than* for numbers| AP style                |
-| Composition titles                | quote marks             | quote marks            | Quote marks             |
-
-When writing for a specific outlet, follow that outlet's house style. When writing for general
-publication (blog, newsletter, op-ed, business communication), follow AP style by default — it's
-the most common in modern journalism.
-
----
-
-## 17. The Underlying Voice
+## 16. The Underlying Voice
 
 The voice these conventions produce, when applied without strain, is recognizable: a thoughtful,
 attentive person explaining something they have thought about carefully to another thoughtful

@@ -28,8 +28,7 @@ In the SKILL.md (loaded when the skill triggers):
 13. The kicker
 14. Writing about AI
 15. The self-edit pass (manual + parallel-review-with-subagents)
-16. Where the style guides disagree
-17. The underlying voice
+16. The underlying voice
 
 Loaded on demand:
 
