@@ -36,12 +36,8 @@ diagram/
 ├── .claude-plugin/
 │   └── plugin.json             # Plugin manifest
 ├── agents/
-│   ├── code-explorer.md        # Analyzes code (from Anthropic feature-dev)
-│   ├── code-architect.md       # Maps architecture (from Anthropic feature-dev)
-│   ├── code-reviewer.md        # Reviews code (from Anthropic feature-dev)
-│   └── diagram-builder.md      # Builds .mmd from analysis
-├── commands/
-│   └── feature-dev-orchestrator.md  # Reference orchestration pattern
+│   ├── code-explorer.md        # Analyzes the code to be diagrammed
+│   └── diagram-builder.md      # Builds .mmd from the analysis
 └── skills/
     └── diagram/
         ├── SKILL.md            # Orchestrator skill
@@ -50,6 +46,6 @@ diagram/
 
 ## Credits
 
-- Code analysis agents: [anthropics/claude-code/plugins/feature-dev](https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev)
+- `code-explorer` adapted from [anthropics/claude-code/plugins/feature-dev](https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev)
 - Mermaid syntax: [mermaid-js/mermaid](https://github.com/mermaid-js/mermaid/tree/develop/packages/mermaid/src/docs/syntax)
 - Advanced features: [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit/tree/main/skills/mermaid-diagrams)

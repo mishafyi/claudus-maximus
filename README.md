@@ -21,7 +21,7 @@ Then install individual plugins:
 
 | Plugin                                | Version | Category      | What it does                                                                       |
 | ------------------------------------- | ------- | ------------- | ---------------------------------------------------------------------------------- |
-| [diagram](#diagram)                   | 1.1.1   | visualization | Generates Mermaid diagrams from actual codebase analysis — not guesswork           |
+| [diagram](#diagram)                   | 1.2.0   | visualization | Generates Mermaid diagrams from actual codebase analysis — not guesswork           |
 | [winning](#winning)                   | 0.8.0   | orchestration | Deploys parallel agents on competing strategies, keeps the winner                  |
 | [career-companion](#career-companion) | 1.0.0   | productivity  | Searches 20,000+ live jobs, tailors resumes, runs mock interviews                  |
 | [journalist](#journalist)             | 1.1.0   | productivity  | Newspaper prose discipline + narrative craft for any extended long-form writing    |
@@ -47,7 +47,7 @@ create an architecture diagram of this project
 diagram the database schema
 ```
 
-**Components:** 4 agents, 1 command, 1 skill, 27 Mermaid syntax references
+**Components:** 2 agents (code-explorer, diagram-builder), 1 skill, 27 Mermaid syntax references
 
 ---
 
@@ -132,8 +132,7 @@ claudus-maximus/
 │   └── marketplace.json         # Plugin registry
 └── plugins/
     ├── diagram/                 # Mermaid diagrams from code analysis
-    │   ├── agents/              # code-explorer, diagram-builder, code-architect, code-reviewer
-    │   ├── commands/            # feature-dev-orchestrator
+    │   ├── agents/              # code-explorer, diagram-builder
     │   └── skills/diagram/      # Orchestrator skill + 27 syntax references
     ├── winning/                 # Evolutionary parallel orchestrator
     │   ├── agents/              # strategy-runner, researcher
