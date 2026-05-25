@@ -101,6 +101,60 @@ that condescends. Aim for the middle.
 
 ---
 
+## 3. The Second Principle: Every Piece Is a Journey
+
+A piece of writing is not an information container. It is an experience the reader moves through — a journey the writer designs. The writer's job is to engineer that journey: where the reader starts, what they encounter, what they realize, where they arrive.
+
+The first principle (§2) protects the reader's intelligence. The second principle honors their attention. The two work together: don't waste the reader's time by under- or over-explaining (§2), and don't waste it by failing to take them anywhere (§3).
+
+The reader's contract is simple. They give you their attention as long as you keep earning it. They will leave at any paragraph, on any sentence. Lose them once and the rest of the piece is wasted on no one.
+
+### 3.1 Show, don't dump
+
+Resist the urge to explain. Let the reader realize.
+
+The pieces people remember are the ones where the reader felt smart for noticing the pattern the writer set up. Tell them what to think and they will resist. Show them the evidence, build the pattern, and let them reach the conclusion themselves — they will hold that conclusion more firmly than anything you could have told them.
+
+This is more than "show, don't tell." It is "show enough that they earn the meaning."
+
+### 3.2 Voice — the writer is in the room
+
+Anonymous wire-service prose serves a purpose, but it does not engage. Features, essays, blogs, and longform require a point of view. The reader is reading you, not a corpus.
+
+Voice in nonfiction is rarely the first-person pronoun. It is in the choices: what is foregrounded, what is elided, where the camera lingers, which detail gets the sentence and which gets the clause. The author's stance is always present, even in prose that reads as neutral. The question is whether the writer is using that stance deliberately or pretending it does not exist.
+
+### 3.3 Connective tissue
+
+Every paragraph earns the next. If you could shuffle three adjacent paragraphs without breaking the piece, those paragraphs are not doing their job — they are not connected, they are merely co-located.
+
+The strongest connections are causal: this happened, which caused that. The next strongest are argumentative: premise, evidence, conclusion. Wiki-style accretion — "and also... furthermore... it should also be noted that..." — is the failure mode. A Wikipedia entry is built that way on purpose; a piece of writing is not.
+
+When in doubt, the test is: can the reader say "and so" between the paragraphs? If yes, they are connected.
+
+### 3.4 Cliff-hangers and revelations
+
+A paragraph's last sentence should make the next paragraph inevitable. The reader should reach the period at the end of a paragraph and want — not need but want — to know what comes next.
+
+The pieces people remember have at least one revelation: a moment where the meaning of what came before shifts. The reader thought they were reading one kind of story and learns they are reading another. The shift is not a plot twist; it is an understanding earned by the writer's deliberate withholding and timed release.
+
+### 3.5 Research as raw material, not output
+
+The facts serve the narrative; the narrative makes the facts matter.
+
+Quoting a study is not writing about the study. Writing about it means making the reader feel why this finding changed something — what was assumed before, what is true now, what follows. A reader scanning citation density is reading documentation. A reader pulled through a narrative is reading a piece.
+
+The research dump — three paragraphs of cited statistics without a through-line — is worse than no research. It gives the illusion of substance while failing to do the work of synthesis. The reader can sense the difference.
+
+### 3.6 When this does not apply
+
+Pure reference documents (instructions, specifications, glossaries) are tools, not journeys. The prose discipline of §1 and §2 still applies — clean active sentences, no clichés, no editorializing — but the narrative arc does not. A list of API endpoints is not a story and should not pretend to be one.
+
+Hard-news leads, where the inverted pyramid (§10.1) prioritizes getting the facts out in the first paragraph for readers who may stop reading, are a different mode. The reveal pattern (build tension, withhold, release) competes with the wire-service goal of front-loading. Choose the mode the piece needs.
+
+For everything else — features, profiles, op-eds, essays, longform, blog posts, newsletters, reports meant to be read rather than scanned — the journey is the form. For deep dives on the patterns (show vs tell vs earn, the Chekhov principle, building tension, the wiki test, marrying research and prose, patterns from masters), see `references/narrative-craft.md`.
+
+---
+
 ## 3. Voice and Sentence Construction
 
 ### 3.1 Use the active voice
