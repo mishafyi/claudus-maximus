@@ -43,6 +43,8 @@ Loaded on demand:
 
 - `references/narrative-craft.md` — deep dive on show/tell/earn, the Chekhov principle, the reveal, building tension, connective tissue, marrying research and prose, the wiki test, patterns from masters.
 - `references/anti-patterns.md` — full treatments of the seven anti-patterns (fact lists, manifest paragraphs, hedging, throat-clearing, adjective pile-up, clichés, editorializing).
+- `references/citation-and-sourcing.md` — when to attribute, when to quote, linking conventions.
+- `references/copy-editing-mechanics.md` — numbers, dates, money, percent, time, measurements, capitalization, punctuation rules.
 
 Subagent dispatch templates (for parallel fresh-eyes review of longer drafts):
 
@@ -91,7 +93,9 @@ journalist/
         ├── SKILL.md
         ├── references/
         │   ├── narrative-craft.md
-        │   └── anti-patterns.md
+        │   ├── anti-patterns.md
+        │   ├── citation-and-sourcing.md
+        │   └── copy-editing-mechanics.md
         └── prompts/
             ├── prose-reviewer-prompt.md
             ├── copy-editor-prompt.md
