@@ -155,21 +155,21 @@ For everything else — features, profiles, op-eds, essays, longform, blog posts
 
 ---
 
-## 3. Voice and Sentence Construction
+## 4. Voice and Sentence Construction
 
-### 3.1 Use the active voice
+### 4.1 Use the active voice
 
 The most consistent rule across every major style guide. Active voice clarifies who acted; passive obscures it, which is why bureaucracies prefer it.
 
 The one acceptable use of the passive: when the actor is genuinely unknown, irrelevant, or rhetorically less important than the action.
 
-### 3.2 Verbs over nouns
+### 4.2 Verbs over nouns
 
 The strongest sentences move on verbs. Nominalization — turning verbs into nouns — drains energy.
 
 When editing, scan for words ending in *-tion, -ment, -ance, -ence, -ity*. Many can be collapsed back into the verbs they came from.
 
-### 3.3 Plain words beat Latinate ones
+### 4.3 Plain words beat Latinate ones
 
 A suspect *stole* the funds, not *absconded with* them. The shorter Anglo-Saxon word is almost
 always stronger.
@@ -190,20 +190,20 @@ always stronger.
 
 Reserve Latinate vocabulary for cases where precision genuinely requires it.
 
-### 3.4 AP's classic rule: "more than" vs. "over"
+### 4.4 AP's classic rule: "more than" vs. "over"
 
 A signature AP rule: use *more than* for quantities, *over* for spatial relationships.
 
 The NYT now permits *over* with quantities in many cases, but *more than* is always safe and feels more precise. Default to *more than* for numbers.
 
-### 3.5 Strip prepositional clutter
+### 4.5 Strip prepositional clutter
 
 The NYT Manual: "Unnecessary prepositions should be eliminated to streamline prose." Two patterns to watch for:
 
 - Prepositional phrases in the wrong order — put them in the sequence the reader needs them.
 - Stacked prepositional phrases that pile *of...on...for* into a single noun. Rewrite by converting to possessives or recasting around a verb.
 
-### 3.6 Cut redundancy
+### 4.6 Cut redundancy
 
 A non-exhaustive list of phrases all three style guides flag as redundant:
 
@@ -222,11 +222,11 @@ A non-exhaustive list of phrases all three style guides flag as redundant:
 
 The pattern: an adjective or modifier that restates what the noun already means. Cut the modifier.
 
-### 3.7 Vary sentence length
+### 4.7 Vary sentence length
 
 A page of uniform sentences exhausts the reader. The strongest rhythm in feature writing: long, building sentences that accumulate context, then short declarative sentences that release the pressure. A four-word punch sentence works *because* the sentences around it built up to it.
 
-### 3.8 Avoid "alphabet soup"
+### 4.8 Avoid "alphabet soup"
 
 AP's term for paragraphs choked with acronyms. Strings of agency initials cause the reader to disengage.
 
@@ -234,22 +234,22 @@ If three or more acronyms appear in a single sentence, rewrite. Spell out one or
 
 ---
 
-## 4. Names and Attribution
+## 5. Names and Attribution
 
-### 4.1 Full name on first reference
+### 5.1 Full name on first reference
 
 Give the full name on first use. On later references, use the last name alone.
 
 **NYT vs. AP:** The Times traditionally uses a courtesy title (*Mr. Smith*, *Ms. Jones*) on second reference, though this is relaxed in sports, arts, and pop culture sections. AP dropped courtesy titles long ago. For general writing outside the Times itself, the last name alone (AP style) is the standard default.
 
-### 4.2 Honorifics before names; descriptive titles after
+### 5.2 Honorifics before names; descriptive titles after
 
 - **Before the name (capitalized):** President, Senator, Dr. when used as a formal title attached to a specific name.
 - **After the name (lowercase):** the president, a senator from the state, when the role is described after the name.
 
 Don't capitalize *the president* or *the secretary of state* when the title stands alone without the name.
 
-### 4.3 Use "said" for attribution
+### 5.3 Use "said" for attribution
 
 The NYT Manual's preference is firm: *said* is invisible to the reader and does its job. *Stated*,
 *noted*, *explained*, and *exclaimed* either editorialize ("noted" implies the statement is true) or
@@ -258,18 +258,18 @@ call attention to themselves. The exception is when a different verb conveys rea
 
 AP agrees: *said* is the workhorse. Reach for an alternative only when it earns its place.
 
-### 4.4 Attribution placement
+### 5.4 Attribution placement
 
 For a short quote, put the attribution at the end. For a long quote, bury the attribution mid-sentence so the reader doesn't wait for it. Inserting *he said* between two clauses of a long quotation lets the reader hear the voice before the bureaucracy of attribution.
 
 ---
 
-## 5. Numbers, Dates, and Measurements
+## 6. Numbers, Dates, and Measurements
 
 The three style guides agree on most basics and diverge on a few details. The most useful unified
 rules:
 
-### 5.1 Numbers
+### 6.1 Numbers
 
 - **Spell out one through nine.** ("Six soldiers, seven officers.")
 - **Use figures for 10 and above.** ("11 senators, 250 protesters.")
@@ -279,7 +279,7 @@ rules:
   attended" — or rewrite to "The crowd reached 20,000.")
 - **Round large numbers:** "1.2 million" beats "1,243,872" unless precision matters.
 
-### 5.2 Dates
+### 6.2 Dates
 
 - **Months with a specific date take the abbreviated form:** *Jan. 4, 2026.* (AP and NYT agree.
   Exception: spell out March, April, May, June, July when used with a date, because they are short
@@ -290,13 +290,13 @@ rules:
 - **Decades:** *the 1980s*, not *the 1980's*. No apostrophe before the *s*.
 - **Centuries:** lowercase. *the 20th century, the 21st century.*
 
-### 5.3 Money
+### 6.3 Money
 
 - **Under a million:** *$5*, *$25*, *$500*, *$1,500*, *$50,000*.
 - **Million and above:** *$1.5 million*, *$3.2 billion*, *$8 trillion*. Spell out the word.
 - **Approximate:** *about $3 million*, not *approximately $3,000,000*.
 
-### 5.4 Percent vs. %
+### 6.4 Percent vs. %
 
 **AP and NYT disagree.** AP since 2019 uses **the % sign with numerals**: *5%, 25%, 8.5%*. The NYT
 Manual still says **percent**: *5 percent, 25 percent*. Both are correct in their respective house
@@ -307,21 +307,21 @@ Spell out *percent* in literary or formal contexts (NYT style). Be consistent wi
 
 At the start of a sentence, spell out: *"Fifty-two percent of voters..."* (both styles agree).
 
-### 5.5 Time
+### 6.5 Time
 
 - **Use a.m. and p.m. in lowercase with periods.** *8:30 a.m., 4 p.m.* (drop the zeros on the hour:
   *4 p.m.*, not *4:00 p.m.*)
 - **Noon and midnight, not 12 p.m. and 12 a.m.** Both AP and NYT are firm: the words prevent
   ambiguity.
 
-### 5.6 Measurements
+### 6.6 Measurements
 
 Convert metric to American units for American readers: "10,000 square meters (about 2.5 acres)."
 Don't make the reader do the math.
 
 ---
 
-## 6. Capitalization
+## 7. Capitalization
 
 All three guides lean toward minimal capitalization. When in doubt, lowercase.
 
@@ -340,9 +340,9 @@ All three guides lean toward minimal capitalization. When in doubt, lowercase.
 
 ---
 
-## 7. Punctuation
+## 8. Punctuation
 
-### 7.1 The serial (Oxford) comma — three styles disagree
+### 8.1 The serial (Oxford) comma — three styles disagree
 
 This is the single most contested punctuation question in journalism.
 
@@ -354,7 +354,7 @@ This is the single most contested punctuation question in journalism.
 
 **Default recommendation:** Follow AP/NYT — drop the serial comma in simple series, add it when needed to prevent confusion or ambiguity.
 
-### 7.2 Em dashes — AP and NYT use spaces
+### 8.2 Em dashes — AP and NYT use spaces
 
 Both AP and NYT set em dashes off with spaces on both sides — like this. The Chicago style closes the dashes up—like this. For newspaper-style writing, use the spaced version.
 
@@ -362,20 +362,20 @@ Use em dashes to set off a strong parenthetical, introduce a punchline or amplif
 
 More than two em dashes in a paragraph reads as breathless. Use sparingly.
 
-### 7.3 Quotation marks
+### 8.3 Quotation marks
 
 - **American style:** Periods and commas always go inside the quotation marks.
 - **Colons and semicolons outside.**
 - **Question marks and exclamation points:** inside if they belong to the quoted material, outside if they belong to the surrounding sentence.
 
-### 7.4 Possessives ending in s — AP and NYT disagree
+### 8.4 Possessives ending in s — AP and NYT disagree
 
 - **NYT:** Always add 's regardless of the final letter (*James's, Texas's, Davis's*).
 - **AP:** Drop the second s for proper nouns ending in s (*James', Texas', Davis'*).
 
 **Default recommendation:** Pick one and stay consistent. AP style (drop the second s) is more common in journalism; NYT style is more common in book publishing.
 
-### 7.5 Hyphenation
+### 8.5 Hyphenation
 
 - **Compound modifiers before a noun:** hyphenated. *A 7-year-old child. A well-known author. A
   long-term plan.*
@@ -383,7 +383,7 @@ More than two em dashes in a paragraph reads as breathless. Use sparingly.
   known. The plan is for the long term.*
 - **With -ly adverbs:** never hyphenate. *A highly regarded scholar* (not *highly-regarded*).
 
-### 7.6 Composition titles
+### 8.6 Composition titles
 
 - **AP:** Put titles of books, movies, songs, TV shows, and works of art in quotation marks. *"The
   Great Gatsby," "Citizen Kane," "Bohemian Rhapsody."*
@@ -396,19 +396,19 @@ Italics for newspaper and magazine names where italics are technically possible.
 
 ---
 
-## 8. The Lede
+## 9. The Lede
 
 The first paragraph buys the second. Most readers drop off after the opening. The lede must be
 specific, surprising, and confident.
 
-### 8.1 Effective lede patterns
+### 9.1 Effective lede patterns
 
 - **The scene:** Place the reader in a specific moment, with concrete sensory details that ground them in a place and time.
 - **The telling fact:** A statistic or detail so striking the reader needs to know how it can be true.
 - **The WSJ "Hey Martha!" anecdote:** A single specific person doing a single specific thing that crystallizes a larger pattern. The Wall Street Journal's signature page-one feature opening — so named because the prototypical reader, having read it, would call out to a spouse: *"Hey Martha! Listen to this..."*
 - **The provocation:** A claim that contradicts conventional wisdom, framed to make the reader want the explanation.
 
-### 8.2 The nut graf
+### 9.2 The nut graf
 
 In feature writing — particularly in the WSJ tradition — the second or third paragraph contains the
 "nut graf": the paragraph that tells the reader what the piece is about and why it matters. After a
@@ -420,7 +420,7 @@ A nut graf typically:
 - Explains why it matters now
 - Hints at what the rest of the piece will deliver
 
-### 8.3 What to avoid in ledes
+### 9.3 What to avoid in ledes
 
 - **"In today's world..."** — empty opening. Cut.
 - **"It is interesting to note..."** — if it's interesting, show it.
@@ -430,16 +430,16 @@ A nut graf typically:
 
 ---
 
-## 9. Structure and Flow
+## 10. Structure and Flow
 
-### 9.1 The inverted pyramid for hard news
+### 10.1 The inverted pyramid for hard news
 
 Most important information first. Each subsequent paragraph adds detail, context, or background.
 A reader who stops after paragraph three should still have the essential story. This is the
 classic AP wire-service structure, designed for newspapers that might cut a story to fit available
 space.
 
-### 9.2 Narrative longform
+### 10.2 Narrative longform
 
 For longer narrative pieces, the structure resembles classic essay form:
 
@@ -452,7 +452,7 @@ For longer narrative pieces, the structure resembles classic essay form:
 7. **Implication** — what follows from the argument
 8. **Kicker** — a closing image or sentence the reader carries with them
 
-### 9.3 Paragraph length
+### 10.3 Paragraph length
 
 Newspaper paragraphs are short by literary standards — three to five sentences typical, often
 shorter. Long paragraphs read as dense in newsprint and on screens. When a paragraph reaches seven
@@ -464,37 +464,37 @@ applies.
 
 ---
 
-## 10. Anti-Patterns
+## 11. Anti-Patterns
 
 The most common failures. Avoid all of them.
 
-### 10.1 The fact list
+### 11.1 The fact list
 
 Three or more facts in a row with no connective tissue. Reads like a Wikipedia entry, not journalism. Each fact should cause or explain the next. If the connective tissue isn't there, the paragraph is a list pretending to be prose.
 
-### 10.2 The manifest paragraph
+### 11.2 The manifest paragraph
 
 A sentence whose middle is a comma-delimited inventory of items. The reader's attention slides off the list and never lands on what the sentence was about. Rewrite so the inventory either becomes the structural backbone of a longer sentence or gets compressed into a single representative example.
 
-### 10.3 Hedging into oblivion
+### 11.3 Hedging into oblivion
 
 "Some have argued." "It could be said." "Many believe." These phrases launder opinions through
 phantom third parties. Either make the claim directly or don't make it.
 
-### 10.4 Throat-clearing
+### 11.4 Throat-clearing
 
 "This article will examine..." "It is important to note that..." "There are many factors to consider
 when thinking about..."
 
 Strip them all. Start with the claim or the scene.
 
-### 10.5 Adjective pile-up
+### 11.5 Adjective pile-up
 
 "A devastating, unprecedented, catastrophic, world-changing event."
 
 Pick one. Adjectives that compete for the reader's attention cancel each other out.
 
-### 10.6 Clichés
+### 11.6 Clichés
 
 Every major style guide is firm: avoid clichés. A non-exhaustive list to delete on sight:
 
@@ -511,7 +511,7 @@ Every major style guide is firm: avoid clichés. A non-exhaustive list to delete
 - "circle back"
 - "double down"
 
-### 10.7 Editorializing through adjectives
+### 11.7 Editorializing through adjectives
 
 Don't tell the reader how to feel through loaded modifiers. *"The shocking decision," "the
 courageous senator," "the tragic event," "the grim pattern," "the devastating consequences"* —
@@ -534,15 +534,15 @@ evidence couldn't.
 
 ---
 
-## 11. Citation and Sourcing
+## 12. Citation and Sourcing
 
-### 11.1 Attribution
+### 12.1 Attribution
 
 Attribute claims when the source matters — naming the institution, study, or document that produced the fact.
 
 Don't attribute well-established facts. Adding *according to the National Weather Service* to a claim that the sun rises in the east is absurd.
 
-### 11.2 When to quote
+### 12.2 When to quote
 
 Quote when:
 - The exact wording matters (legal language, contested claims, distinctive voice)
@@ -551,7 +551,7 @@ Quote when:
 
 Don't quote routine information you could state directly. If a quote is just delivering the time of a meeting, drop the quotation marks and state the fact.
 
-### 11.3 Linking (digital context)
+### 12.3 Linking (digital context)
 
 The 2015 NYT Manual and AP 2024-2026 both address online writing. The conventions:
 
@@ -561,7 +561,7 @@ The 2015 NYT Manual and AP 2024-2026 both address online writing. The convention
 
 ---
 
-## 12. The Kicker
+## 13. The Kicker
 
 The last paragraph should land. Three working patterns:
 
@@ -575,7 +575,7 @@ piece is ending. Don't announce it.
 
 ---
 
-## 13. Writing About AI (AP 2024-2026 New Guidance)
+## 14. Writing About AI (AP 2024-2026 New Guidance)
 
 The 2024-2026 edition of the AP Stylebook added a chapter on artificial intelligence — relevant to
 any piece touching technology. Key guidance:
@@ -591,12 +591,12 @@ any piece touching technology. Key guidance:
 
 ---
 
-## 14. The Self-Edit Pass
+## 15. The Self-Edit Pass
 
 The AP Stylebook 2024-2026 added a dedicated chapter on self-editing. Run the prose pass first, then
 the copy-editing pass.
 
-### 14.1 Prose pass (run first)
+### 15.1 Prose pass (run first)
 
 1. **Read the piece aloud.** Sentences that don't work usually fail at the level of sound. If you stumble while reading, the reader will too.
 2. **Check every sentence for passive voice.** Mark each one. Rewrite unless the actor is genuinely unknown or irrelevant.
@@ -609,7 +609,7 @@ the copy-editing pass.
 9. **Check for clichés.** *At the end of the day*, *perfect storm*, *game changer*, *moving forward* — delete on sight.
 10. **Check sentence rhythm.** Does any paragraph run six or more long sentences without a short one? Look for the place to insert a punch sentence.
 
-### 14.2 Copy-editing pass (run after prose is solid)
+### 15.2 Copy-editing pass (run after prose is solid)
 
 11. **Check the lede.** Could it be deleted with no loss? If yes, rewrite.
 12. **Check every quote.** Is it exact? Is the attribution clear? Is the verb *said* unless there's a reason for something else?
@@ -626,7 +626,7 @@ The order matters. Prose first, formatting second.
 
 ---
 
-## 15. Where the Style Guides Disagree — Quick Reference
+## 16. Where the Style Guides Disagree — Quick Reference
 
 | Question                          | NYT (2015)              | AP (2024-2026)         | Default for general use |
 |-----------------------------------|-------------------------|------------------------|-------------------------|
@@ -645,7 +645,7 @@ the most common in modern journalism.
 
 ---
 
-## 16. The Underlying Voice
+## 17. The Underlying Voice
 
 The voice these conventions produce, when applied without strain, is recognizable: a thoughtful,
 attentive person explaining something they have thought about carefully to another thoughtful
