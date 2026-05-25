@@ -1,6 +1,6 @@
 {
   "name": "journalist",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Newspaper prose discipline (NYT/AP/WSJ) plus narrative craft (longform-feature tradition) for any extended writing — drafting, editing, polishing. Story-shaped, gripping, research-woven.",
   "author": { "name": "misha" },
   "repository": "https://github.com/mishafyi/claudus-maximus",

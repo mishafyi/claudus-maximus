@@ -57,7 +57,7 @@
       "name": "journalist",
       "description": "Newspaper prose discipline (NYT/AP/WSJ) plus narrative craft for drafting, editing, and polishing serious writing \u2014 story-shaped, gripping, research-woven.",
       "source": "./plugins/journalist",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": "productivity",
       "tags": [
         "writing",
