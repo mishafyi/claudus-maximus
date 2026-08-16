@@ -12,20 +12,20 @@ Active jobs only, sorted by listing freshness (`createdAt` descending).
 
 ### Parameters
 
-| Param            | Type   | Default | Description                                                                                  |
-| ---------------- | ------ | ------- | -------------------------------------------------------------------------------------------- |
-| `q`              | string | —       | Keyword (full-text + fuzzy)                                                                  |
-| `company`        | string | —       | Company slug (see `references/companies.md`). Repeat the param for multi-company OR.         |
-| `industry`       | string | —       | `SPACE`, `AI`, `ROBOTICS`, `DEFENSE`, `FRONTIER`, `VC` (case-insensitive)                    |
-| `location`       | string | —       | Country slug (`united-states`), US state (`california`), or city                             |
-| `addressCountry` | string | —       | ISO-2 country code (`US`, `GB`, `DE`)                                                        |
-| `addressRegion`  | string | —       | US state code (`CA`, `TX`) or region code                                                    |
-| `employmentType` | string | —       | `full-time`, `internship`, `part-time`, `contract`                                           |
-| `remote`         | string | —       | `true` for remote-only jobs (`location=remote` does NOT work — use this instead)             |
-| `filters`        | string | —       | SEO-style combined slug (e.g., `python-and-internship`, `aerospace`)                         |
-| `limit`          | number | 10      | Results per page (max 50)                                                                    |
-| `offset`         | number | 0       | Pagination offset (max 49,000)                                                               |
-| `format`         | string | —       | `md` for compact markdown (one block per job)                                                |
+| Param            | Type   | Default | Description                                                                          |
+| ---------------- | ------ | ------- | ------------------------------------------------------------------------------------ |
+| `q`              | string | —       | Keyword (full-text + fuzzy)                                                          |
+| `company`        | string | —       | Company slug (see `references/companies.md`). Repeat the param for multi-company OR. |
+| `industry`       | string | —       | `SPACE`, `AI`, `ROBOTICS`, `DEFENSE`, `FRONTIER`, `VC` (case-insensitive)            |
+| `location`       | string | —       | Country slug (`united-states`), US state (`california`), or city                     |
+| `addressCountry` | string | —       | ISO-2 country code (`US`, `GB`, `DE`)                                                |
+| `addressRegion`  | string | —       | US state code (`CA`, `TX`) or region code                                            |
+| `employmentType` | string | —       | `full-time`, `internship`, `part-time`, `contract`                                   |
+| `remote`         | string | —       | `true` for remote-only jobs (`location=remote` does NOT work — use this instead)     |
+| `filters`        | string | —       | SEO-style combined slug (e.g., `python-and-internship`, `aerospace`)                 |
+| `limit`          | number | 10      | Results per page (max 50)                                                            |
+| `offset`         | number | 0       | Pagination offset (max 49,000)                                                       |
+| `format`         | string | —       | `md` for compact markdown (one block per job)                                        |
 
 ### JSON Response
 
@@ -97,8 +97,8 @@ Fetch a single job's full details + up to 5 related active roles at the same com
 
 ### Parameters
 
-| Param    | Type   | Default | Description                                            |
-| -------- | ------ | ------- | ------------------------------------------------------ |
+| Param    | Type   | Default | Description                                                     |
+| -------- | ------ | ------- | --------------------------------------------------------------- |
 | `format` | string | —       | `md` for clean markdown (title, metadata, description, related) |
 
 ### JSON Response
@@ -112,9 +112,20 @@ Fetch a single job's full details + up to 5 related active roles at the same com
     "employmentTypes": ["FULL_TIME"],
     "category": "Business & Finance",
     "department": "G&A",
-    "salary": { "min": 85000, "max": 120000, "currency": "USD", "interval": "year" },
+    "salary": {
+      "min": 85000,
+      "max": 120000,
+      "currency": "USD",
+      "interval": "year"
+    },
     "listedAt": "2026-05-17T02:51:20.875Z",
-    "company": { "name": "SpaceX", "slug": "spacex", "industry": "SPACE", "logoUrl": "https://zerogtalent.com/logos/spacex.jpeg", "country": "USA" },
+    "company": {
+      "name": "SpaceX",
+      "slug": "spacex",
+      "industry": "SPACE",
+      "logoUrl": "https://zerogtalent.com/logos/spacex.jpeg",
+      "country": "USA"
+    },
     "applyUrl": "https://zerogtalent.com/space-jobs/spacex/stock-plan-administrator-8553046002",
     "jdUrl": "https://zerogtalent.com/api/agent/job/stock-plan-administrator-8553046002",
     "description": "SpaceX was founded under the belief that…"
@@ -139,3 +150,90 @@ Related-job entries omit `description` to keep payloads small. Fetch each relate
 ### Markdown Format (`format=md`)
 
 Cleanest path for LLMs to read a single JD — returns a `text/markdown` document with title, metadata table, description, apply link, and related-roles list.
+
+## Resolve Company
+
+```
+GET https://zerogtalent.com/api/agent/companies?q={name}
+```
+
+Deterministic, **alias-aware name resolver** — not a fuzzy search. A company name maps to exactly one canonical company on Zero G Talent (e.g. `q=OpenAI`, or `q=X` → xAI), so `companies` holds 0 or 1 item. Use it to turn a company name into its on-site `url` + slug.
+
+### Parameters
+
+| Param | Type   | Default | Description                                                  |
+| ----- | ------ | ------- | ------------------------------------------------------------ |
+| `q`   | string | —       | Company name (required). Case-insensitive; resolves aliases. |
+
+### JSON Response
+
+```json
+{
+  "companies": [
+    {
+      "name": "OpenAI",
+      "slug": "openai",
+      "industry": "AI",
+      "url": "https://zerogtalent.com/ai-companies/openai",
+      "logoUrl": "https://zerogtalent.com/logos/openai.png",
+      "website": "https://openai.com",
+      "hq": "San Francisco, CA, US",
+      "openJobs": 42,
+      "description": "…"
+    }
+  ],
+  "total": 1
+}
+```
+
+- `total: 0` + empty `companies` when the name doesn't resolve to a tracked company.
+- `openJobs` is the count of currently-active roles; `industry` is the uppercase `CompanyIndustry` enum.
+- Optional fields (`logoUrl`, `website`, `hq`, `description`) are omitted when absent.
+
+## Resolve People
+
+```
+GET https://zerogtalent.com/api/agent/people?q={name}&company={slug}
+```
+
+Deterministic **exact-name resolver** — not a fuzzy search. Returns every person whose name matches `q` (case-insensitive). Names collide, so pass `company={slug}` to disambiguate to the person at that company.
+
+### Parameters
+
+| Param     | Type   | Default | Description                                           |
+| --------- | ------ | ------- | ----------------------------------------------------- |
+| `q`       | string | —       | Person name (required), case-insensitive exact match. |
+| `company` | string | —       | Company slug to disambiguate same-named people.       |
+| `limit`   | number | 10      | Max results (1–20).                                   |
+
+### JSON Response
+
+```json
+{
+  "people": [
+    {
+      "name": "Gwynne Shotwell",
+      "slug": "gwynne-shotwell",
+      "url": "https://zerogtalent.com/people/gwynne-shotwell",
+      "headline": "President & COO at SpaceX",
+      "company": "SpaceX",
+      "linkedin": "https://www.linkedin.com/in/…",
+      "avatar": "https://zerogtalent.com/avatars/gwynne-shotwell.jpg"
+    }
+  ],
+  "total": 1
+}
+```
+
+- When a name maps to multiple people, `people` has several entries; each carries `company` (or `companies[]` if tied to more than one). Narrow with `company`.
+- Optional fields (`headline`, `linkedin`, `avatar`) are omitted when absent.
+
+## MCP server (Claude connector)
+
+The same four endpoints are exposed as MCP tools at `https://zerogtalent.com/api/mcp` (Streamable HTTP, no authentication, read-only): `search_jobs`, `get_job`, `resolve_company`, `resolve_person` — same parameters and output as the endpoints above (markdown for jobs, JSON for company/people lookups).
+
+- **Claude.ai / Desktop / mobile (any plan):** Customize → Connectors → Add custom connector → `https://zerogtalent.com/api/mcp`, or open the prefilled dialog: `https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Zero%20G%20Talent&connectorUrl=https%3A%2F%2Fzerogtalent.com%2Fapi%2Fmcp`
+- **Claude Code:** `claude mcp add --transport http zerogtalent https://zerogtalent.com/api/mcp` (the `career-companion` plugin bundles this connector)
+- **Any MCP client:** point a Streamable HTTP transport at the URL. Legacy HTTP+SSE is not served.
+
+Privacy: the server processes only tool inputs; it stores no conversation data (see https://zerogtalent.com/privacy).

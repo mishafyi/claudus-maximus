@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "zerogtalent": {
+      "type": "http",
+      "url": "https://zerogtalent.com/api/mcp"
+    }
+  }
+}
