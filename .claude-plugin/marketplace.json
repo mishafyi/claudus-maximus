@@ -27,7 +27,7 @@
       "name": "winning",
       "description": "Evolutionary parallel strategy orchestrator \u2014 deploys competing approaches, monitors progress, eliminates underperformers, consolidates the winner",
       "source": "./plugins/winning",
-      "version": "0.8.0",
+      "version": "0.8.1",
       "category": "orchestration",
       "tags": [
         "parallel",

@@ -1,7 +1,7 @@
 {
   "name": "winning",
   "description": "Evolutionary parallel strategy orchestrator. Deploys 3 agents per round on different strategies, compares results against verification tests, records learnings, and redeploys until the goal is achieved. No cycle limits. No round limits.",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "author": {
     "name": "misha"
   },
