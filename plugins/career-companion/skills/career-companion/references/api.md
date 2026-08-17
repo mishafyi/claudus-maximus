@@ -28,7 +28,8 @@ Active jobs only. Default order is listing freshness (`createdAt` descending); p
 | `filters`        | string | —       | SEO-style combined slug (e.g., `python-and-internship`, `aerospace`)                               |
 | `limit`          | number | 10      | Results per page (max 50)                                                                          |
 | `offset`         | number | 0       | Absolute pagination offset (max 49,000) — pass the previous page's `nextOffset`; any `limit` works |
-| `format`         | string | —       | `md` for compact markdown (one block per job)                                                      |
+| `format`         | string | —       | `md` compact markdown (one block per job); `slim` JSON without descriptions                        |
+| `ref`            | string | —       | Traffic-source marker echoed onto every `applyUrl` as `?s=`; `[a-z][a-z0-9_-]{0,31}` or ignored    |
 
 ### JSON Response
 
@@ -90,6 +91,17 @@ Showing 10 of 1667 results
 Next: offset=10
 ```
 
+### Slim JSON (`format=slim`)
+
+The same JSON minus each job's `description`. The default shape embeds every
+description, which is what makes a 10-job page large: measured on one query,
+86 KB as default JSON, 5.8 KB as `slim`, 2.9 KB as `md`.
+
+Use `slim` when you need fields markdown flattens into prose — `salary.interval`,
+`listedAt`, `remote`, `category`, `department`, `hasMore`/`nextOffset` — and `md`
+when you are only going to print a listing. Fetch a description for the one job
+that matters via its `jdUrl`.
+
 ## Get Job Description
 
 ```
@@ -103,6 +115,10 @@ Fetch a single job's full details + up to 5 related active roles at the same com
 | Param    | Type   | Default | Description                                                     |
 | -------- | ------ | ------- | --------------------------------------------------------------- |
 | `format` | string | —       | `md` for clean markdown (title, metadata, description, related) |
+| `ref`    | string | —       | Traffic-source marker echoed onto `applyUrl` and related roles  |
+
+The markdown header carries `Remote` when the role is remote, plus a
+`Category: … | Department: … | Listed: YYYY-MM-DD` line.
 
 ### JSON Response
 
@@ -193,6 +209,112 @@ Deterministic, **alias-aware name resolver** — not a fuzzy search. A company n
 - `hq` is the company's stored address and is **not normalised to a city** — it may be a street address (SpaceX: `1 Rocket Road, TX, US`, NASA: `300 E Street SW, US`) or a city (`San Francisco, CA, US`). Don't parse it as `city, region, country`; show it verbatim.
 - `openJobs` is the count of currently-active roles; `industry` is the uppercase `CompanyIndustry` enum.
 - Optional fields (`logoUrl`, `website`, `hq`, `description`) are omitted when absent.
+
+Pass `suggest=true` and a name that resolves to nothing comes back with a
+`suggestions` array of up to 5 tracked companies matching by name, best match
+first — the everyday short form of a company usually lands here. Without the
+flag the endpoint stays a pure exact resolver:
+
+```
+GET /api/agent/companies?q=Anduril&suggest=true
+```
+
+```json
+{
+  "companies": [],
+  "total": 0,
+  "suggestions": [
+    {
+      "name": "Anduril Industries",
+      "slug": "anduril-industries",
+      "industry": "DEFENSE",
+      "url": "https://zerogtalent.com/defense-companies/anduril-industries",
+      "openJobs": 2147,
+      "hq": "Costa Mesa, CA, US"
+    }
+  ]
+}
+```
+
+`companies` keeps its 0-or-1 exact-match contract, so a suggestion is a lead to
+confirm with the user, not an answer. Empty `companies` **and** an empty or
+absent `suggestions` means the company is genuinely not tracked. The MCP
+`resolve_company` tool sets the flag for you.
+
+## Salary Statistics
+
+```
+GET https://zerogtalent.com/api/agent/salaries
+```
+
+Pay aggregates over open postings that disclose a salary, normalised to annual
+USD (FX-converted, floored, salary-tracked industries only). Use this instead of
+averaging figures out of search results: those are one page, mixed currencies
+and mixed pay intervals.
+
+### Parameters
+
+| Param      | Type   | Default | Description                                                                |
+| ---------- | ------ | ------- | -------------------------------------------------------------------------- |
+| `category` | string | —       | Role family: a category name or slug (`Software`, `aerospace-engineering`) |
+| `company`  | string | —       | Company slug from `/api/agent/companies`                                   |
+
+Called with neither, it returns the live category list. An unknown `category`
+returns 400 **with that same list**, so a caller can retry without a second
+round trip. An ambiguous substring is rejected rather than guessed.
+
+### Category → pay by industry
+
+```
+GET /api/agent/salaries?category=research
+```
+
+```json
+{
+  "category": "Research",
+  "url": "https://zerogtalent.com/salaries/research",
+  "currency": "USD",
+  "basis": "annualised from disclosed salary ranges on open postings",
+  "byIndustry": [
+    {
+      "industry": "AI",
+      "jobs": 152,
+      "companies": 64,
+      "p25Usd": 152250,
+      "medianMinUsd": 216000,
+      "medianMaxUsd": 320000,
+      "p75Usd": 445000
+    }
+  ]
+}
+```
+
+### Company → pay band
+
+```
+GET /api/agent/salaries?company=spacex&category=software
+```
+
+```json
+{
+  "company": { "name": "SpaceX", "slug": "spacex" },
+  "category": "Software",
+  "url": "https://zerogtalent.com/salaries/software",
+  "band": {
+    "p10Usd": 120750,
+    "medianUsd": 160000,
+    "p90Usd": 240000,
+    "sampleSize": 264
+  },
+  "currency": "USD",
+  "basis": "annualised from disclosed salary ranges on open postings"
+}
+```
+
+`band` is **null** when too few postings disclose pay to say anything honest —
+report that as "not enough disclosed salary data", never as a zero or a guess.
+Percentiles come from posted ranges, not per-person total comp: they describe
+what employers advertise, and equity and bonus are not in them.
 
 ## Resolve People
 

@@ -1,6 +1,6 @@
 {
   "name": "career-companion",
-  "version": "1.2.4",
+  "version": "1.3.0",
   "description": "Career companion for frontier tech — search live job openings, tailor resumes, and practice interviews across space, AI, robotics, and defense industries; bundles the Zero G Talent MCP connector",
   "author": {
     "name": "misha"
