@@ -2,6 +2,8 @@
 
 Public, no authentication required. Built specifically for AI agents — slim JSON shape, pre-built URLs, plain-text description, no internal IDs or null fields.
 
+Example payloads below are real responses captured 2026-08-17; live counts and asset extensions change, so treat the values as shape documentation rather than current data.
+
 ## Search Jobs
 
 ```
@@ -176,10 +178,10 @@ Deterministic, **alias-aware name resolver** — not a fuzzy search. A company n
       "slug": "openai",
       "industry": "AI",
       "url": "https://zerogtalent.com/ai-companies/openai",
-      "logoUrl": "https://zerogtalent.com/logos/openai.png",
+      "logoUrl": "https://zerogtalent.com/logos/openai.jpeg",
       "website": "https://openai.com",
       "hq": "San Francisco, CA, US",
-      "openJobs": 42,
+      "openJobs": 721,
       "description": "…"
     }
   ],
@@ -188,6 +190,7 @@ Deterministic, **alias-aware name resolver** — not a fuzzy search. A company n
 ```
 
 - `total: 0` + empty `companies` when the name doesn't resolve to a tracked company.
+- `hq` is the company's stored address and is **not normalised to a city** — it may be a street address (SpaceX: `1 Rocket Road, TX, US`, NASA: `300 E Street SW, US`) or a city (`San Francisco, CA, US`). Don't parse it as `city, region, country`; show it verbatim.
 - `openJobs` is the count of currently-active roles; `industry` is the uppercase `CompanyIndustry` enum.
 - Optional fields (`logoUrl`, `website`, `hq`, `description`) are omitted when absent.
 
@@ -219,7 +222,7 @@ Deterministic **exact-name resolver** — not a fuzzy search. Returns every pers
       "headline": "President & COO at SpaceX",
       "company": "SpaceX",
       "linkedin": "https://www.linkedin.com/in/…",
-      "avatar": "https://zerogtalent.com/avatars/gwynne-shotwell.jpg"
+      "avatar": "https://zerogtalent.com/avatars/gwynne-shotwell.jpeg"
     }
   ],
   "total": 1
