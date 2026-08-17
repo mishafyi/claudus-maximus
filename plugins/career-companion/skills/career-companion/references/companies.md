@@ -2,7 +2,7 @@
 
 Use these slugs with the `company` parameter in the search API. Grouped by DB `CompanyIndustry` (determines the URL prefix: `SPACE` → `space-jobs`, `AI` → `ai-jobs`, `ROBOTICS` → `robotics-jobs`, `DEFENSE` → `defense-jobs`, `FRONTIER` → `frontier-jobs`).
 
-Job counts shown are active openings at time of writing — directional only.
+This is a hand-maintained sample of the largest employers, not the full list — hundreds more companies are tracked. To get the slug for any company, call `resolve_company` (MCP) or `GET /api/agent/companies?q={name}` with the company's full name; it also returns the live open-job count.
 
 ## Space (URL prefix: `space-jobs`)
 
