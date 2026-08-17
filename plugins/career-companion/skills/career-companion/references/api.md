@@ -8,24 +8,25 @@ Public, no authentication required. Built specifically for AI agents — slim JS
 GET https://zerogtalent.com/api/agent/jobs
 ```
 
-Active jobs only, sorted by listing freshness (`createdAt` descending).
+Active jobs only. Default order is listing freshness (`createdAt` descending); pass `sort=relevance` for hybrid keyword + semantic ranking (the same mode the site's AI chat uses — descriptive queries work; pagination then stops at the top-200 fusion window).
 
 ### Parameters
 
-| Param            | Type   | Default | Description                                                                          |
-| ---------------- | ------ | ------- | ------------------------------------------------------------------------------------ |
-| `q`              | string | —       | Keyword (full-text + fuzzy)                                                          |
-| `company`        | string | —       | Company slug (see `references/companies.md`). Repeat the param for multi-company OR. |
-| `industry`       | string | —       | `SPACE`, `AI`, `ROBOTICS`, `DEFENSE`, `FRONTIER`, `VC` (case-insensitive)            |
-| `location`       | string | —       | Country slug (`united-states`), US state (`california`), or city                     |
-| `addressCountry` | string | —       | ISO-2 country code (`US`, `GB`, `DE`)                                                |
-| `addressRegion`  | string | —       | US state code (`CA`, `TX`) or region code                                            |
-| `employmentType` | string | —       | `full-time`, `internship`, `part-time`, `contract`                                   |
-| `remote`         | string | —       | `true` for remote-only jobs (`location=remote` does NOT work — use this instead)     |
-| `filters`        | string | —       | SEO-style combined slug (e.g., `python-and-internship`, `aerospace`)                 |
-| `limit`          | number | 10      | Results per page (max 50)                                                            |
-| `offset`         | number | 0       | Pagination offset (max 49,000)                                                       |
-| `format`         | string | —       | `md` for compact markdown (one block per job)                                        |
+| Param            | Type   | Default | Description                                                                                        |
+| ---------------- | ------ | ------- | -------------------------------------------------------------------------------------------------- |
+| `q`              | string | —       | Keyword (full-text + fuzzy)                                                                        |
+| `sort`           | string | `new`   | `new` = freshness (exhaustive); `relevance` = hybrid BM25 + semantic ranking (top 200)             |
+| `company`        | string | —       | Company slug (see `references/companies.md`). Repeat the param for multi-company OR.               |
+| `industry`       | string | —       | `SPACE`, `AI`, `ROBOTICS`, `DEFENSE`, `FRONTIER`, `VC` (case-insensitive)                          |
+| `location`       | string | —       | Country slug (`united-states`), US state (`california`), or city                                   |
+| `addressCountry` | string | —       | ISO-2 country code (`US`, `GB`, `DE`)                                                              |
+| `addressRegion`  | string | —       | US state code (`CA`, `TX`) or region code                                                          |
+| `employmentType` | string | —       | `full-time`, `internship`, `part-time`, `contract`                                                 |
+| `remote`         | string | —       | `true` for remote-only jobs (`location=remote` does NOT work — use this instead)                   |
+| `filters`        | string | —       | SEO-style combined slug (e.g., `python-and-internship`, `aerospace`)                               |
+| `limit`          | number | 10      | Results per page (max 50)                                                                          |
+| `offset`         | number | 0       | Absolute pagination offset (max 49,000) — pass the previous page's `nextOffset`; any `limit` works |
+| `format`         | string | —       | `md` for compact markdown (one block per job)                                                      |
 
 ### JSON Response
 
@@ -230,7 +231,7 @@ Deterministic **exact-name resolver** — not a fuzzy search. Returns every pers
 
 ## MCP server (Claude connector)
 
-The same four endpoints are exposed as MCP tools at `https://zerogtalent.com/api/mcp` (Streamable HTTP, no authentication, read-only): `search_jobs`, `get_job`, `resolve_company`, `resolve_person` — same parameters and output as the endpoints above (markdown for jobs, JSON for company/people lookups).
+The same endpoints are exposed as MCP tools at `https://zerogtalent.com/api/mcp` (Streamable HTTP, no authentication, read-only): `search_jobs` (relevance-ranked by default — the site's AI-chat mode; `sort: "new"` for freshness), `get_job`, `resolve_company`, `resolve_person` (exact name), plus `search_people` — semantic search over 180k+ profiles ("nuclear fusion founder"), the same executor as the home-page chat. Same parameters and output as the endpoints above (markdown for jobs, JSON for company/people).
 
 - **Claude.ai / Desktop / mobile (any plan):** Customize → Connectors → Add custom connector → `https://zerogtalent.com/api/mcp`, or open the prefilled dialog: `https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Zero%20G%20Talent&connectorUrl=https%3A%2F%2Fzerogtalent.com%2Fapi%2Fmcp`
 - **Claude Code:** `claude mcp add --transport http zerogtalent https://zerogtalent.com/api/mcp` (the `career-companion` plugin bundles this connector)
