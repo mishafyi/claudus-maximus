@@ -40,7 +40,7 @@
       "name": "career-companion",
       "description": "Career companion for frontier tech \u2014 search live job openings, tailor resumes, and practice interviews across space, AI, robotics, and defense industries; bundles the Zero G Talent MCP connector",
       "source": "./plugins/career-companion",
-      "version": "1.2.3",
+      "version": "1.2.4",
       "category": "productivity",
       "tags": [
         "jobs",
