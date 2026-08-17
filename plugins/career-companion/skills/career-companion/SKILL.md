@@ -31,7 +31,7 @@ Don't wait for the user to ask for each step — look for opportunities to chain
 
 When the `zerogtalent` MCP server is connected (bundled with this plugin; also addable in Claude.ai as a custom connector — see `references/api.md` § MCP server), use its tools instead of curl — same data, no shell needed: `search_jobs` (query, companies, industry, location, country, region, employmentType, remote, sort, limit, offset — relevance-ranked by default, so describe the role in plain words), `get_job` (slug or applyUrl), `resolve_company` (name), `search_people` (descriptive query, semantic), `resolve_person` (exact name, company). The output rules below apply unchanged. Fall back to the curl commands only when the tools are unavailable.
 
-Search live openings via `curl`. See `references/api.md` for full parameter docs and response schema. See `references/companies.md` for company slugs.
+Search live openings via `curl`. See `references/api.md` for full parameter docs and response schema. For a company slug, prefer `resolve_company` / `/api/agent/companies?q={full name}` — `references/companies.md` is only a sample of the largest employers.
 
 ```
 curl -s "https://zerogtalent.com/api/agent/jobs?q=machine+learning+engineer"
@@ -45,7 +45,9 @@ The endpoint defaults to `limit=10`, `isActive=true`, and freshness sort — no 
 
 Users read these results on mobile (Telegram, Slack, etc.) where long messages get truncated and lose formatting. To keep results scannable and consistent:
 
-1. **Don't pass `limit` above 10** — the default is 10 and that's what mobile UIs comfortably render. Paginate via `offset={nextOffset}` if needed.
+**The two paths return different shapes.** The MCP tools and `format=md` return a pre-rendered markdown block per job (`**{title}** at {company}` / metadata line / `[Apply](…) | [JD](…)`, then `Showing N of TOTAL results` and `Next: offset=N`) — salary is already formatted there, so take it verbatim and don't re-derive it. The JSON path (curl without `format=md`) returns the fields named below. Either way, re-emit the results in the template in rule 2 — never pass the tool's markdown through unchanged.
+
+1. **Don't pass `limit` above 10** — the default is 10 and that's what mobile UIs comfortably render. Paginate via `offset={nextOffset}` (JSON) or the `Next: offset=N` line (markdown) if needed.
 2. **Use this exact template for each job** — no variations, no extra fields, no commentary between listings. Blank line between each job.
 
 ```
