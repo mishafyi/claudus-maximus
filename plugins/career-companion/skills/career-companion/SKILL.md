@@ -1,11 +1,7 @@
 ---
 name: career-companion
 description: "Career Companion for frontier tech — AI, space, aerospace, robotics, drones, defense, autonomy. Searches live job openings, tailors resumes and CVs, runs mock interviews, researches salaries. Use when user asks about jobs, careers, job search, job hunting, applying, hiring, resume or CV review, interview prep, salary, compensation, or mentions companies like SpaceX, Rocket Lab, OpenAI, Anthropic, Blue Origin, NASA, Boston Dynamics, Waymo, or any aerospace/AI/robotics company. Also triggers on 'I want to work at X,' 'help me get hired at X,' 'I have an interview at X,' or 'what do they pay at X.'"
-version: "1.2.0"
-emoji: "🚀"
-requires:
-  bins: []
-  env: []
+version: "1.2.3"
 allowed-tools:
   - Bash
 ---
@@ -20,7 +16,7 @@ Powered by [Zero G Talent](https://zerogtalent.com) — live openings from hundr
 
 Chain all three capabilities when a user mentions a role or company:
 
-1. **Search** for the job → get the `slug`
+1. **Search** for the job → keep its `jdUrl`/`applyUrl` (results carry no `slug` field; `get_job` accepts either URL)
 2. **Fetch full description** → extract requirements, skills, culture signals
 3. **Tailor resume** using actual JD language
 4. **Run mock interview** with questions from the role's requirements
@@ -29,15 +25,17 @@ Don't wait for the user to ask for each step — look for opportunities to chain
 
 ## 1. Find Jobs
 
-When the `zerogtalent` MCP server is connected (bundled with this plugin; also addable in Claude.ai as a custom connector — see `references/api.md` § MCP server), use its tools instead of curl — same data, no shell needed: `search_jobs` (query, companies, industry, location, country, region, employmentType, remote, sort, limit, offset — relevance-ranked by default, so describe the role in plain words), `get_job` (slug or applyUrl), `resolve_company` (name), `search_people` (descriptive query, semantic), `resolve_person` (exact name, company). The output rules below apply unchanged. Fall back to the curl commands only when the tools are unavailable.
+When the `zerogtalent` MCP server is connected (bundled with this plugin; also addable in Claude.ai as a custom connector — see `references/api.md` § MCP server), use its tools instead of curl — same data, no shell needed: `search_jobs` (query, companies, industry, location, country, region, employmentType, remote, sort, limit, offset — relevance-ranked by default, so describe the role in plain words), `get_job` (slug or applyUrl), `resolve_company` (name), `search_people` (descriptive query, semantic), `resolve_person` (exact name, company). The output rules below still govern what you print, but read their preamble first — the tools return pre-rendered markdown, not the JSON fields those rules name. Fall back to the curl commands only when the tools are unavailable (`search_people` has no curl equivalent — `/api/agent/people` only matches exact names).
 
 Search live openings via `curl`. See `references/api.md` for full parameter docs and response schema. For a company slug, prefer `resolve_company` / `/api/agent/companies?q={full name}` — `references/companies.md` is only a sample of the largest employers.
 
 ```
-curl -s "https://zerogtalent.com/api/agent/jobs?q=machine+learning+engineer"
-curl -s "https://zerogtalent.com/api/agent/jobs?company=spacex"
-curl -s "https://zerogtalent.com/api/agent/jobs?employmentType=internship&remote=true&q=AI"
+curl -s "https://zerogtalent.com/api/agent/jobs?q=machine+learning+engineer&format=md"
+curl -s "https://zerogtalent.com/api/agent/jobs?company=spacex&format=md"
+curl -s "https://zerogtalent.com/api/agent/jobs?employmentType=internship&remote=true&q=AI&format=md"
 ```
+
+**Always pass `format=md` when listing.** The JSON shape embeds each job's full description: the same search returns ~103 KB as JSON versus ~3 KB as markdown (measured 2026-08-17), so omitting it burns roughly 25k tokens per search for fields a listing never shows. Omit `format` only when you specifically need `category`, `department` or the raw `salary` object.
 
 The endpoint defaults to `limit=10`, `isActive=true`, and freshness sort — no need to pass them. For descriptive queries ("guidance navigation control engineer") add `sort=relevance` so results are ranked by hybrid keyword + semantic match instead of listing date. Each job comes back with pre-built `applyUrl` (the user-facing page) and `jdUrl` (the full markdown JD).
 
@@ -57,7 +55,7 @@ ${salary.min/1000}K–${salary.max/1000}K/yr · [Apply →]({applyUrl})
 ```
 
 3. **Use the `applyUrl` field as-is** — it's already a full https:// URL with the correct industry prefix. No reconstruction needed.
-4. **Salary formatting depends on `salary.interval`** (lowercase strings):
+4. **Salary formatting depends on `salary.interval`** (compare case-insensitively — prod stores `YEAR`/`HOUR`/`MONTH`/`WEEK`; on the markdown path it is already formatted, so copy it verbatim):
    - `year` → `${salary.min/1000}K–${salary.max/1000}K/yr`
    - `hour` → `${salary.min}–${salary.max}/hr`
    - `month` / `week` / `day` → `${salary.min}–${salary.max} ${salary.currency}/{interval}`
@@ -144,7 +142,7 @@ Run a mock interview:
 
 ## Troubleshooting
 
-**0 results:** Broaden keywords or remove company filter. Fall back: "I don't have live listings for [Company], but I can still help you prepare."
+**0 results:** First rule out an outage — relevance search (the connector default) needs the embedding service, and when it or Elasticsearch is unavailable the API answers HTTP 200 with zero jobs and no error. Retry once with `sort=new`, which doesn't embed: if that returns results, the earlier zero was an outage, not your query. Only then broaden keywords or drop the company filter. Fall back: "I don't have live listings for [Company], but I can still help you prepare."
 
 **API timeout:** Retry once. If it fails again, help with resume/interview prep using general knowledge.
 

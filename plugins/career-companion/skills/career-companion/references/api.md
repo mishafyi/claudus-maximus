@@ -71,9 +71,9 @@ Notes:
 - **`applyUrl`** points at the user-facing job page. **`jdUrl`** points at the markdown JD endpoint below.
 - **`listedAt`** is when the job was first listed on Zero G Talent (project-canonical freshness — matches the homepage's sort).
 - **`description`** is the full plain-text description with HTML stripped. Cap your output to a snippet if you don't need the whole thing.
-- **`salary.interval`** is lowercase (`year`, `hour`, `month`, …). Format hourly rates differently — don't divide by 1000.
+- **`salary.interval`** is the raw DB value and is normally UPPERCASE (`YEAR`, `HOUR`, `MONTH`, `WEEK`), with a small lowercase legacy tail — compare case-insensitively. Only yearly figures are annual totals; never divide an hourly/monthly/weekly rate by 1000.
 - **`company.industry`** is the uppercase `CompanyIndustry` enum.
-- **Pagination**: pass `nextOffset` as `offset` in the next request. `hasMore: false` when you've reached the tail.
+- **Pagination**: pass `nextOffset` as `offset` in the next request. Under the default `sort=new`, `hasMore: false` means you've reached the tail. Under `sort=relevance` it goes false at the top-200 rank-fusion window even though `total` reports the full match count — to page deeper than 200, switch to `sort=new` or narrow the filters.
 
 ### Markdown Format (`format=md`)
 
@@ -94,7 +94,7 @@ Next: offset=10
 GET https://zerogtalent.com/api/agent/job/{slug}
 ```
 
-Fetch a single job's full details + up to 5 related active roles at the same company. Pass the `slug` from a search result — or the trailing segment of an `applyUrl` / `jdUrl`. Returns 404 if the job is closed or unknown.
+Fetch a single job's full details + up to 5 related active roles at the same company. Search results carry no `slug` field — pass the trailing path segment of a result's `jdUrl` or `applyUrl` (the MCP `get_job` tool accepts either URL whole). Returns 404 if the job is closed or unknown.
 
 ### Parameters
 
@@ -158,7 +158,7 @@ Cleanest path for LLMs to read a single JD — returns a `text/markdown` documen
 GET https://zerogtalent.com/api/agent/companies?q={name}
 ```
 
-Deterministic, **alias-aware name resolver** — not a fuzzy search. A company name maps to exactly one canonical company on Zero G Talent (e.g. `q=OpenAI`, or `q=x.ai` → xAI), so `companies` holds 0 or 1 item. It matches canonical names and known aliases only — pass the full name (`Anduril Industries`, not `Anduril`); if it returns 0 items, fall back to `search_jobs`/`/api/agent/jobs?q=<company>` where the name is matched as text. Use it to turn a company name into its on-site `url` + slug.
+Deterministic, **alias-aware name resolver** — not a fuzzy search. A company name maps to exactly one canonical company on Zero G Talent (e.g. `q=OpenAI`, or `q=x.ai` → xAI), so `companies` holds 0 or 1 item. It matches canonical names and known aliases only — pass the full name (`Anduril Industries`, not `Anduril`); if it returns 0 items the company isn't tracked — say so. Do **not** fall back to `?q=<company>`: `q` is fuzzy full-text over the whole corpus, so it returns other companies' jobs (e.g. `q=wayve` → 16 results, none at Wayve). Use it to turn a company name into its on-site `url` + slug.
 
 ### Parameters
 
@@ -227,14 +227,17 @@ Deterministic **exact-name resolver** — not a fuzzy search. Returns every pers
 ```
 
 - When a name maps to multiple people, `people` has several entries; each carries `company` (or `companies[]` if tied to more than one). Narrow with `company`.
+- **`total` is the number of rows returned, not the number of matches**, and the result is truncated at `limit` (max 20) with no `hasMore`. If `total` equals your `limit`, assume there may be more.
 - Optional fields (`headline`, `linkedin`, `avatar`) are omitted when absent.
 
 ## MCP server (Claude connector)
 
-The same endpoints are exposed as MCP tools at `https://zerogtalent.com/api/mcp` (Streamable HTTP, no authentication, read-only): `search_jobs` (relevance-ranked by default — the site's AI-chat mode; `sort: "new"` for freshness), `get_job`, `resolve_company`, `resolve_person` (exact name), plus `search_people` — semantic search over 180k+ profiles ("nuclear fusion founder"), the same executor as the home-page chat. Same parameters and output as the endpoints above (markdown for jobs, JSON for company/people).
+The same endpoints are exposed as MCP tools at `https://zerogtalent.com/api/mcp` (Streamable HTTP, no authentication, read-only): `search_jobs` (relevance-ranked by default — the site's AI-chat mode; `sort: "new"` for freshness), `get_job`, `resolve_company`, `resolve_person` (exact name), plus `search_people` — semantic search over 180k+ profiles ("nuclear fusion founder"), the same executor as the home-page chat. Output matches the endpoints above (markdown for jobs, JSON for company/people), but **the tool parameters are renamed**: `q`→`query`, `company`→`companies` (array), `addressCountry`→`country`, `addressRegion`→`region`, `remote` is a boolean, and `filters`/`format` are not exposed. Unknown keys are silently dropped by the schema, so REST parameter names sent to a tool are ignored without an error.
+
+`search_people` has no REST equivalent — `/api/agent/people` is an exact-name resolver, so this is the one tool with no `curl` fallback. It returns `{total, showing, browseUrl, people[{name, headline, company, title, profileUrl}]}` (note `profileUrl`, not `url`; no `slug`/`linkedin`/`avatar`), defaults to 5 results, and `total` is the Elasticsearch match count for the semantic query — a broad relevance figure, not a count of good matches.
 
 - **Claude.ai / Desktop / mobile (any plan):** Customize → Connectors → Add custom connector → `https://zerogtalent.com/api/mcp`, or open the prefilled dialog: `https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Zero%20G%20Talent&connectorUrl=https%3A%2F%2Fzerogtalent.com%2Fapi%2Fmcp`
 - **Claude Code:** `claude mcp add --transport http zerogtalent https://zerogtalent.com/api/mcp` (the `career-companion` plugin bundles this connector)
 - **Any MCP client:** point a Streamable HTTP transport at the URL. Legacy HTTP+SSE is not served.
 
-Privacy: the server processes only tool inputs; it stores no conversation data (see https://zerogtalent.com/privacy).
+Privacy: the connector is read-only and unauthenticated — it needs no account and receives only the arguments Claude sends with a tool call. Zero G Talent's data handling is described at https://zerogtalent.com/privacy.

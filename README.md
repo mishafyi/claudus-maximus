@@ -23,7 +23,7 @@ Then install individual plugins:
 | ------------------------------------- | ------- | ------------- | ---------------------------------------------------------------------------------- |
 | [diagram](#diagram)                   | 1.2.0   | visualization | Generates Mermaid diagrams from actual codebase analysis — not guesswork           |
 | [winning](#winning)                   | 0.8.0   | orchestration | Deploys parallel agents on competing strategies, keeps the winner                  |
-| [career-companion](#career-companion) | 1.2.2   | productivity  | Searches 35,000+ live jobs via the Zero G Talent MCP connector, tailors resumes, runs mock interviews |
+| [career-companion](#career-companion) | 1.2.3   | productivity  | Searches 35,000+ live jobs via the Zero G Talent MCP connector, tailors resumes, runs mock interviews |
 | [journalist](#journalist)             | 1.1.0   | productivity  | Newspaper prose discipline + narrative craft for any extended long-form writing    |
 
 ---
