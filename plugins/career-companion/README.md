@@ -16,7 +16,7 @@ Activates when you mention jobs, careers, hiring, resumes, interviews, salaries,
 
 ## How it works
 
-Bundles the Zero G Talent MCP connector — `https://zerogtalent.com/api/mcp` (Streamable HTTP, read-only, no account or API key) — exposing four tools: `search_jobs`, `get_job`, `resolve_company`, `resolve_person`. Where the connector isn't available the skill falls back to `curl` against the same public API. Either way you get live job listings with salary data, company info, and direct apply links.
+Bundles the Zero G Talent MCP connector — `https://zerogtalent.com/api/mcp` (Streamable HTTP, read-only, no account or API key) — exposing five read-only tools: `search_jobs` (relevance-ranked, like the site's AI chat), `get_job`, `resolve_company`, `search_people` (semantic), `resolve_person`. Where the connector isn't available the skill falls back to `curl` against the same public API. Either way you get live job listings with salary data, company info, and direct apply links.
 
 The connector also works outside Claude Code: in Claude.ai / Desktop / mobile add it as a custom connector (Customize → Connectors → Add custom connector → `https://zerogtalent.com/api/mcp`), or open the prefilled dialog: <https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Zero%20G%20Talent&connectorUrl=https%3A%2F%2Fzerogtalent.com%2Fapi%2Fmcp>.
 

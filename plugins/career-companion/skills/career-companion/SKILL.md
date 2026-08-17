@@ -29,7 +29,7 @@ Don't wait for the user to ask for each step — look for opportunities to chain
 
 ## 1. Find Jobs
 
-When the `zerogtalent` MCP server is connected (bundled with this plugin; also addable in Claude.ai as a custom connector — see `references/api.md` § MCP server), use its tools instead of curl — same data, no shell needed: `search_jobs` (query, companies, industry, location, country, region, employmentType, remote, limit, offset), `get_job` (slug or applyUrl), `resolve_company` (name), `resolve_person` (name, company). The output rules below apply unchanged. Fall back to the curl commands only when the tools are unavailable.
+When the `zerogtalent` MCP server is connected (bundled with this plugin; also addable in Claude.ai as a custom connector — see `references/api.md` § MCP server), use its tools instead of curl — same data, no shell needed: `search_jobs` (query, companies, industry, location, country, region, employmentType, remote, sort, limit, offset — relevance-ranked by default, so describe the role in plain words), `get_job` (slug or applyUrl), `resolve_company` (name), `search_people` (descriptive query, semantic), `resolve_person` (exact name, company). The output rules below apply unchanged. Fall back to the curl commands only when the tools are unavailable.
 
 Search live openings via `curl`. See `references/api.md` for full parameter docs and response schema. See `references/companies.md` for company slugs.
 
@@ -39,7 +39,7 @@ curl -s "https://zerogtalent.com/api/agent/jobs?company=spacex"
 curl -s "https://zerogtalent.com/api/agent/jobs?employmentType=internship&remote=true&q=AI"
 ```
 
-The endpoint defaults to `limit=10`, `isActive=true`, and freshness sort — no need to pass them. Each job comes back with pre-built `applyUrl` (the user-facing page) and `jdUrl` (the full markdown JD).
+The endpoint defaults to `limit=10`, `isActive=true`, and freshness sort — no need to pass them. For descriptive queries ("guidance navigation control engineer") add `sort=relevance` so results are ranked by hybrid keyword + semantic match instead of listing date. Each job comes back with pre-built `applyUrl` (the user-facing page) and `jdUrl` (the full markdown JD).
 
 ### Output rules
 
