@@ -23,7 +23,7 @@ Then install individual plugins:
 | ------------------------------------- | ------- | ------------- | ---------------------------------------------------------------------------------- |
 | [diagram](#diagram)                   | 1.2.0   | visualization | Generates Mermaid diagrams from actual codebase analysis — not guesswork           |
 | [winning](#winning)                   | 0.8.0   | orchestration | Deploys parallel agents on competing strategies, keeps the winner                  |
-| [career-companion](#career-companion) | 1.0.0   | productivity  | Searches 20,000+ live jobs, tailors resumes, runs mock interviews                  |
+| [career-companion](#career-companion) | 1.2.1   | productivity  | Searches 35,000+ live jobs via the Zero G Talent MCP connector, tailors resumes, runs mock interviews |
 | [journalist](#journalist)             | 1.1.0   | productivity  | Newspaper prose discipline + narrative craft for any extended long-form writing    |
 
 ---
@@ -79,11 +79,12 @@ Goal → Refine → Deploy 3 agents → Verify → None pass? → Record learnin
 
 ### career-companion
 
-Career companion for frontier tech industries — space, AI, robotics, and defense. Powered by [Zero G Talent](https://zerogtalent.com) with live data from hundreds of companies via direct ATS integrations. No API key required.
+Career companion for frontier tech industries — space, AI, robotics, and defense. Powered by [Zero G Talent](https://zerogtalent.com) with live data from hundreds of companies via direct ATS integrations. Bundles the Zero G Talent MCP connector (`https://zerogtalent.com/api/mcp`, read-only, no account or API key) — five tools: relevance-ranked job search, full job descriptions, company resolution, semantic people search, exact-name people lookup — with a `curl` fallback in the skill.
 
 **What it does:**
 
-- **Find jobs** — search live openings across SpaceX, OpenAI, Anthropic, NASA, Boston Dynamics, and 200+ more
+- **Find jobs** — search 35,000+ live openings across SpaceX, OpenAI, Anthropic, NASA, Boston Dynamics, and hundreds more; relevance-ranked (hybrid keyword + semantic)
+- **Company & people lookup** — company profiles with open-job counts; semantic people search or exact-name lookup with profile links
 - **Resume help** — review, critique, and tailor resumes to specific job descriptions
 - **Interview prep** — mock interviews with company-specific questions and honest feedback
 

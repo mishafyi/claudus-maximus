@@ -158,7 +158,7 @@ Cleanest path for LLMs to read a single JD — returns a `text/markdown` documen
 GET https://zerogtalent.com/api/agent/companies?q={name}
 ```
 
-Deterministic, **alias-aware name resolver** — not a fuzzy search. A company name maps to exactly one canonical company on Zero G Talent (e.g. `q=OpenAI`, or `q=X` → xAI), so `companies` holds 0 or 1 item. Use it to turn a company name into its on-site `url` + slug.
+Deterministic, **alias-aware name resolver** — not a fuzzy search. A company name maps to exactly one canonical company on Zero G Talent (e.g. `q=OpenAI`, or `q=x.ai` → xAI), so `companies` holds 0 or 1 item. It matches canonical names and known aliases only — pass the full name (`Anduril Industries`, not `Anduril`); if it returns 0 items, fall back to `search_jobs`/`/api/agent/jobs?q=<company>` where the name is matched as text. Use it to turn a company name into its on-site `url` + slug.
 
 ### Parameters
 
