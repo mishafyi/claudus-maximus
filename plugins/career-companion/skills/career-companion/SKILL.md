@@ -1,7 +1,7 @@
 ---
 name: career-companion
 description: "Career Companion for frontier tech — AI, space, aerospace, robotics, drones, defense, autonomy. Searches live job openings, tailors resumes and CVs, runs mock interviews, researches salaries. Use when user asks about jobs, careers, job search, job hunting, applying, hiring, resume or CV review, interview prep, salary, compensation, or mentions companies like SpaceX, Rocket Lab, OpenAI, Anthropic, Blue Origin, NASA, Boston Dynamics, Waymo, or any aerospace/AI/robotics company. Also triggers on 'I want to work at X,' 'help me get hired at X,' 'I have an interview at X,' or 'what do they pay at X.'"
-version: "1.0.0"
+version: "1.2.0"
 emoji: "🚀"
 requires:
   bins: []
