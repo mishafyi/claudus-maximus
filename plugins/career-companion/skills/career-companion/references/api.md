@@ -16,7 +16,7 @@ Active jobs only. Default order is listing freshness (`createdAt` descending); p
 
 | Param            | Type   | Default | Description                                                                                        |
 | ---------------- | ------ | ------- | -------------------------------------------------------------------------------------------------- |
-| `q`              | string | —       | Keyword (full-text + fuzzy)                                                                        |
+| `q`              | string | —       | Keywords; a job matches when 75% of the words appear across its fields                             |
 | `sort`           | string | `new`   | `new` = freshness (exhaustive); `relevance` = hybrid BM25 + semantic ranking (top 200)             |
 | `company`        | string | —       | Company slug (see `references/companies.md`). Repeat the param for multi-company OR.               |
 | `industry`       | string | —       | `SPACE`, `AI`, `ROBOTICS`, `DEFENSE`, `FRONTIER`, `VC` (case-insensitive)                          |
@@ -72,6 +72,8 @@ Notes:
 
 - **No internal IDs, no `null` fields.** Optional fields are omitted from the response (smaller payloads).
 - **`applyUrl`** points at the user-facing job page. **`jdUrl`** points at the markdown JD endpoint below.
+- **`workMode`** is `remote`, `hybrid` or `onsite`; the older `remote` boolean stays for existing clients.
+- **`seniority`** is `Intern`, `Entry`, `Mid`, `Senior`, `Director`, `VP` or `C-Level`, omitted when the role isn't classified.
 - **`listedAt`** is when the job was first listed on Zero G Talent (project-canonical freshness — matches the homepage's sort).
 - **`description`** is the full plain-text description with HTML stripped. Cap your output to a snippet if you don't need the whole thing.
 - **`salary.interval`** is the raw DB value and is normally UPPERCASE (`YEAR`, `HOUR`, `MONTH`, `WEEK`), with a small lowercase legacy tail — compare case-insensitively. Only yearly figures are annual totals; never divide an hourly/monthly/weekly rate by 1000.
@@ -168,7 +170,7 @@ Related-job entries omit `description` to keep payloads small. Fetch each relate
 
 ### Markdown Format (`format=md`)
 
-Cleanest path for LLMs to read a single JD — returns a `text/markdown` document with title, metadata table, description, apply link, and related-roles list.
+Cleanest path for LLMs to read a single JD — returns a `text/markdown` document (the same one as `/api/md/job/{slug}`): title; company, location, work mode, seniority, employment type, salary, category, department and listing date; apply link; "What you'll do" and "What you need"; the description with its headings and lists; and up to 5 other open roles at the company.
 
 ## Resolve Company
 
@@ -176,7 +178,7 @@ Cleanest path for LLMs to read a single JD — returns a `text/markdown` documen
 GET https://zerogtalent.com/api/agent/companies?q={name}
 ```
 
-Deterministic, **alias-aware name resolver** — not a fuzzy search. A company name maps to exactly one canonical company on Zero G Talent (e.g. `q=OpenAI`, or `q=x.ai` → xAI), so `companies` holds 0 or 1 item. It matches canonical names and known aliases only — pass the full name (`Anduril Industries`, not `Anduril`); if it returns 0 items the company isn't tracked — say so. Do **not** fall back to `?q=<company>`: `q` is fuzzy full-text over the whole corpus, so it returns other companies' jobs (e.g. `q=wayve` → 16 results, none at Wayve). Use it to turn a company name into its on-site `url` + slug.
+Deterministic, **alias-aware name resolver** — not a fuzzy search. A company name maps to exactly one canonical company on Zero G Talent (e.g. `q=OpenAI`, or `q=x.ai` → xAI), so `companies` holds 0 or 1 item. It matches canonical names and known aliases only — pass the full name (`Anduril Industries`, not `Anduril`); if it returns 0 items the company isn't tracked — say so. Do **not** fall back to `?q=<company>`: `q` is full-text over every field, so it also returns other companies' jobs that mention the name. Use it to turn a company name into its on-site `url` + slug.
 
 ### Parameters
 
@@ -209,6 +211,7 @@ Deterministic, **alias-aware name resolver** — not a fuzzy search. A company n
 - `hq` is the company's stored address and is **not normalised to a city** — it may be a street address (SpaceX: `1 Rocket Road, TX, US`, NASA: `300 E Street SW, US`) or a city (`San Francisco, CA, US`). Don't parse it as `city, region, country`; show it verbatim.
 - `openJobs` is the count of currently-active roles; `industry` is the uppercase `CompanyIndustry` enum.
 - Optional fields (`logoUrl`, `website`, `hq`, `description`) are omitted when absent.
+- The company object is the full profile Search Companies returns — `careersUrl`, `slogan`, `foundedYear`, `employeeCount`, `stage`, `funding`, `investors`, the YC fields (`batch`, `ycIndustry`, `regions`, `hiringDescription`, `techDescription`), `portfolios`, `socials` (`linkedin`, `twitter`, `github`, `crunchbase`, `facebook`, `youtube`, `instagram`) and `founders` (`name`, `slug`, `title`, `url` of each founder's profile; this resolver only, not Search Companies) — every field omitted when unknown. The sample above predates those fields.
 
 Pass `suggest=true` and a name that resolves to nothing comes back with a
 `suggestions` array of up to 5 tracked companies matching by name, best match
@@ -240,6 +243,160 @@ GET /api/agent/companies?q=Anduril&suggest=true
 confirm with the user, not an answer. Empty `companies` **and** an empty or
 absent `suggestions` means the company is genuinely not tracked. The MCP
 `resolve_company` tool sets the flag for you.
+
+## Search Companies
+
+```
+GET https://zerogtalent.com/api/agent/companies/search
+```
+
+Filtered listing of tracked companies — the facet set of the site's `/people` directory, applied to the companies themselves. Use it for "which companies…" questions (YC batch or category, funding stage, investor, region, HQ country, headcount); use Resolve Company when you already have a name. Ordered by open-job count, then name.
+
+### Parameters
+
+All optional. List params take comma-separated values — OR within a param, AND across params — and match case-insensitively.
+
+| Param        | Type   | Default | Description                                                                                                                                                                   |
+| ------------ | ------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `q`          | string | —       | Name/slug substring, 2–80 chars. Not ranked — for a known name use Resolve Company                                                                                            |
+| `industry`   | list   | —       | `SPACE`, `AI`, `ROBOTICS`, `DEFENSE`, `FRONTIER`, `VC`                                                                                                                        |
+| `ycIndustry` | list   | —       | YC category: `B2B`, `Consumer`, `Healthcare`, `Fintech`, `Industrials`, `Real Estate and Construction`, `Education`, `Government`                                             |
+| `region`     | list   | —       | YC macro-region: `America / Canada`, `Europe`, `South Asia`, `Latin America`, `Southeast Asia`, `Africa`, `Middle East and North Africa`, `East Asia`, `Oceania`, or `Remote` |
+| `batch`      | list   | —       | YC batch as code (`W24`, `S21`, `F26`; Spring is `P26`) or season name (`Fall 2026`, `Spring 2026`)                                                                           |
+| `stage`      | list   | —       | `Seed`, `Series A`, `Series B+`, `Growth`, `Late Stage`, `IPO`, `Acquired`, `Venture`, `Grant`                                                                                |
+| `vc`         | list   | —       | Investor/accelerator slug whose portfolio holds the company (`yc`, `a16z`, `sequoia`, `founders-fund`) — take slugs from the `vc` facet                                       |
+| `country`    | list   | —       | HQ country as stored, mostly ISO-2 (`US`, `GB`, `IN`) — take values from the `country` facet                                                                                  |
+| `sizeMin`    | number | —       | Minimum employee count (inclusive)                                                                                                                                            |
+| `sizeMax`    | number | —       | Maximum employee count (inclusive)                                                                                                                                            |
+| `limit`      | number | 10      | Results per page (max 50)                                                                                                                                                     |
+| `offset`     | number | 0       | Absolute pagination offset (max 10,000) — pass the previous page's `nextOffset`                                                                                               |
+
+### JSON Response
+
+```
+GET /api/agent/companies/search?stage=Seed&region=Europe&industry=space&limit=1
+```
+
+```json
+{
+  "companies": [
+    {
+      "name": "HyLight",
+      "slug": "hylight",
+      "industry": "SPACE",
+      "url": "https://zerogtalent.com/space-companies/hylight",
+      "logoUrl": "https://zerogtalent.com/logos/hylight.png",
+      "website": "https://www.hylight.aero/",
+      "careersUrl": "https://www.workatastartup.com/companies/hylight",
+      "slogan": "Small unmanned hydrogen airships for long range monitoring",
+      "hq": "Paris, Ile-de-France, FR",
+      "openJobs": 9,
+      "description": "Small unmanned hydrogen airships for long range monitoring",
+      "foundedYear": 2022,
+      "employeeCount": 22,
+      "stage": "Seed",
+      "funding": "$4.4M",
+      "investors": "Y Combinator, Collaborative Fund, Kima Ventures, SkyDeck Berkeley, Ring Capital",
+      "batch": "S23",
+      "ycIndustry": "Industrials",
+      "regions": ["Europe"],
+      "portfolios": ["y-combinator", "yc"],
+      "socials": {
+        "linkedin": "https://www.linkedin.com/company/hylightaero/",
+        "twitter": "https://x.com/hylight_aero?s=20",
+        "crunchbase": "https://www.crunchbase.com/organization/hylight"
+      }
+    }
+  ],
+  "total": 3,
+  "hasMore": true,
+  "nextOffset": 1,
+  "facets": {
+    "industry": [
+      {
+        "key": "AI",
+        "count": 59
+      },
+      {
+        "key": "FRONTIER",
+        "count": 11
+      },
+      {
+        "key": "SPACE",
+        "count": 3
+      },
+      {
+        "key": "ROBOTICS",
+        "count": 2
+      }
+    ],
+    "ycIndustry": [
+      {
+        "key": "Industrials",
+        "count": 3
+      }
+    ],
+    "region": [
+      {
+        "key": "America / Canada",
+        "count": 16
+      },
+      {
+        "key": "Remote",
+        "count": 6
+      },
+      {
+        "key": "Europe",
+        "count": 3
+      },
+      {
+        "key": "Latin America",
+        "count": 2
+      }
+    ],
+    "stage": [
+      {
+        "key": "Seed",
+        "count": 3
+      }
+    ],
+    "batch": [
+      {
+        "key": "S23",
+        "count": 1
+      },
+      {
+        "key": "S24",
+        "count": 1
+      }
+    ],
+    "vc": [
+      {
+        "key": "yc",
+        "count": 2
+      },
+      {
+        "key": "y-combinator",
+        "count": 1
+      }
+    ],
+    "country": [
+      {
+        "key": "FR",
+        "count": 2
+      },
+      {
+        "key": "GB",
+        "count": 1
+      }
+    ]
+  }
+}
+```
+
+- Each company is the full public profile: identity (`url`, `logoUrl`, `website`, `careersUrl`, `slogan`, `description`), `hq`, `openJobs`, `foundedYear`, `employeeCount`, funding (`stage`, `funding`, `investors`, `portfolios`), the YC fields (`batch`, `ycIndustry`, `regions`, `hiringDescription`, `techDescription`) and `socials` (`linkedin`, `twitter`, `github`, `crunchbase`, `facebook`, `youtube`, `instagram`). Every field is omitted when unknown — no second call is needed to get a company's socials or description.
+- `facets` ships on the first page only (`offset=0`). Each facet counts with every **other** active filter applied — above, `industry` lists the Seed + Europe companies across all industries — so you can discover valid values and pivot within a facet. Pass facet keys back verbatim.
+- Coverage is partial: of ~25k tracked companies, ~6k carry the YC fields (`batch`, `ycIndustry`, `regions`), ~4k a `stage`, ~10k an `employeeCount`. A company missing an attribute never matches a filter on it, so an empty result means "none with that data on file", not "none exist". Some investors appear under two slugs (`yc` and `y-combinator`, `a16z` and `andreessen-horowitz`) — pass both.
 
 ## Salary Statistics
 
@@ -322,15 +479,17 @@ what employers advertise, and equity and bonus are not in them.
 GET https://zerogtalent.com/api/agent/people?q={name}&company={slug}
 ```
 
-Deterministic **exact-name resolver** — not a fuzzy search. Returns every person whose name matches `q` (case-insensitive). Names collide, so pass `company={slug}` to disambiguate to the person at that company.
+Deterministic **exact-name resolver** — not a fuzzy search. Returns every person whose name matches `q` (case-insensitive). Names collide, so pass `company={slug}` to disambiguate.
+
+Without an API key each person carries a profile's public fields only, and `company=` matches each person's primary employer, the one their profile headline names. An operator-issued key (`x-api-key: <key>`) adds every employer, investments, LinkedIn and the profile's `bio`, `location`, `quote` and `focusAreas`, and `company=` then matches any employment link.
 
 ### Parameters
 
-| Param     | Type   | Default | Description                                           |
-| --------- | ------ | ------- | ----------------------------------------------------- |
-| `q`       | string | —       | Person name (required), case-insensitive exact match. |
-| `company` | string | —       | Company slug to disambiguate same-named people.       |
-| `limit`   | number | 10      | Max results (1–20).                                   |
+| Param     | Type   | Default | Description                                                                                                       |
+| --------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------------- |
+| `q`       | string | —       | Person name (required), case-insensitive exact match.                                                             |
+| `company` | string | —       | Company slug to disambiguate same-named people: the primary employer without a key, any employment link with one. |
+| `limit`   | number | 10      | Max results (1–20).                                                                                               |
 
 ### JSON Response
 
@@ -338,22 +497,32 @@ Deterministic **exact-name resolver** — not a fuzzy search. Returns every pers
 {
   "people": [
     {
-      "name": "Gwynne Shotwell",
-      "slug": "gwynne-shotwell",
-      "url": "https://zerogtalent.com/people/gwynne-shotwell",
-      "headline": "President & COO at SpaceX",
-      "company": "SpaceX",
-      "linkedin": "https://www.linkedin.com/in/…",
-      "avatar": "https://zerogtalent.com/avatars/gwynne-shotwell.jpeg"
+      "name": "Jared Friedman",
+      "slug": "jared-friedman",
+      "url": "https://zerogtalent.com/people/jared-friedman",
+      "headline": "Group Partner at Y Combinator",
+      "company": "Y Combinator",
+      "avatar": "https://zerogtalent.com/avatars/jared-friedman.jpeg"
     }
   ],
   "total": 1
 }
 ```
 
-- When a name maps to multiple people, `people` has several entries; each carries `company` (or `companies[]` if tied to more than one). Narrow with `company`.
+With a key, each person carries `company` (or `companies[]` when tied to more than one employer), `investments` and `linkedin`:
+
+```json
+"companies": ["Y Combinator", "Scribd"],
+"investments": ["Airgoods"],
+"linkedin": "https://www.linkedin.com/in/…"
+```
+
+- When a name maps to multiple people, `people` has several entries. Narrow with `company`.
+- With a key, `company`/`companies` list employment; `investments` lists the companies the person is recorded as investing in, and `company=` matches employment only — an investor is not a match for the company they backed.
+- `investments` carries every recorded investment, so a prolific angel returns hundreds — one Y Combinator partner holds 155.
+- A company can legitimately appear in both lists: `PersonCompany` is unique per person, company **and role**, so someone who works at a company and also invested in it holds a `team` row and an `investor` row there.
 - **`total` is the number of rows returned, not the number of matches**, and the result is truncated at `limit` (max 20) with no `hasMore`. If `total` equals your `limit`, assume there may be more.
-- Optional fields (`headline`, `linkedin`, `avatar`) are omitted when absent.
+- Optional fields (`headline`, `company`, `avatar`, and with a key `linkedin`) are omitted when absent.
 
 ## MCP server (Claude connector)
 
