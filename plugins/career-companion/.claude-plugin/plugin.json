@@ -1,6 +1,6 @@
 {
   "name": "career-companion",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Career companion for frontier tech — search live job openings, tailor resumes, and practice interviews across space, AI, robotics, and defense industries; bundles the Zero G Talent MCP connector",
   "author": {
     "name": "misha"
@@ -8,6 +8,7 @@
   "homepage": "https://github.com/mishafyi/claudus-maximus/tree/master/plugins/career-companion",
   "repository": "https://github.com/mishafyi/claudus-maximus",
   "license": "MIT",
+  "privacyPolicyUrl": "https://zerogtalent.com/privacy",
   "keywords": [
     "jobs",
     "career",

@@ -2,7 +2,7 @@
 
 Public, no authentication required. Built specifically for AI agents — slim JSON shape, pre-built URLs, plain-text description, no internal IDs or null fields.
 
-Example payloads below are real responses captured 2026-08-17; live counts and asset extensions change, so treat the values as shape documentation rather than current data.
+Example payloads below are real responses, trimmed; live counts and asset extensions change, so treat the values as shape documentation rather than current data.
 
 ## Search Jobs
 
@@ -27,7 +27,7 @@ Active jobs only. Default order is listing freshness (`createdAt` descending); p
 | `remote`         | string | —       | `true` for remote-only jobs (`location=remote` does NOT work — use this instead)                   |
 | `filters`        | string | —       | SEO-style combined slug (e.g., `python-and-internship`, `aerospace`)                               |
 | `limit`          | number | 10      | Results per page (max 50)                                                                          |
-| `offset`         | number | 0       | Absolute pagination offset (max 49,000) — pass the previous page's `nextOffset`; any `limit` works |
+| `offset`         | number | 0       | Absolute pagination offset (max 10,000 minus `limit`; results end at 10,000) — pass the previous page's `nextOffset`; any `limit` works |
 | `format`         | string | —       | `md` compact markdown (one block per job); `slim` JSON without descriptions                        |
 | `ref`            | string | —       | Traffic-source marker echoed onto every `applyUrl` as `?s=`; `[a-z][a-z0-9_-]{0,31}` or ignored    |
 
@@ -37,32 +37,34 @@ Active jobs only. Default order is listing freshness (`createdAt` descending); p
 {
   "jobs": [
     {
-      "title": "Stock Plan Administrator",
-      "location": "Hawthorne, CA, United States",
+      "title": "Sr. Software Engineer (Starlink)",
       "remote": false,
+      "workMode": "onsite",
       "employmentTypes": ["FULL_TIME"],
-      "category": "Business & Finance",
-      "department": "G&A",
-      "salary": {
-        "min": 85000,
-        "max": 120000,
-        "currency": "USD",
-        "interval": "year"
-      },
-      "listedAt": "2026-05-17T02:51:20.875Z",
+      "listedAt": "2026-10-31T00:15:41.891Z",
       "company": {
         "name": "SpaceX",
         "slug": "spacex",
         "industry": "SPACE",
         "logoUrl": "https://zerogtalent.com/logos/spacex.jpeg",
-        "country": "USA"
+        "country": "United States"
       },
-      "applyUrl": "https://zerogtalent.com/space-jobs/spacex/stock-plan-administrator-8553046002",
-      "jdUrl": "https://zerogtalent.com/api/agent/job/stock-plan-administrator-8553046002",
-      "description": "SpaceX was founded under the belief that…"
+      "applyUrl": "https://zerogtalent.com/space-jobs/spacex/sr-software-engineer-starlink-8924709002",
+      "jdUrl": "https://zerogtalent.com/api/agent/job/sr-software-engineer-starlink-8924709002",
+      "location": "Redmond, WA",
+      "seniority": "Senior",
+      "category": "Software",
+      "department": "Other",
+      "salary": {
+        "min": 165000,
+        "max": 270000,
+        "currency": "USD",
+        "interval": "YEAR"
+      },
+      "description": "SpaceX was founded under the belief that a futur…"
     }
   ],
-  "total": 1667,
+  "total": 2874,
   "hasMore": true,
   "nextOffset": 10
 }
@@ -78,7 +80,7 @@ Notes:
 - **`description`** is the full plain-text description with HTML stripped. Cap your output to a snippet if you don't need the whole thing.
 - **`salary.interval`** is the raw DB value and is normally UPPERCASE (`YEAR`, `HOUR`, `MONTH`, `WEEK`), with a small lowercase legacy tail — compare case-insensitively. Only yearly figures are annual totals; never divide an hourly/monthly/weekly rate by 1000.
 - **`company.industry`** is the uppercase `CompanyIndustry` enum.
-- **Pagination**: pass `nextOffset` as `offset` in the next request. Under the default `sort=new`, `hasMore: false` means you've reached the tail. Under `sort=relevance` it goes false at the top-200 rank-fusion window even though `total` reports the full match count — to page deeper than 200, switch to `sort=new` or narrow the filters.
+- **Pagination**: pass `nextOffset` as `offset` in the next request. Under the default `sort=new`, `hasMore: false` means you've reached the tail, or the 10,000th result: when `total` is larger, narrow the filters to reach the rest. Under `sort=relevance` it goes false at the top-200 rank-fusion window even though `total` reports the full match count — to page deeper than 200, switch to `sort=new` or narrow the filters.
 
 ### Markdown Format (`format=md`)
 
@@ -119,48 +121,57 @@ Fetch a single job's full details + up to 5 related active roles at the same com
 | `format` | string | —       | `md` for clean markdown (title, metadata, description, related) |
 | `ref`    | string | —       | Traffic-source marker echoed onto `applyUrl` and related roles  |
 
-The markdown header carries `Remote` when the role is remote, plus a
-`Category: … | Department: … | Listed: YYYY-MM-DD` line.
-
 ### JSON Response
 
 ```json
 {
   "job": {
-    "title": "Stock Plan Administrator",
-    "location": "Hawthorne, CA, United States",
+    "title": "Sr. Software Engineer (Starlink)",
     "remote": false,
+    "workMode": "onsite",
     "employmentTypes": ["FULL_TIME"],
-    "category": "Business & Finance",
-    "department": "G&A",
-    "salary": {
-      "min": 85000,
-      "max": 120000,
-      "currency": "USD",
-      "interval": "year"
-    },
-    "listedAt": "2026-05-17T02:51:20.875Z",
+    "listedAt": "2026-10-31T00:15:41.891Z",
     "company": {
       "name": "SpaceX",
       "slug": "spacex",
       "industry": "SPACE",
       "logoUrl": "https://zerogtalent.com/logos/spacex.jpeg",
-      "country": "USA"
+      "country": "United States"
     },
-    "applyUrl": "https://zerogtalent.com/space-jobs/spacex/stock-plan-administrator-8553046002",
-    "jdUrl": "https://zerogtalent.com/api/agent/job/stock-plan-administrator-8553046002",
-    "description": "SpaceX was founded under the belief that…"
+    "applyUrl": "https://zerogtalent.com/space-jobs/spacex/sr-software-engineer-starlink-8924709002",
+    "jdUrl": "https://zerogtalent.com/api/agent/job/sr-software-engineer-starlink-8924709002",
+    "location": "Redmond, WA",
+    "seniority": "Senior",
+    "category": "Software",
+    "department": "Other",
+    "salary": {
+      "min": 165000,
+      "max": 270000,
+      "currency": "USD",
+      "interval": "YEAR"
+    },
+    "description": "SpaceX was founded under the belief that a futur…"
   },
   "relatedJobs": [
     {
-      "title": "Propulsion Engineer",
-      "location": "Hawthorne, CA, United States",
-      "company": { "name": "SpaceX", "slug": "spacex", "industry": "SPACE" },
-      "applyUrl": "https://zerogtalent.com/space-jobs/spacex/propulsion-engineer-…",
-      "jdUrl": "https://zerogtalent.com/api/agent/job/propulsion-engineer-…",
-      "listedAt": "…",
+      "title": "OT Network Engineer, Mission Systems",
+      "remote": false,
+      "workMode": "onsite",
       "employmentTypes": ["FULL_TIME"],
-      "remote": false
+      "listedAt": "2026-10-30T23:15:42.643Z",
+      "company": {
+        "name": "SpaceX",
+        "slug": "spacex",
+        "industry": "SPACE",
+        "logoUrl": "https://zerogtalent.com/logos/spacex.jpeg",
+        "country": "United States"
+      },
+      "applyUrl": "https://zerogtalent.com/space-jobs/spacex/ot-network-engineer-mission-systems-8925985002",
+      "jdUrl": "https://zerogtalent.com/api/agent/job/ot-network-engineer-mission-systems-8925985002",
+      "location": "Memphis, TN",
+      "seniority": "Mid",
+      "category": "Software",
+      "department": "Other"
     }
   ]
 }
@@ -198,9 +209,33 @@ Deterministic, **alias-aware name resolver** — not a fuzzy search. A company n
       "url": "https://zerogtalent.com/ai-companies/openai",
       "logoUrl": "https://zerogtalent.com/logos/openai.jpeg",
       "website": "https://openai.com",
+      "careersUrl": "https://jobs.ashbyhq.com/openai",
+      "slogan": "OpenAI is an AI research and deployment company dedicated to…",
       "hq": "San Francisco, CA, US",
-      "openJobs": 721,
-      "description": "…"
+      "openJobs": 813,
+      "description": "OpenAI is an AI research and deployment company dedicated to…",
+      "foundedYear": 2015,
+      "employeeCount": 7457,
+      "stage": "Growth",
+      "funding": "$201.0B",
+      "investors": "Andreessen Horowitz; Mana Ventures; VU Venture Partners, And…",
+      "portfolios": ["a16z", "founders-fund", "sequoia"],
+      "socials": {
+        "linkedin": "https://www.linkedin.com/company/openai",
+        "twitter": "https://www.twitter.com/OpenAI",
+        "facebook": "https://www.facebook.com/openai",
+        "instagram": "https://www.instagram.com/openai/",
+        "tiktok": "https://www.tiktok.com/@openai",
+        "crunchbase": "https://www.crunchbase.com/organization/openai"
+      },
+      "founders": [
+        {
+          "name": "Sam Altman",
+          "slug": "sam-altman",
+          "title": "Co-Founder and CEO",
+          "url": "https://zerogtalent.com/people/sam-altman"
+        }
+      ]
     }
   ],
   "total": 1
@@ -211,11 +246,11 @@ Deterministic, **alias-aware name resolver** — not a fuzzy search. A company n
 - `hq` is the company's stored address and is **not normalised to a city** — it may be a street address (SpaceX: `1 Rocket Road, TX, US`, NASA: `300 E Street SW, US`) or a city (`San Francisco, CA, US`). Don't parse it as `city, region, country`; show it verbatim.
 - `openJobs` is the count of currently-active roles; `industry` is the uppercase `CompanyIndustry` enum.
 - Optional fields (`logoUrl`, `website`, `hq`, `description`) are omitted when absent.
-- The company object is the full profile Search Companies returns — `careersUrl`, `slogan`, `foundedYear`, `employeeCount`, `stage`, `funding`, `investors`, the YC fields (`batch`, `ycIndustry`, `regions`, `hiringDescription`, `techDescription`), `portfolios`, `socials` (`linkedin`, `twitter`, `github`, `crunchbase`, `facebook`, `youtube`, `instagram`) and `founders` (`name`, `slug`, `title`, `url` of each founder's profile; this resolver only, not Search Companies) — every field omitted when unknown. The sample above predates those fields.
+- The company object is the full profile Search Companies returns — `careersUrl`, `slogan`, `foundedYear`, `employeeCount`, `stage`, `funding`, `investors`, the YC fields (`batch`, `ycIndustry`, `regions`, `hiringDescription`, `techDescription`), `portfolios`, `socials` (`linkedin`, `twitter`, `github`, `crunchbase`, `facebook`, `youtube`, `instagram`, `tiktok`) and `founders` (`name`, `slug`, `title`, `url` of each founder's profile; this resolver only, not Search Companies) — every field omitted when unknown.
 
 Pass `suggest=true` and a name that resolves to nothing comes back with a
 `suggestions` array of up to 5 tracked companies matching by name, best match
-first — the everyday short form of a company usually lands here. Without the
+first, each with the same profile as a resolved company (trimmed to six fields below) — the everyday short form of a company usually lands here. Without the
 flag the endpoint stays a pure exact resolver:
 
 ```
@@ -232,7 +267,7 @@ GET /api/agent/companies?q=Anduril&suggest=true
       "slug": "anduril-industries",
       "industry": "DEFENSE",
       "url": "https://zerogtalent.com/defense-companies/anduril-industries",
-      "openJobs": 2147,
+      "openJobs": 2567,
       "hq": "Costa Mesa, CA, US"
     }
   ]
@@ -394,9 +429,9 @@ GET /api/agent/companies/search?stage=Seed&region=Europe&industry=space&limit=1
 }
 ```
 
-- Each company is the full public profile: identity (`url`, `logoUrl`, `website`, `careersUrl`, `slogan`, `description`), `hq`, `openJobs`, `foundedYear`, `employeeCount`, funding (`stage`, `funding`, `investors`, `portfolios`), the YC fields (`batch`, `ycIndustry`, `regions`, `hiringDescription`, `techDescription`) and `socials` (`linkedin`, `twitter`, `github`, `crunchbase`, `facebook`, `youtube`, `instagram`). Every field is omitted when unknown — no second call is needed to get a company's socials or description.
+- Each company is the full public profile: identity (`url`, `logoUrl`, `website`, `careersUrl`, `slogan`, `description`), `hq`, `openJobs`, `foundedYear`, `employeeCount`, funding (`stage`, `funding`, `investors`, `portfolios`), the YC fields (`batch`, `ycIndustry`, `regions`, `hiringDescription`, `techDescription`) and `socials` (`linkedin`, `twitter`, `github`, `crunchbase`, `facebook`, `youtube`, `instagram`, `tiktok`). Every field is omitted when unknown — no second call is needed to get a company's socials or description.
 - `facets` ships on the first page only (`offset=0`). Each facet counts with every **other** active filter applied — above, `industry` lists the Seed + Europe companies across all industries — so you can discover valid values and pivot within a facet. Pass facet keys back verbatim.
-- Coverage is partial: of ~25k tracked companies, ~6k carry the YC fields (`batch`, `ycIndustry`, `regions`), ~4k a `stage`, ~10k an `employeeCount`. A company missing an attribute never matches a filter on it, so an empty result means "none with that data on file", not "none exist". Some investors appear under two slugs (`yc` and `y-combinator`, `a16z` and `andreessen-horowitz`) — pass both.
+- Coverage is partial: of ~26k tracked companies, ~6k carry the YC fields (`batch`, `ycIndustry`, `regions`), ~10k a `stage`, ~21k an `employeeCount`. A company missing an attribute never matches a filter on it, so an empty result means "none with that data on file", not "none exist". Some investors appear under two slugs (`yc` and `y-combinator`, `a16z` and `andreessen-horowitz`) — pass both.
 
 ## Salary Statistics
 
@@ -526,9 +561,9 @@ With a key, each person carries `company` (or `companies[]` when tied to more th
 
 ## MCP server (Claude connector)
 
-The same endpoints are exposed as MCP tools at `https://zerogtalent.com/api/mcp` (Streamable HTTP, no authentication, read-only): `search_jobs` (relevance-ranked by default — the site's AI-chat mode; `sort: "new"` for freshness), `get_job`, `resolve_company`, `resolve_person` (exact name), plus `search_people` — semantic search over 180k+ profiles ("nuclear fusion founder"), the same executor as the home-page chat. Output matches the endpoints above (markdown for jobs, JSON for company/people), but **the tool parameters are renamed**: `q`→`query`, `company`→`companies` (array), `addressCountry`→`country`, `addressRegion`→`region`, `remote` is a boolean, and `filters`/`format` are not exposed. Unknown keys are silently dropped by the schema, so REST parameter names sent to a tool are ignored without an error.
+The same endpoints are exposed as MCP tools at `https://zerogtalent.com/api/mcp` (Streamable HTTP, no authentication, read-only): `search_jobs` (relevance-ranked by default — the site's AI-chat mode; `sort: "new"` for freshness), `get_job`, `resolve_company`, `resolve_person` (exact name), plus `search_people` — a name search over 180k+ profiles (the people whose name holds the query word for word, any case, no typos; headlines, bios and companies aren't searched), the same executor as the home-page chat. Output matches the endpoints above (markdown for jobs, JSON for company/people), but **the tool parameters are renamed**: `q`→`query`, `company`→`companies` (array), `addressCountry`→`country`, `addressRegion`→`region`, `remote` is a boolean, and `filters`/`format` are not exposed. Unknown keys are silently dropped by the schema, so REST parameter names sent to a tool are ignored without an error.
 
-`search_people` has no REST equivalent — `/api/agent/people` is an exact-name resolver, so this is the one tool with no `curl` fallback. It returns `{total, showing, browseUrl, people[{name, headline, company, title, profileUrl}]}` (note `profileUrl`, not `url`; no `slug`/`linkedin`/`avatar`), defaults to 5 results, and `total` is the Elasticsearch match count for the semantic query — a broad relevance figure, not a count of good matches.
+`search_people` has no REST equivalent — `/api/agent/people` is an exact-name resolver, so this is the one tool with no `curl` fallback. It returns `{total, showing, browseUrl, people[{name, headline, company, title, profileUrl}]}` (note `profileUrl`, not `url`; no `slug`/`linkedin`/`avatar`), defaults to 5 results, and `total` counts every profile the query matches.
 
 - **Claude.ai / Desktop / mobile (any plan):** Customize → Connectors → Add custom connector → `https://zerogtalent.com/api/mcp`, or open the prefilled dialog: `https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Zero%20G%20Talent&connectorUrl=https%3A%2F%2Fzerogtalent.com%2Fapi%2Fmcp`
 - **Claude Code:** `claude mcp add --transport http zerogtalent https://zerogtalent.com/api/mcp` (the `career-companion` plugin bundles this connector)

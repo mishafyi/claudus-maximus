@@ -33,11 +33,11 @@ This is a hand-maintained sample of the largest employers, not the full list —
 | Anthropic         | `anthropic`         |
 | xAI               | `xai`               |
 | Scale AI          | `scale-ai`          |
-| Aurora Innovation | `aurora-innovation` |
+| Harvey AI         | `harvey-ai`         |
 | Cohere            | `cohere`            |
 | Cursor            | `cursor`            |
 | Perplexity        | `perplexity`        |
-| DeepMind          | `deepmind`          |
+| Mistral AI        | `mistral-ai`        |
 | Together AI       | `together-ai`       |
 
 ## Robotics (URL prefix: `robotics-jobs`)
@@ -67,7 +67,7 @@ The `FRONTIER` industry is the catch-all for frontier-tech companies that don't 
 | ASML              | `asml`              |
 | Waymo             | `waymo`             |
 | ArianeGroup       | `arianegroup`       |
-| Deel              | `deel`              |
+| Stripe            | `stripe`            |
 | Helion Energy     | `helion-energy`     |
 | IonQ              | `ionq`              |
 | Neuralink         | `neuralink`         |

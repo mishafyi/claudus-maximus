@@ -1,7 +1,7 @@
 ---
 name: career-companion
 description: "Career Companion for frontier tech — AI, space, aerospace, robotics, drones, defense, autonomy. Searches live job openings, tailors resumes and CVs, runs mock interviews, researches salaries. Use when user asks about jobs, careers, job search, job hunting, applying, hiring, resume or CV review, interview prep, salary, compensation, or mentions companies like SpaceX, Rocket Lab, OpenAI, Anthropic, Blue Origin, NASA, Boston Dynamics, Waymo, or any aerospace/AI/robotics company. Also triggers on 'I want to work at X,' 'help me get hired at X,' 'I have an interview at X,' or 'what do they pay at X.'"
-version: "1.3.0"
+version: "1.4.1"
 allowed-tools:
   - Bash
 ---
@@ -10,7 +10,7 @@ allowed-tools:
 
 Your Career Companion for jobs of the future. Find roles, prepare resumes, and practice interviews across space, AI, robotics, and defense industries.
 
-Powered by [Zero G Talent](https://zerogtalent.com) — live openings from hundreds of frontier tech companies via direct ATS integrations.
+Powered by [Zero G Talent](https://zerogtalent.com) — live openings from about 2,000 frontier tech companies via direct ATS integrations.
 
 ## Workflow
 
@@ -25,7 +25,7 @@ Don't wait for the user to ask for each step — look for opportunities to chain
 
 ## 1. Find Jobs
 
-When the `zerogtalent` MCP server is connected (bundled with this plugin; also addable in Claude.ai as a custom connector — see `references/api.md` § MCP server), use its tools instead of curl — same data, no shell needed: `search_jobs` (query, companies, industry, location, country, region, employmentType, remote, sort, limit, offset — relevance-ranked by default, so describe the role in plain words), `get_job` (slug or applyUrl), `resolve_company` (name), `search_people` (descriptive query, semantic), `resolve_person` (exact name, company), `get_salary_stats` (category and/or company — see § 4). The output rules below still govern what you print, but read their preamble first — the tools return pre-rendered markdown, not the JSON fields those rules name. Fall back to the curl commands only when the tools are unavailable (`search_people` has no curl equivalent — `/api/agent/people` only matches exact names).
+When the `zerogtalent` MCP server is connected (bundled with this plugin; also addable in Claude.ai as a custom connector — see `references/api.md` § MCP server), use its tools instead of curl — same data, no shell needed: `search_jobs` (query, companies, industry, location, country, region, employmentType, remote, sort, limit, offset — relevance-ranked by default, so describe the role in plain words), `get_job` (slug or applyUrl), `resolve_company` (name), `search_people` (a name, word for word, any case, no typos; headlines, bios and companies aren't searched), `resolve_person` (exact name, company), `get_salary_stats` (category and/or company — see § 4). The output rules below still govern what you print, but read their preamble first — the tools return pre-rendered markdown, not the JSON fields those rules name. Fall back to the curl commands only when the tools are unavailable (`search_people` has no curl equivalent — `/api/agent/people` only matches exact names).
 
 Search live openings via `curl`. See `references/api.md` for full parameter docs and response schema. For a company slug, prefer `resolve_company` / `/api/agent/companies?q={name}` — `references/companies.md` is only a sample of the largest employers. To list companies by attribute instead — YC batch or category, funding stage, investor, region, HQ country, headcount — call `/api/agent/companies/search` (`references/api.md` § Search Companies); it has no MCP tool yet, so use curl.
 
