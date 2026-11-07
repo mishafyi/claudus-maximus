@@ -10,7 +10,7 @@ Example payloads below are real responses, trimmed; live counts and asset extens
 GET https://zerogtalent.com/api/agent/jobs
 ```
 
-Active jobs only. Default order is listing freshness (`createdAt` descending); pass `sort=relevance` for hybrid keyword + semantic ranking (the same mode the site's AI chat uses — descriptive queries work; pagination then stops at the top-200 fusion window).
+Active jobs only. Default order is listing freshness (`createdAt` descending); add `sort=relevance` for hybrid keyword + semantic ranking (the same mode the site's AI chat uses — descriptive queries work; pagination then stops at the top-200 fusion window).
 
 ### Parameters
 
@@ -27,7 +27,7 @@ Active jobs only. Default order is listing freshness (`createdAt` descending); p
 | `remote`         | string | —       | `true` for remote-only jobs (`location=remote` does NOT work — use this instead)                   |
 | `filters`        | string | —       | SEO-style combined slug (e.g., `python-and-internship`, `aerospace`)                               |
 | `limit`          | number | 10      | Results per page (max 50)                                                                          |
-| `offset`         | number | 0       | Absolute pagination offset (max 10,000 minus `limit`; results end at 10,000) — pass the previous page's `nextOffset`; any `limit` works |
+| `offset`         | number | 0       | Absolute pagination offset (max 10,000 minus `limit`; results end at 10,000) — send the previous page's `nextOffset`; any `limit` works |
 | `format`         | string | —       | `md` compact markdown (one block per job); `slim` JSON without descriptions                        |
 | `ref`            | string | —       | Traffic-source marker echoed onto every `applyUrl` as `?s=`; `[a-z][a-z0-9_-]{0,31}` or ignored    |
 
@@ -80,7 +80,7 @@ Notes:
 - **`description`** is the full plain-text description with HTML stripped. Cap your output to a snippet if you don't need the whole thing.
 - **`salary.interval`** is the raw DB value and is normally UPPERCASE (`YEAR`, `HOUR`, `MONTH`, `WEEK`), with a small lowercase legacy tail — compare case-insensitively. Only yearly figures are annual totals; never divide an hourly/monthly/weekly rate by 1000.
 - **`company.industry`** is the uppercase `CompanyIndustry` enum.
-- **Pagination**: pass `nextOffset` as `offset` in the next request. Under the default `sort=new`, `hasMore: false` means you've reached the tail, or the 10,000th result: when `total` is larger, narrow the filters to reach the rest. Under `sort=relevance` it goes false at the top-200 rank-fusion window even though `total` reports the full match count — to page deeper than 200, switch to `sort=new` or narrow the filters.
+- **Pagination**: send `nextOffset` as `offset` in the next request. Under the default `sort=new`, `hasMore: false` means you've reached the tail, or the 10,000th result: when `total` is larger, narrow the filters to reach the rest. Under `sort=relevance` it goes false at the top-200 rank-fusion window even though `total` reports the full match count — to page deeper than 200, switch to `sort=new` or narrow the filters.
 
 ### Markdown Format (`format=md`)
 
@@ -112,7 +112,7 @@ that matters via its `jdUrl`.
 GET https://zerogtalent.com/api/agent/job/{slug}
 ```
 
-Fetch a single job's full details + up to 5 related active roles at the same company. Search results carry no `slug` field — pass the trailing path segment of a result's `jdUrl` or `applyUrl` (the MCP `get_job` tool accepts either URL whole). Returns 404 if the job is closed or unknown.
+Fetch a single job's full details + up to 5 related active roles at the same company. Search results carry no `slug` field — use the trailing path segment of a result's `jdUrl` or `applyUrl` (the MCP `get_job` tool accepts either URL whole). Returns 404 if the job is closed or unknown.
 
 ### Parameters
 
@@ -189,7 +189,7 @@ Cleanest path for LLMs to read a single JD — returns a `text/markdown` documen
 GET https://zerogtalent.com/api/agent/companies?q={name}
 ```
 
-Deterministic, **alias-aware name resolver** — not a fuzzy search. A company name maps to exactly one canonical company on Zero G Talent (e.g. `q=OpenAI`, or `q=x.ai` → xAI), so `companies` holds 0 or 1 item. It matches canonical names and known aliases only — pass the full name (`Anduril Industries`, not `Anduril`); if it returns 0 items the company isn't tracked — say so. Do **not** fall back to `?q=<company>`: `q` is full-text over every field, so it also returns other companies' jobs that mention the name. Use it to turn a company name into its on-site `url` + slug.
+Deterministic, **alias-aware name resolver** — not a fuzzy search. A company name maps to exactly one canonical company on Zero G Talent (e.g. `q=OpenAI`, or `q=x.ai` → xAI), so `companies` holds 0 or 1 item. It matches canonical names and known aliases only — give the full name (`Anduril Industries`, not `Anduril`); if it returns 0 items the company isn't tracked — say so. Do **not** fall back to `?q=<company>`: `q` is full-text over every field, so it also returns other companies' jobs that mention the name. Use it to turn a company name into its on-site `url` + slug.
 
 ### Parameters
 
@@ -248,7 +248,7 @@ Deterministic, **alias-aware name resolver** — not a fuzzy search. A company n
 - Optional fields (`logoUrl`, `website`, `hq`, `description`) are omitted when absent.
 - The company object is the full profile Search Companies returns — `careersUrl`, `slogan`, `foundedYear`, `employeeCount`, `stage`, `funding`, `investors`, the YC fields (`batch`, `ycIndustry`, `regions`, `hiringDescription`, `techDescription`), `portfolios`, `socials` (`linkedin`, `twitter`, `github`, `crunchbase`, `facebook`, `youtube`, `instagram`, `tiktok`) and `founders` (`name`, `slug`, `title`, `url` of each founder's profile; this resolver only, not Search Companies) — every field omitted when unknown.
 
-Pass `suggest=true` and a name that resolves to nothing comes back with a
+Add `suggest=true` and a name that resolves to nothing comes back with a
 `suggestions` array of up to 5 tracked companies matching by name, best match
 first, each with the same profile as a resolved company (trimmed to six fields below) — the everyday short form of a company usually lands here. Without the
 flag the endpoint stays a pure exact resolver:
@@ -304,7 +304,7 @@ All optional. List params take comma-separated values — OR within a param, AND
 | `sizeMin`    | number | —       | Minimum employee count (inclusive)                                                                                                                                            |
 | `sizeMax`    | number | —       | Maximum employee count (inclusive)                                                                                                                                            |
 | `limit`      | number | 10      | Results per page (max 50)                                                                                                                                                     |
-| `offset`     | number | 0       | Absolute pagination offset (max 10,000) — pass the previous page's `nextOffset`                                                                                               |
+| `offset`     | number | 0       | Absolute pagination offset (max 10,000) — send the previous page's `nextOffset`                                                                                               |
 
 ### JSON Response
 
@@ -430,8 +430,8 @@ GET /api/agent/companies/search?stage=Seed&region=Europe&industry=space&limit=1
 ```
 
 - Each company is the full public profile: identity (`url`, `logoUrl`, `website`, `careersUrl`, `slogan`, `description`), `hq`, `openJobs`, `foundedYear`, `employeeCount`, funding (`stage`, `funding`, `investors`, `portfolios`), the YC fields (`batch`, `ycIndustry`, `regions`, `hiringDescription`, `techDescription`) and `socials` (`linkedin`, `twitter`, `github`, `crunchbase`, `facebook`, `youtube`, `instagram`, `tiktok`). Every field is omitted when unknown — no second call is needed to get a company's socials or description.
-- `facets` ships on the first page only (`offset=0`). Each facet counts with every **other** active filter applied — above, `industry` lists the Seed + Europe companies across all industries — so you can discover valid values and pivot within a facet. Pass facet keys back verbatim.
-- Coverage is partial: of ~26k tracked companies, ~6k carry the YC fields (`batch`, `ycIndustry`, `regions`), ~10k a `stage`, ~21k an `employeeCount`. A company missing an attribute never matches a filter on it, so an empty result means "none with that data on file", not "none exist". Some investors appear under two slugs (`yc` and `y-combinator`, `a16z` and `andreessen-horowitz`) — pass both.
+- `facets` ships on the first page only (`offset=0`). Each facet counts with every **other** active filter applied — above, `industry` lists the Seed + Europe companies across all industries — so you can discover valid values and pivot within a facet. Send facet keys back verbatim.
+- Coverage is partial: of ~26k tracked companies, ~6k carry the YC fields (`batch`, `ycIndustry`, `regions`), ~10k a `stage`, ~21k an `employeeCount`. A company missing an attribute never matches a filter on it, so an empty result means "none with that data on file", not "none exist". Some investors appear under two slugs (`yc` and `y-combinator`, `a16z` and `andreessen-horowitz`) — send both.
 
 ## Salary Statistics
 
@@ -514,7 +514,7 @@ what employers advertise, and equity and bonus are not in them.
 GET https://zerogtalent.com/api/agent/people?q={name}&company={slug}
 ```
 
-Deterministic **exact-name resolver** — not a fuzzy search. Returns every person whose name matches `q` (case-insensitive). Names collide, so pass `company={slug}` to disambiguate.
+Deterministic **exact-name resolver** — not a fuzzy search. Returns every person whose name matches `q` (case-insensitive). Names collide, so add `company={slug}` to disambiguate.
 
 Each person carries a profile's public fields only, and `company=` matches each person's primary employer, the one their profile headline names.
 
