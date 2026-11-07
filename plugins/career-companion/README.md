@@ -43,7 +43,7 @@ Or load it for one session only: `claude --plugin-dir /path/to/career-companion`
 
 ## Privacy
 
-The connector processes only the tool inputs Claude sends it and stores no conversation data. See <https://zerogtalent.com/privacy>.
+The connector processes only the tool inputs Claude sends it and stores no conversation data. When the connector isn't available, the skill's curl fallback sends the same search inputs to Zero G Talent's public REST API (`https://zerogtalent.com/api/agent/*`), under the same policy. See <https://zerogtalent.com/privacy>.
 
 ## License
 
