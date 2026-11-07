@@ -516,14 +516,14 @@ GET https://zerogtalent.com/api/agent/people?q={name}&company={slug}
 
 Deterministic **exact-name resolver** — not a fuzzy search. Returns every person whose name matches `q` (case-insensitive). Names collide, so pass `company={slug}` to disambiguate.
 
-Without an API key each person carries a profile's public fields only, and `company=` matches each person's primary employer, the one their profile headline names. An operator-issued key (`x-api-key: <key>`) adds every employer, investments, LinkedIn and the profile's `bio`, `location`, `quote` and `focusAreas`, and `company=` then matches any employment link.
+Each person carries a profile's public fields only, and `company=` matches each person's primary employer, the one their profile headline names.
 
 ### Parameters
 
 | Param     | Type   | Default | Description                                                                                                       |
 | --------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------------- |
 | `q`       | string | —       | Person name (required), case-insensitive exact match.                                                             |
-| `company` | string | —       | Company slug to disambiguate same-named people: the primary employer without a key, any employment link with one. |
+| `company` | string | —       | Company slug to disambiguate same-named people: their primary employer.                                           |
 | `limit`   | number | 10      | Max results (1–20).                                                                                               |
 
 ### JSON Response
