@@ -544,20 +544,9 @@ Each person carries a profile's public fields only, and `company=` matches each 
 }
 ```
 
-With a key, each person carries `company` (or `companies[]` when tied to more than one employer), `investments` and `linkedin`:
-
-```json
-"companies": ["Y Combinator", "Scribd"],
-"investments": ["Airgoods"],
-"linkedin": "https://www.linkedin.com/in/…"
-```
-
 - When a name maps to multiple people, `people` has several entries. Narrow with `company`.
-- With a key, `company`/`companies` list employment; `investments` lists the companies the person is recorded as investing in, and `company=` matches employment only — an investor is not a match for the company they backed.
-- `investments` carries every recorded investment, so a prolific angel returns hundreds — one Y Combinator partner holds 155.
-- A company can legitimately appear in both lists: `PersonCompany` is unique per person, company **and role**, so someone who works at a company and also invested in it holds a `team` row and an `investor` row there.
 - **`total` is the number of rows returned, not the number of matches**, and the result is truncated at `limit` (max 20) with no `hasMore`. If `total` equals your `limit`, assume there may be more.
-- Optional fields (`headline`, `company`, `avatar`, and with a key `linkedin`) are omitted when absent.
+- Optional fields (`headline`, `company`, `avatar`) are omitted when absent.
 
 ## MCP server (Claude connector)
 
